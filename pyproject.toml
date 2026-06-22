@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=77.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gameviz-hyperkit"
+version = "0.1.0"
+description = "A lightweight Python SDK for 2D hypercasual and hybrid-casual mobile game prototypes."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+    { name = "Md. Rifat Hossain Chowdhury", email = "rifat.gameviz@gmail.com" }
+]
+keywords = ["game", "kivy", "android", "hypercasual", "mobile", "2d", "sdk"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "kivy>=2.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.0",
+    "twine>=5.0.0",
+    "pytest>=8.0.0",
+]
+android = [
+    "buildozer>=1.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/gameviz-rifat/gameviz-hyperkit"
+Repository = "https://github.com/gameviz-rifat/gameviz-hyperkit"
+Issues = "https://github.com/gameviz-rifat/gameviz-hyperkit/issues"
+
+[project.scripts]
+hyperkit = "hyperkit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+hyperkit = ["templates/**/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

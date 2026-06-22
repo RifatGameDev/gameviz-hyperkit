@@ -1,0 +1,42 @@
+"""GameViz HyperKit.
+
+A lightweight Python SDK for mobile-ready 2D hypercasual game prototypes.
+"""
+
+from .collision import circle_intersects_circle, rect_intersects_rect, rect_intersects_circle
+from .geometry import Circle, Rect, Vector2
+from .input import TouchEvent, TouchGesture, TouchTracker
+from .object import GameObject
+from .physics import apply_gravity, clamp, move_towards
+from .save import SaveManager
+from .scene import Scene
+from .score import ScoreManager
+from .ui import Button
+
+try:  # Kivy may not be available in headless test environments.
+    from .app import Game
+except Exception:  # pragma: no cover
+    Game = None  # type: ignore
+
+__all__ = [
+    "Button",
+    "Circle",
+    "Game",
+    "GameObject",
+    "Rect",
+    "SaveManager",
+    "Scene",
+    "ScoreManager",
+    "TouchEvent",
+    "TouchGesture",
+    "TouchTracker",
+    "Vector2",
+    "apply_gravity",
+    "circle_intersects_circle",
+    "clamp",
+    "move_towards",
+    "rect_intersects_circle",
+    "rect_intersects_rect",
+]
+
+__version__ = "0.1.0"
