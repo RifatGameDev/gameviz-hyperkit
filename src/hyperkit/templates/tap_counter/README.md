@@ -1,14 +1,17 @@
-# Tap Counter
+# Tap Counter Template
 
-A tiny HyperKit demo game. Tap anywhere to move the ball and increase score.
+A simple HyperKit tap/click game template.
+
+## Features
+
+- Tap input
+- Object movement
+- Score system
+- High score saving
+- Game over state
+- Tap to restart
+
+## Run
 
 ```bash
 python main.py
-```
-
-For Android APK:
-
-```bash
-hyperkit init-android --title "Tap Counter"
-hyperkit build android
-```

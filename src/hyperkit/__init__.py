@@ -11,7 +11,7 @@ from .physics import apply_gravity, clamp, move_towards
 from .save import SaveManager
 from .scene import Scene
 from .score import ScoreManager
-from .ui import Button
+from .ui import Button, TextLabel
 from .state import GameState, StateMachine
 
 try:  # Kivy may not be available in headless test environments.
@@ -21,6 +21,7 @@ except Exception:  # pragma: no cover
 
 __all__ = [
     "Button",
+    "TextLabel",
     "Circle",
     "Game",
     "GameObject",
