@@ -12,6 +12,7 @@ from .save import SaveManager
 from .scene import Scene
 from .score import ScoreManager
 from .ui import Button
+from .state import GameState, StateMachine
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -37,6 +38,8 @@ __all__ = [
     "move_towards",
     "rect_intersects_circle",
     "rect_intersects_rect",
+    "GameState",
+    "StateMachine",
 ]
 
 __version__ = "0.1.0"
