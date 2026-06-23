@@ -1,7 +1,19 @@
-# Flappy Mini
+# Flappy Mini Template
 
-A small Flappy-style HyperKit prototype.
+A simple Flappy-style HyperKit prototype.
+
+## Features
+
+- Tap-to-jump input
+- Gravity
+- Moving pipe obstacles
+- Collision detection
+- Score system
+- High score saving
+- Game over state
+- Tap to restart
+
+## Run
 
 ```bash
 python main.py
-```
