@@ -30,6 +30,10 @@ TEMPLATES = {
         "folder": "quiz_game",
         "description": "Educational quiz prototype with questions, answer buttons, score, and result screen.",
     },
+    "simple-physics": {
+        "folder": "simple_physics",
+        "description": "Physics prototype with gravity, bounce, coin collection, score, and restart.",
+    },
 }
 
 

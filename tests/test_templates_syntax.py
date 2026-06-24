@@ -25,3 +25,8 @@ def test_puzzle_game_template_has_valid_python_syntax():
 def test_quiz_game_template_has_valid_python_syntax():
     path = Path("src/hyperkit/templates/quiz_game/main.py")
     ast.parse(path.read_text(encoding="utf-8"))
+
+
+def test_simple_physics_template_has_valid_python_syntax():
+    path = Path("src/hyperkit/templates/simple_physics/main.py")
+    ast.parse(path.read_text(encoding="utf-8"))
