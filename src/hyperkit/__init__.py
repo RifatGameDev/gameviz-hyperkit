@@ -13,6 +13,7 @@ from .scene import Scene
 from .score import ScoreManager
 from .ui import Button, TextLabel
 from .state import GameState, StateMachine
+from .layout import CanvasScaler
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -41,6 +42,7 @@ __all__ = [
     "rect_intersects_rect",
     "GameState",
     "StateMachine",
+    "CanvasScaler",
 ]
 
 __version__ = "0.1.0"

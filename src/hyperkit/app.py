@@ -3,14 +3,15 @@ from __future__ import annotations
 from typing import Optional
 
 from .input import TouchTracker
+from .layout import CanvasScaler
 from .scene import Scene
 
 
 class Game:
     """Kivy-backed HyperKit game runner.
 
-    This class keeps the public API small while using Kivy internally for
-    desktop/mobile windows, drawing, and touch events.
+    HyperKit uses a virtual resolution. The default is 720x1280.
+    The game is automatically scaled to fit the real screen/window size.
     """
 
     def __init__(
@@ -57,24 +58,56 @@ class Game:
         class HyperKitWidget(Widget):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
+
+                self.scaler = CanvasScaler(
+                    virtual_width=game.width,
+                    virtual_height=game.height,
+                    actual_width=game.width,
+                    actual_height=game.height,
+                )
+
                 self.touch_tracker = TouchTracker()
+
                 if game.scene and not game.scene.started:
                     game.scene.started = True
                     game.scene.start()
+
                 Clock.schedule_interval(self._tick, 1.0 / max(1, game.fps))
 
+            def _update_scaler(self):
+                self.scaler.update_actual_size(self.width, self.height)
+
+            def _draw_background(self):
+                Color(*game.background_color)
+                Rectangle(pos=(0, 0), size=self.size)
+
+                # Optional subtle content area overlay.
+                # This helps when the window aspect ratio does not match the virtual canvas.
+                Color(0, 0, 0, 0)
+                Rectangle(
+                    pos=(self.scaler.offset_x, self.scaler.offset_y),
+                    size=(self.scaler.content_width,
+                          self.scaler.content_height),
+                )
+
             def _draw_text(self, obj):
+                font_size = max(
+                    1, int(getattr(obj, "font_size", 28) * self.scaler.scale))
+
                 label = CoreLabel(
                     text=str(getattr(obj, "text", "")),
-                    font_size=int(getattr(obj, "font_size", 28)),
+                    font_size=font_size,
                     bold=bool(getattr(obj, "bold", False)),
                 )
                 label.refresh()
 
+                screen_x = self.scaler.to_screen_x(obj.x)
+                screen_y = self.scaler.to_screen_y(obj.y)
+
                 Color(*obj.color)
                 Rectangle(
                     texture=label.texture,
-                    pos=(obj.x, obj.y),
+                    pos=(screen_x, screen_y),
                     size=label.texture.size,
                 )
 
@@ -83,15 +116,21 @@ class Game:
                 if not text:
                     return
 
+                font_size = max(
+                    1, int(getattr(obj, "font_size", 24) * self.scaler.scale))
+
                 label = CoreLabel(
                     text=text,
-                    font_size=int(getattr(obj, "font_size", 24)),
+                    font_size=font_size,
                     bold=bool(getattr(obj, "bold", False)),
                 )
                 label.refresh()
 
-                text_x = obj.x + (obj.width - label.texture.size[0]) / 2
-                text_y = obj.y + (obj.height - label.texture.size[1]) / 2
+                sx, sy, sw, sh = self.scaler.to_screen_rect(
+                    obj.x, obj.y, obj.width, obj.height)
+
+                text_x = sx + (sw - label.texture.size[0]) / 2
+                text_y = sy + (sh - label.texture.size[1]) / 2
 
                 Color(1, 1, 1, 1)
                 Rectangle(
@@ -101,15 +140,19 @@ class Game:
                 )
 
             def _tick(self, dt):
+                self._update_scaler()
+
                 if game.scene:
                     game.scene.update(dt)
+
                 self._redraw()
 
             def _redraw(self):
                 self.canvas.clear()
+                self._update_scaler()
+
                 with self.canvas:
-                    Color(*game.background_color)
-                    Rectangle(pos=(0, 0), size=self.size)
+                    self._draw_background()
 
                     if not game.scene:
                         return
@@ -122,13 +165,19 @@ class Game:
                             self._draw_text(obj)
                             continue
 
+                        sx, sy, sw, sh = self.scaler.to_screen_rect(
+                            obj.x,
+                            obj.y,
+                            obj.width,
+                            obj.height,
+                        )
+
                         Color(*obj.color)
+
                         if obj.shape == "circle":
-                            Ellipse(pos=(obj.x, obj.y), size=(
-                                obj.width, obj.height))
+                            Ellipse(pos=(sx, sy), size=(sw, sh))
                         else:
-                            Rectangle(pos=(obj.x, obj.y), size=(
-                                obj.width, obj.height))
+                            Rectangle(pos=(sx, sy), size=(sw, sh))
 
                         if hasattr(obj, "text"):
                             self._draw_button_text(obj)
@@ -136,25 +185,37 @@ class Game:
                     game.scene.draw(self.canvas)
 
             def on_touch_down(self, touch):
-                self.touch_tracker.touch_down(touch.x, touch.y)
+                vx, vy = self.scaler.to_virtual_point(touch.x, touch.y)
+
+                self.touch_tracker.touch_down(vx, vy)
+
                 if game.scene:
-                    game.scene.on_touch_down(touch.x, touch.y)
+                    game.scene.on_touch_down(vx, vy)
+
                 return True
 
             def on_touch_move(self, touch):
+                vx, vy = self.scaler.to_virtual_point(touch.x, touch.y)
+
                 if game.scene:
-                    game.scene.on_touch_move(touch.x, touch.y)
+                    game.scene.on_touch_move(vx, vy)
+
                 return True
 
             def on_touch_up(self, touch):
-                gesture = self.touch_tracker.touch_up(touch.x, touch.y)
+                vx, vy = self.scaler.to_virtual_point(touch.x, touch.y)
+
+                gesture = self.touch_tracker.touch_up(vx, vy)
+
                 if game.scene:
-                    game.scene.on_touch_up(touch.x, touch.y)
+                    game.scene.on_touch_up(vx, vy)
+
                     if gesture and gesture.kind == "tap":
-                        game.scene.on_tap(touch.x, touch.y)
+                        game.scene.on_tap(vx, vy)
                     elif gesture and gesture.kind == "swipe" and gesture.direction:
                         game.scene.on_swipe(
                             gesture.start, gesture.end, gesture.direction)
+
                 return True
 
         class HyperKitKivyApp(App):
