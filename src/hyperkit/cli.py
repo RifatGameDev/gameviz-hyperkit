@@ -22,6 +22,10 @@ TEMPLATES = {
         "folder": "swipe_runner",
         "description": "3-lane swipe runner prototype with obstacles, score, and game over.",
     },
+    "puzzle-game": {
+        "folder": "puzzle_game",
+        "description": "3x3 color matching puzzle prototype with score, target color, and restart.",
+    },
 }
 
 
