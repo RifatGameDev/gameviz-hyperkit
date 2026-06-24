@@ -18,6 +18,10 @@ TEMPLATES = {
         "folder": "flappy_mini",
         "description": "Small flappy-style prototype with tap-to-jump style gameplay.",
     },
+    "swipe-runner": {
+        "folder": "swipe_runner",
+        "description": "3-lane swipe runner prototype with obstacles, score, and game over.",
+    },
 }
 
 
