@@ -1,76 +1,243 @@
 # GameViz HyperKit
 
-**GameViz HyperKit** is a lightweight Python SDK for building 2D hypercasual and hybrid-casual mobile game prototypes.
+**GameViz HyperKit** is a lightweight Python SDK for quickly creating **2D hypercasual and hybrid casual game prototypes**.
 
-It is not a Unity/Godot replacement. It is a beginner-friendly SDK for fast prototypes, educational games, templates, and simple mobile-ready 2D game ideas.
+It is designed for beginners, students, game jam developers, and small teams who want to test simple game ideas faster using Python.
 
-## What it targets
+> HyperKit is not a full game engine like Unity, Unreal, or Godot.
+> It is a prototype-focused SDK with reusable systems and ready-made templates.
 
-- 2D hypercasual games
-- Tap games
-- Swipe games
-- Endless runner prototypes
-- Puzzle games
-- Simple physics games
-- Educational mobile games
-- Internal game templates
+---
 
-## Install locally during development
+## Features
+
+* 2D game prototype structure
+* Scene system
+* GameObject system
+* Tap/click input
+* Swipe input
+* Score and high-score system
+* Save system
+* Collision helpers
+* Simple physics helpers
+* Text label and basic UI helpers
+* Responsive virtual canvas scaling
+* Ready-made hypercasual game templates
+* CLI project generator
+
+---
+
+## Installation
+
+For local development:
 
 ```bash
 pip install -e .
 ```
 
-## Create a new game
+After installation, check if HyperKit is working:
 
 ```bash
-hyperkit new tap-game
-cd tap-game
+hyperkit doctor
+```
+
+---
+
+## Create a New Game
+
+Create a new project from a template:
+
+```bash
+hyperkit new my-game --template tap_counter
+cd my-game
 python main.py
 ```
 
-## Build Android APK
-
-Android APK builds use Kivy + Buildozer.
-
-On Linux/macOS or Windows WSL:
+You can also use dash-style names:
 
 ```bash
-pip install buildozer
-hyperkit init-android
-hyperkit build android
+hyperkit new my-game --template tap-counter
 ```
 
-The APK will be created by Buildozer under the `bin/` folder.
+---
 
-## Minimal example
+## Available Templates
+
+Check available templates:
+
+```bash
+hyperkit list-templates
+```
+
+Current templates:
+
+| Template       | Command Name                        | Description                                    |
+| -------------- | ----------------------------------- | ---------------------------------------------- |
+| Tap Counter    | `tap_counter` / `tap-counter`       | Tap/click scoring prototype                    |
+| Flappy Mini    | `flappy_mini` / `flappy-mini`       | Flappy-style tap-to-jump prototype             |
+| Swipe Runner   | `swipe_runner` / `swipe-runner`     | 3-lane swipe runner prototype                  |
+| Puzzle Game    | `puzzle_game` / `puzzle-game`       | Color matching puzzle prototype                |
+| Quiz Game      | `quiz_game` / `quiz-game`           | Educational quiz game prototype                |
+| Simple Physics | `simple_physics` / `simple-physics` | Gravity, bounce, and coin collection prototype |
+
+---
+
+## Example Usage
 
 ```python
-from hyperkit import Game, Scene, GameObject
+from hyperkit import Game, GameObject, Scene, ScoreManager, TextLabel
 
-class MainScene(Scene):
+
+class MyScene(Scene):
     def start(self):
-        self.player = GameObject(x=320, y=240, width=80, height=80)
-        self.add(self.player)
+        self.score = ScoreManager(high_score_key="my_game_high_score")
+
+        self.player = self.add(
+            GameObject(
+                x=300,
+                y=500,
+                width=100,
+                height=100,
+                color=(0.2, 0.75, 1.0, 1),
+                shape="circle",
+            )
+        )
+
+        self.score_label = self.add(
+            TextLabel(
+                x=30,
+                y=1180,
+                text="Score: 0",
+                font_size=32,
+                color=(1, 1, 1, 1),
+            )
+        )
 
     def on_tap(self, x, y):
         self.player.x = x - self.player.width / 2
         self.player.y = y - self.player.height / 2
+        self.score.add(1)
+        self.score_label.set_text(f"Score: {self.score.value}")
 
-Game(title="Tap Game").set_scene(MainScene()).run()
+
+Game(title="My HyperKit Game", width=720, height=1280).set_scene(MyScene()).run()
 ```
 
-## CLI commands
+---
+
+## CLI Commands
 
 ```bash
-hyperkit new my-game
-hyperkit new my-game --template flappy-mini
-hyperkit run
-hyperkit init-android
-hyperkit build android
 hyperkit doctor
 ```
 
-## Current status
+Check local environment.
 
-Version `0.1.0` is an alpha MVP.
+```bash
+hyperkit list-templates
+```
+
+Show available templates.
+
+```bash
+hyperkit new my-game --template tap_counter
+```
+
+Create a new game project.
+
+```bash
+hyperkit run
+```
+
+Run a HyperKit project from the current folder.
+
+```bash
+hyperkit init-android
+```
+
+Create experimental Android build configuration.
+
+```bash
+hyperkit build android
+```
+
+Experimental Android build command.
+
+---
+
+## Current Status
+
+HyperKit is currently in active development.
+
+Current version goal:
+
+```text
+0.2.x = SDK core + multiple working templates
+```
+
+Stable public release target:
+
+```text
+1.0.0 = polished SDK, documentation, tests, examples, and mobile build support
+```
+
+---
+
+## Current Limitations
+
+* This is not a full game engine.
+* Advanced 3D rendering is not supported.
+* Android APK build support is still experimental.
+* The current focus is 2D hypercasual and hybrid casual prototypes.
+* Templates are designed for learning and prototyping, not final commercial game production yet.
+
+---
+
+## Roadmap
+
+Planned improvements:
+
+* Better UI system
+* More game templates
+* Asset loading
+* Audio helper
+* Animation helper
+* Particle helper
+* Improved mobile touch support
+* Android Gradle / Chaquopy build pipeline
+* AdMob / analytics helper layer
+* Better documentation and examples
+
+---
+
+## Development
+
+Run tests:
+
+```bash
+pytest
+```
+
+Build package:
+
+```bash
+python -m build
+```
+
+Check package:
+
+```bash
+twine check dist/*
+```
+
+---
+
+## License
+
+MIT License.
+
+---
+
+## Author
+
+Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
