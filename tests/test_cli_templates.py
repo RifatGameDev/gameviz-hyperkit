@@ -18,6 +18,9 @@ def test_normalize_template_name_accepts_dash_and_underscore():
     assert normalize_template_name("puzzle-game") == "puzzle-game"
     assert normalize_template_name("puzzle_game") == "puzzle-game"
 
+    assert normalize_template_name("quiz-game") == "quiz-game"
+    assert normalize_template_name("quiz_game") == "quiz-game"
+
 
 def test_copy_template_creates_tap_counter_project(tmp_path: Path):
     project_path = tmp_path / "tap_game"
@@ -53,6 +56,16 @@ def test_copy_template_creates_puzzle_game_project(tmp_path: Path):
     project_path = tmp_path / "puzzle_game"
 
     copy_template("puzzle_game", project_path)
+
+    assert project_path.exists()
+    assert (project_path / "main.py").exists()
+    assert (project_path / "README.md").exists()
+
+
+def test_copy_template_creates_quiz_game_project(tmp_path: Path):
+    project_path = tmp_path / "quiz_game"
+
+    copy_template("quiz_game", project_path)
 
     assert project_path.exists()
     assert (project_path / "main.py").exists()

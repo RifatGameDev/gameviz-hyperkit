@@ -20,3 +20,8 @@ def test_swipe_runner_template_has_valid_python_syntax():
 def test_puzzle_game_template_has_valid_python_syntax():
     path = Path("src/hyperkit/templates/puzzle_game/main.py")
     ast.parse(path.read_text(encoding="utf-8"))
+
+
+def test_quiz_game_template_has_valid_python_syntax():
+    path = Path("src/hyperkit/templates/quiz_game/main.py")
+    ast.parse(path.read_text(encoding="utf-8"))

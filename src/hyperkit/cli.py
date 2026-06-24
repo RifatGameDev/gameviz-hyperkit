@@ -26,6 +26,10 @@ TEMPLATES = {
         "folder": "puzzle_game",
         "description": "3x3 color matching puzzle prototype with score, target color, and restart.",
     },
+    "quiz-game": {
+        "folder": "quiz_game",
+        "description": "Educational quiz prototype with questions, answer buttons, score, and result screen.",
+    },
 }
 
 
