@@ -5,9 +5,16 @@ import shutil
 import subprocess
 import sys
 from importlib import resources
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 from .android import create_buildozer_spec
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 fallback
+    tomllib = None
+
 
 TEMPLATES = {
     "tap-counter": {
@@ -37,15 +44,14 @@ TEMPLATES = {
 }
 
 
-def normalize_template_name(template: str) -> str:
-    """
-    Accept both dash and underscore template names.
+def get_hyperkit_version() -> str:
+    try:
+        return version("gameviz-hyperkit")
+    except PackageNotFoundError:
+        return "0.0.0-dev"
 
-    Examples:
-    tap_counter -> tap-counter
-    tap-counter -> tap-counter
-    flappy_mini -> flappy-mini
-    """
+
+def normalize_template_name(template: str) -> str:
     return template.strip().lower().replace("_", "-")
 
 
@@ -53,13 +59,24 @@ def available_template_names() -> list[str]:
     return list(TEMPLATES.keys())
 
 
-def copy_template(template: str, destination: Path) -> None:
+def validate_template_name(template: str) -> str:
     template_key = normalize_template_name(template)
 
     if template_key not in TEMPLATES:
         available = ", ".join(available_template_names())
         raise ValueError(
             f"Unknown template '{template}'. Available templates: {available}")
+
+    return template_key
+
+
+def get_template_folder(template: str) -> str:
+    template_key = validate_template_name(template)
+    return TEMPLATES[template_key]["folder"]
+
+
+def copy_template(template: str, destination: Path) -> None:
+    template_key = validate_template_name(template)
 
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError(
@@ -70,6 +87,9 @@ def copy_template(template: str, destination: Path) -> None:
     template_folder = TEMPLATES[template_key]["folder"]
     package_files = resources.files("hyperkit") / "templates" / template_folder
 
+    if not package_files.is_dir():
+        raise FileNotFoundError(f"Template folder missing: {template_folder}")
+
     for item in package_files.iterdir():
         target = destination / item.name
 
@@ -79,11 +99,107 @@ def copy_template(template: str, destination: Path) -> None:
             target.write_bytes(item.read_bytes())
 
 
+def write_project_metadata(project_path: Path, project_name: str, template: str) -> Path:
+    template_key = validate_template_name(template)
+    template_folder = get_template_folder(template_key)
+
+    metadata_path = project_path / "hyperkit.toml"
+    metadata = f'''[project]
+name = "{project_name}"
+template = "{template_key}"
+template_folder = "{template_folder}"
+created_by = "gameviz-hyperkit"
+hyperkit_version = "{get_hyperkit_version()}"
+
+[run]
+main = "main.py"
+'''
+
+    metadata_path.write_text(metadata, encoding="utf-8")
+    return metadata_path
+
+
+def create_project(project_name: str, template: str, destination: Path) -> Path:
+    template_key = validate_template_name(template)
+    copy_template(template_key, destination)
+    write_project_metadata(
+        destination, project_name=project_name, template=template_key)
+    return destination
+
+
+def _read_toml_fallback(path: Path) -> dict[str, dict[str, str]]:
+    data: dict[str, dict[str, str]] = {}
+    current_section: str | None = None
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+
+        if not line or line.startswith("#"):
+            continue
+
+        if line.startswith("[") and line.endswith("]"):
+            current_section = line[1:-1].strip()
+            data[current_section] = {}
+            continue
+
+        if "=" in line and current_section:
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"')
+            data[current_section][key] = value
+
+    return data
+
+
+def read_project_metadata(project_path: Path) -> dict:
+    metadata_path = project_path / "hyperkit.toml"
+
+    if not metadata_path.exists():
+        raise FileNotFoundError(f"Project metadata not found: {metadata_path}")
+
+    if tomllib is not None:
+        return tomllib.loads(metadata_path.read_text(encoding="utf-8"))
+
+    return _read_toml_fallback(metadata_path)
+
+
+def validate_project(project_path: Path) -> tuple[bool, list[str]]:
+    issues: list[str] = []
+
+    if not project_path.exists():
+        issues.append(f"Project path does not exist: {project_path}")
+        return False, issues
+
+    main_file = project_path / "main.py"
+    metadata_file = project_path / "hyperkit.toml"
+
+    if not main_file.exists():
+        issues.append("Missing main.py")
+
+    if not metadata_file.exists():
+        issues.append("Missing hyperkit.toml project metadata")
+    else:
+        try:
+            metadata = read_project_metadata(project_path)
+            template = metadata.get("project", {}).get("template")
+
+            if template:
+                validate_template_name(template)
+            else:
+                issues.append("hyperkit.toml is missing project.template")
+        except Exception as exc:
+            issues.append(f"Invalid hyperkit.toml: {exc}")
+
+    return len(issues) == 0, issues
+
+
 def cmd_new(args: argparse.Namespace) -> int:
     destination = Path(args.name).resolve()
-    copy_template(args.template, destination)
+    create_project(project_name=destination.name,
+                   template=args.template, destination=destination)
 
     print(f"Created HyperKit project: {destination}")
+    print(f"Template: {validate_template_name(args.template)}")
     print("")
     print("Next steps:")
     print(f"  cd {destination.name}")
@@ -102,8 +218,53 @@ def cmd_list_templates(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_info(args: argparse.Namespace) -> int:
+    project_path = Path(args.path).resolve()
+
+    try:
+        metadata = read_project_metadata(project_path)
+    except FileNotFoundError:
+        print("No hyperkit.toml found in this project.", file=sys.stderr)
+        print(
+            "This may be an older project or a manually created project.", file=sys.stderr)
+        return 1
+
+    project = metadata.get("project", {})
+    run = metadata.get("run", {})
+
+    print("HyperKit Project Info")
+    print("---------------------")
+    print(f"Name: {project.get('name', 'unknown')}")
+    print(f"Template: {project.get('template', 'unknown')}")
+    print(f"Template Folder: {project.get('template_folder', 'unknown')}")
+    print(f"Created By: {project.get('created_by', 'unknown')}")
+    print(f"HyperKit Version: {project.get('hyperkit_version', 'unknown')}")
+    print(f"Main File: {run.get('main', 'main.py')}")
+    return 0
+
+
+def cmd_validate(args: argparse.Namespace) -> int:
+    project_path = Path(args.path).resolve()
+    is_valid, issues = validate_project(project_path)
+
+    print("HyperKit Project Validation")
+    print("---------------------------")
+    print(f"Path: {project_path}")
+
+    if is_valid:
+        print("Status: valid")
+        return 0
+
+    print("Status: invalid")
+    for issue in issues:
+        print(f"- {issue}")
+
+    return 1
+
+
 def cmd_run(args: argparse.Namespace) -> int:
-    main_file = Path(args.path).resolve() / "main.py"
+    project_path = Path(args.path).resolve()
+    main_file = project_path / "main.py"
 
     if not main_file.exists():
         print(f"Could not find {main_file}", file=sys.stderr)
@@ -141,6 +302,7 @@ def cmd_build_android(args: argparse.Namespace) -> int:
 def cmd_doctor(args: argparse.Namespace) -> int:
     print("HyperKit Doctor")
     print("---------------")
+    print(f"HyperKit: {get_hyperkit_version()}")
     print(f"Python: {sys.version.split()[0]}")
 
     try:
@@ -179,6 +341,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_list = sub.add_parser(
         "list-templates", help="Show available game templates")
     p_list.set_defaults(func=cmd_list_templates)
+
+    p_info = sub.add_parser("info", help="Show HyperKit project metadata")
+    p_info.add_argument("--path", default=".")
+    p_info.set_defaults(func=cmd_info)
+
+    p_validate = sub.add_parser("validate", help="Validate a HyperKit project")
+    p_validate.add_argument("--path", default=".")
+    p_validate.set_defaults(func=cmd_validate)
 
     p_run = sub.add_parser("run", help="Run a HyperKit game project")
     p_run.add_argument("--path", default=".")

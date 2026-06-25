@@ -82,6 +82,22 @@ Current templates:
 
 ---
 
+## Examples
+
+Official example projects are available in the `examples/` folder.
+
+Examples include:
+
+- `basic_tap_demo`
+- `swipe_input_demo`
+- `score_highscore_demo`
+
+Run an example:
+
+```bash
+cd examples/basic_tap_demo
+python main.py
+
 ## Example Usage
 
 ```python
@@ -131,19 +147,73 @@ Game(title="My HyperKit Game", width=720, height=1280).set_scene(MyScene()).run(
 hyperkit doctor
 ```
 
-Check local environment.
+Check the local HyperKit environment, Python version, Kivy installation, and build tool status.
 
 ```bash
 hyperkit list-templates
 ```
 
-Show available templates.
+Show all available HyperKit game templates.
+
+```bash
+hyperkit info
+```
+
+Show project metadata from `hyperkit.toml`.
+
+Example output includes:
+
+```text
+Name
+Template
+Template folder
+Created by
+HyperKit version
+Main file
+```
+
+```bash
+hyperkit validate
+```
+
+Validate the current HyperKit project structure.
+
+It checks whether the project has:
+
+```text
+main.py
+hyperkit.toml
+valid template metadata
+```
 
 ```bash
 hyperkit new my-game --template tap_counter
 ```
 
-Create a new game project.
+Create a new game project from a template.
+
+You can use underscore-style names:
+
+```bash
+hyperkit new my-game --template tap_counter
+```
+
+Or dash-style names:
+
+```bash
+hyperkit new my-game --template tap-counter
+```
+
+Available templates:
+
+```text
+tap_counter / tap-counter
+flappy_mini / flappy-mini
+swipe_runner / swipe-runner
+puzzle_game / puzzle-game
+quiz_game / quiz-game
+simple_physics / simple-physics
+```
 
 ```bash
 hyperkit run
@@ -152,10 +222,22 @@ hyperkit run
 Run a HyperKit project from the current folder.
 
 ```bash
+hyperkit run --path path/to/project
+```
+
+Run a HyperKit project from a specific folder.
+
+```bash
 hyperkit init-android
 ```
 
 Create experimental Android build configuration.
+
+```bash
+hyperkit init-android --title "My Game"
+```
+
+Create Android configuration with a custom game title.
 
 ```bash
 hyperkit build android
@@ -163,7 +245,8 @@ hyperkit build android
 
 Experimental Android build command.
 
----
+> Android build support is still experimental and will be improved in future versions.
+
 
 ## Current Status
 
