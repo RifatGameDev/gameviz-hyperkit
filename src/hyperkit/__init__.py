@@ -14,6 +14,18 @@ from .score import ScoreManager
 from .ui import Button, TextLabel
 from .state import GameState, StateMachine
 from .layout import CanvasScaler
+from .assets import (
+    AssetError,
+    AssetManager,
+    AssetNotFoundError,
+    UnsupportedAssetTypeError,
+    load_audio,
+    load_csv,
+    load_font,
+    load_image,
+    load_json,
+    load_text,
+)
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -43,6 +55,16 @@ __all__ = [
     "GameState",
     "StateMachine",
     "CanvasScaler",
+    "AssetError",
+    "AssetManager",
+    "AssetNotFoundError",
+    "UnsupportedAssetTypeError",
+    "load_audio",
+    "load_csv",
+    "load_font",
+    "load_image",
+    "load_json",
+    "load_text",
 ]
 
 __version__ = "0.1.0"

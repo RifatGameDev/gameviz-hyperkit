@@ -24,6 +24,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Responsive virtual canvas scaling
 * Ready-made hypercasual game templates
 * CLI project generator
+* Asset loading helpers
 
 ---
 
@@ -336,3 +337,28 @@ MIT License.
 ## Author
 
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
+
+---
+
+## Asset Loading
+
+HyperKit projects include an `assets/` folder:
+
+```text
+assets/
+├── images/
+├── audio/
+├── fonts/
+└── data/
+
+from hyperkit import AssetManager
+
+assets = AssetManager()
+
+player_image = assets.load_image("player.png")
+jump_sound = assets.load_audio("jump.wav")
+game_font = assets.load_font("game_font.ttf")
+
+level_data = assets.load_json("level.json")
+items = assets.load_csv("items.csv")
+message = assets.load_text("message.txt")
