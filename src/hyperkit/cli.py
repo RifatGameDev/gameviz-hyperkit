@@ -113,10 +113,57 @@ hyperkit_version = "{get_hyperkit_version()}"
 
 [run]
 main = "main.py"
+
+[assets]
+root = "assets"
+images = "assets/images"
+audio = "assets/audio"
+fonts = "assets/fonts"
+data = "assets/data"
 '''
 
     metadata_path.write_text(metadata, encoding="utf-8")
     return metadata_path
+
+
+def write_file_if_missing(path: Path, content: str = "") -> None:
+    if not path.exists():
+        path.write_text(content, encoding="utf-8")
+
+
+def create_project_asset_structure(project_path: Path) -> None:
+    assets_root = project_path / "assets"
+
+    asset_folders = [
+        assets_root,
+        assets_root / "images",
+        assets_root / "audio",
+        assets_root / "fonts",
+        assets_root / "data",
+    ]
+
+    for folder in asset_folders:
+        folder.mkdir(parents=True, exist_ok=True)
+
+    write_file_if_missing(
+        assets_root / "README.md",
+        """# Assets Folder
+
+This folder contains game assets for your HyperKit project.
+
+## Folders
+
+- `images/` — sprites, icons, backgrounds, UI images
+- `audio/` — sound effects and music
+- `fonts/` — custom font files
+- `data/` — JSON, CSV, level data, quiz data, and other game data
+
+Keep your game assets organized so your project stays clean.
+""",
+    )
+
+    for folder in asset_folders[1:]:
+        write_file_if_missing(folder / ".gitkeep", "")
 
 
 def create_project(project_name: str, template: str, destination: Path) -> Path:
@@ -124,6 +171,7 @@ def create_project(project_name: str, template: str, destination: Path) -> Path:
     copy_template(template_key, destination)
     write_project_metadata(
         destination, project_name=project_name, template=template_key)
+    create_project_asset_structure(destination)
     return destination
 
 
@@ -189,6 +237,18 @@ def validate_project(project_path: Path) -> tuple[bool, list[str]]:
                 issues.append("hyperkit.toml is missing project.template")
         except Exception as exc:
             issues.append(f"Invalid hyperkit.toml: {exc}")
+
+    required_folders = [
+        "assets",
+        "assets/images",
+        "assets/audio",
+        "assets/fonts",
+        "assets/data",
+    ]
+
+    for folder in required_folders:
+        if not (project_path / folder).exists():
+            issues.append(f"Missing folder: {folder}")
 
     return len(issues) == 0, issues
 

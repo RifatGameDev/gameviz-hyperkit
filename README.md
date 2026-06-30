@@ -52,6 +52,18 @@ hyperkit new my-game --template tap_counter
 cd my-game
 python main.py
 ```
+Generated projects include a starter asset structure:
+
+```text
+my-game/
+├── main.py
+├── README.md
+├── hyperkit.toml
+└── assets/
+    ├── images/
+    ├── audio/
+    ├── fonts/
+    └── data/
 
 You can also use dash-style names:
 

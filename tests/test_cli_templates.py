@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 import pytest
@@ -110,6 +111,11 @@ def test_create_project_writes_metadata(tmp_path: Path):
     assert metadata["project"]["name"] == "my_game"
     assert metadata["project"]["template"] == "tap-counter"
     assert metadata["run"]["main"] == "main.py"
+    assert metadata["assets"]["root"] == "assets"
+    assert metadata["assets"]["images"] == "assets/images"
+    assert metadata["assets"]["audio"] == "assets/audio"
+    assert metadata["assets"]["fonts"] == "assets/fonts"
+    assert metadata["assets"]["data"] == "assets/data"
 
 
 def test_validate_project_accepts_generated_project(tmp_path: Path):
@@ -132,3 +138,34 @@ def test_validate_project_rejects_missing_metadata(tmp_path: Path):
 
     assert not is_valid
     assert "Missing hyperkit.toml project metadata" in issues
+
+
+def test_create_project_creates_asset_structure(tmp_path: Path):
+    project_path = tmp_path / "asset_game"
+
+    create_project("asset_game", "tap_counter", project_path)
+
+    assert (project_path / "assets").exists()
+    assert (project_path / "assets" / "README.md").exists()
+    assert (project_path / "assets" / "images").exists()
+    assert (project_path / "assets" / "audio").exists()
+    assert (project_path / "assets" / "fonts").exists()
+    assert (project_path / "assets" / "data").exists()
+
+    assert (project_path / "assets" / "images" / ".gitkeep").exists()
+    assert (project_path / "assets" / "audio" / ".gitkeep").exists()
+    assert (project_path / "assets" / "fonts" / ".gitkeep").exists()
+    assert (project_path / "assets" / "data" / ".gitkeep").exists()
+
+
+def test_validate_project_rejects_missing_asset_folder(tmp_path: Path):
+    project_path = tmp_path / "broken_asset_game"
+
+    create_project("broken_asset_game", "tap_counter", project_path)
+
+    shutil.rmtree(project_path / "assets" / "images")
+
+    is_valid, issues = validate_project(project_path)
+
+    assert not is_valid
+    assert "Missing folder: assets/images" in issues
