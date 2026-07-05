@@ -19,6 +19,7 @@ class GameObject:
     vy: float = 0.0
     color: tuple[float, float, float, float] = (1, 1, 1, 1)
     shape: str = "rect"  # rect or circle
+    image_path: str | None = None
     active: bool = True
     visible: bool = True
     name: str = ""
@@ -50,3 +51,9 @@ class GameObject:
     def update(self, dt: float) -> None:
         self.x += self.vx * dt
         self.y += self.vy * dt
+
+    def set_image(self, image_path: str | None) -> None:
+        self.image_path = image_path
+
+    def has_image(self) -> bool:
+        return self.image_path is not None and self.image_path != ""

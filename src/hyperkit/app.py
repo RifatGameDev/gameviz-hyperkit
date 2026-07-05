@@ -39,7 +39,8 @@ class Game:
     def run(self) -> None:
         if self.scene is None:
             raise RuntimeError(
-                "No scene set. Use Game(...).set_scene(MyScene()).run().")
+                "No scene set. Use Game(...).set_scene(MyScene()).run()."
+            )
 
         try:
             from kivy.app import App
@@ -92,7 +93,9 @@ class Game:
 
             def _draw_text(self, obj):
                 font_size = max(
-                    1, int(getattr(obj, "font_size", 28) * self.scaler.scale))
+                    1,
+                    int(getattr(obj, "font_size", 28) * self.scaler.scale),
+                )
 
                 label = CoreLabel(
                     text=str(getattr(obj, "text", "")),
@@ -117,7 +120,9 @@ class Game:
                     return
 
                 font_size = max(
-                    1, int(getattr(obj, "font_size", 24) * self.scaler.scale))
+                    1,
+                    int(getattr(obj, "font_size", 24) * self.scaler.scale),
+                )
 
                 label = CoreLabel(
                     text=text,
@@ -127,7 +132,11 @@ class Game:
                 label.refresh()
 
                 sx, sy, sw, sh = self.scaler.to_screen_rect(
-                    obj.x, obj.y, obj.width, obj.height)
+                    obj.x,
+                    obj.y,
+                    obj.width,
+                    obj.height,
+                )
 
                 text_x = sx + (sw - label.texture.size[0]) / 2
                 text_y = sy + (sh - label.texture.size[1]) / 2
@@ -172,12 +181,23 @@ class Game:
                             obj.height,
                         )
 
-                        Color(*obj.color)
-
-                        if obj.shape == "circle":
-                            Ellipse(pos=(sx, sy), size=(sw, sh))
+                        # Image rendering support.
+                        # If image_path exists, render the image.
+                        # Otherwise, render the normal shape and color.
+                        if hasattr(obj, "has_image") and obj.has_image():
+                            Color(1, 1, 1, 1)
+                            Rectangle(
+                                source=str(obj.image_path),
+                                pos=(sx, sy),
+                                size=(sw, sh),
+                            )
                         else:
-                            Rectangle(pos=(sx, sy), size=(sw, sh))
+                            Color(*obj.color)
+
+                            if obj.shape == "circle":
+                                Ellipse(pos=(sx, sy), size=(sw, sh))
+                            else:
+                                Rectangle(pos=(sx, sy), size=(sw, sh))
 
                         if hasattr(obj, "text"):
                             self._draw_button_text(obj)
@@ -214,7 +234,10 @@ class Game:
                         game.scene.on_tap(vx, vy)
                     elif gesture and gesture.kind == "swipe" and gesture.direction:
                         game.scene.on_swipe(
-                            gesture.start, gesture.end, gesture.direction)
+                            gesture.start,
+                            gesture.end,
+                            gesture.direction,
+                        )
 
                 return True
 
