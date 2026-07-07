@@ -362,3 +362,22 @@ game_font = assets.load_font("game_font.ttf")
 level_data = assets.load_json("level.json")
 items = assets.load_csv("items.csv")
 message = assets.load_text("message.txt")
+
+
+---
+
+```md
+* Audio playback helpers
+
+## Audio Playback
+
+HyperKit includes a simple `AudioManager` for sound effects and background music.
+
+```python
+from hyperkit import AssetManager, AudioManager
+
+assets = AssetManager()
+audio = AudioManager()
+
+click_sound = assets.load_audio("click.wav")
+audio.play_sound(click_sound)

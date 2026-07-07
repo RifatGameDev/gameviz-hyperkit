@@ -26,6 +26,14 @@ from .assets import (
     load_json,
     load_text,
 )
+from .audio import (
+    AudioError,
+    AudioLoadError,
+    AudioManager,
+    play_music,
+    play_sound,
+    stop_music,
+)
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -65,6 +73,12 @@ __all__ = [
     "load_image",
     "load_json",
     "load_text",
+    "AudioError",
+    "AudioLoadError",
+    "AudioManager",
+    "play_music",
+    "play_sound",
+    "stop_music",
 ]
 
 __version__ = "0.1.0"
