@@ -30,6 +30,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Image rendering support for `GameObject`
 * Audio playback helpers
 * Animation helpers
+* Sprite animation helper
 
 ---
 
@@ -116,6 +117,7 @@ Examples include:
 * `image_rendering_demo`
 * `audio_playback_demo`
 * `animation_demo`
+* `sprite_animation_demo`
 
 Run an example:
 
@@ -305,6 +307,48 @@ ease_in_out_quad
 
 ---
 
+## Sprite Animation
+
+HyperKit supports simple frame-based sprite animation using `SpriteAnimator`.
+
+```python
+from hyperkit import AssetManager, GameObject, SpriteAnimator
+
+assets = AssetManager()
+
+player = GameObject(
+    x=300,
+    y=500,
+    width=120,
+    height=120,
+)
+
+sprite = SpriteAnimator(player)
+
+sprite.add_animation(
+    "run",
+    frames=[
+        assets.load_image("run_1.png"),
+        assets.load_image("run_2.png"),
+        assets.load_image("run_3.png"),
+    ],
+    fps=8,
+    loop=True,
+)
+
+sprite.play("run")
+```
+
+Update the sprite animation inside your scene update method:
+
+```python
+def update(self, dt):
+    sprite.update(dt)
+    super().update(dt)
+```
+
+---
+
 ## CLI Commands
 
 ```bash
@@ -430,7 +474,7 @@ Planned improvements:
 * More game templates
 * Asset loading improvements
 * Audio helper improvements
-* Sprite animation helper
+* Sprite animation improvements
 * Particle helper
 * Improved mobile touch support
 * Android Gradle / Chaquopy build pipeline

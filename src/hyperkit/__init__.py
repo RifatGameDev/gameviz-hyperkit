@@ -43,6 +43,7 @@ from .animation import (
     ease_out_quad,
     linear,
 )
+from .sprite import SpriteAnimation, SpriteAnimationError, SpriteAnimator
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -95,6 +96,9 @@ __all__ = [
     "ease_in_quad",
     "ease_out_quad",
     "linear",
+    "SpriteAnimation",
+    "SpriteAnimationError",
+    "SpriteAnimator",
 ]
 
 __version__ = "0.1.0"

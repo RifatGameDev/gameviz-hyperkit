@@ -88,3 +88,12 @@ Shows how to animate movement, size, and color using `AnimationManager`.
 cd examples/animation_demo
 python main.py
 ```
+---
+
+### 8. Sprite Animation Demo
+
+Shows frame-based sprite animation using `SpriteAnimator`.
+
+```bash
+cd examples/sprite_animation_demo
+python main.py
