@@ -2,11 +2,72 @@
 
 This folder contains official demo projects for learning how to use HyperKit.
 
-Templates are used with:
+Templates are used with the CLI:
 
 ```bash
 hyperkit new my-game --template tap_counter
+```
 
+Examples are learning projects inside this repository. You can run them directly.
+
+---
+
+## Available Examples
+
+### 1. Basic Tap Demo
+
+Shows basic tap/click input and object movement.
+
+```bash
+cd examples/basic_tap_demo
+python main.py
+```
+
+---
+
+### 2. Swipe Input Demo
+
+Shows left/right swipe input and lane movement.
+
+```bash
+cd examples/swipe_input_demo
+python main.py
+```
+
+---
+
+### 3. Score and High Score Demo
+
+Shows score, high score, and save system usage.
+
+```bash
+cd examples/score_highscore_demo
+python main.py
+```
+
+---
+
+### 4. Asset Loading Demo
+
+Shows how to load JSON data from the `assets/data` folder using `AssetManager`.
+
+```bash
+cd examples/asset_loading_demo
+python main.py
+```
+
+---
+
+### 5. Image Rendering Demo
+
+Shows how to render an image using `GameObject(image_path=...)`.
+
+```bash
+cd examples/image_rendering_demo
+python main.py
+```
+
+---
 
 ### 6. Audio Playback Demo
 
@@ -15,3 +76,15 @@ Shows how to play a sound effect using `AudioManager`.
 ```bash
 cd examples/audio_playback_demo
 python main.py
+```
+
+---
+
+### 7. Animation Demo
+
+Shows how to animate movement, size, and color using `AnimationManager`.
+
+```bash
+cd examples/animation_demo
+python main.py
+```

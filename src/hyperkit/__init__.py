@@ -34,6 +34,15 @@ from .audio import (
     play_sound,
     stop_music,
 )
+from .animation import (
+    AnimationManager,
+    ColorTween,
+    Tween,
+    ease_in_out_quad,
+    ease_in_quad,
+    ease_out_quad,
+    linear,
+)
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -79,6 +88,13 @@ __all__ = [
     "play_music",
     "play_sound",
     "stop_music",
+    "AnimationManager",
+    "ColorTween",
+    "Tween",
+    "ease_in_out_quad",
+    "ease_in_quad",
+    "ease_out_quad",
+    "linear",
 ]
 
 __version__ = "0.1.0"

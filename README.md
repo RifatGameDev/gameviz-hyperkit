@@ -24,7 +24,12 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Responsive virtual canvas scaling
 * Ready-made hypercasual game templates
 * CLI project generator
+* Project metadata with `hyperkit.toml`
+* Starter asset folder structure
 * Asset loading helpers
+* Image rendering support for `GameObject`
+* Audio playback helpers
+* Animation helpers
 
 ---
 
@@ -53,6 +58,13 @@ hyperkit new my-game --template tap_counter
 cd my-game
 python main.py
 ```
+
+You can also use dash-style names:
+
+```bash
+hyperkit new my-game --template tap-counter
+```
+
 Generated projects include a starter asset structure:
 
 ```text
@@ -61,15 +73,11 @@ my-game/
 ├── README.md
 ├── hyperkit.toml
 └── assets/
+    ├── README.md
     ├── images/
     ├── audio/
     ├── fonts/
     └── data/
-
-You can also use dash-style names:
-
-```bash
-hyperkit new my-game --template tap-counter
 ```
 
 ---
@@ -101,15 +109,22 @@ Official example projects are available in the `examples/` folder.
 
 Examples include:
 
-- `basic_tap_demo`
-- `swipe_input_demo`
-- `score_highscore_demo`
+* `basic_tap_demo`
+* `swipe_input_demo`
+* `score_highscore_demo`
+* `asset_loading_demo`
+* `image_rendering_demo`
+* `audio_playback_demo`
+* `animation_demo`
 
 Run an example:
 
 ```bash
 cd examples/basic_tap_demo
 python main.py
+```
+
+---
 
 ## Example Usage
 
@@ -142,6 +157,8 @@ class MyScene(Scene):
             )
         )
 
+        self.start_game()
+
     def on_tap(self, x, y):
         self.player.x = x - self.player.width / 2
         self.player.y = y - self.player.height / 2
@@ -150,6 +167,140 @@ class MyScene(Scene):
 
 
 Game(title="My HyperKit Game", width=720, height=1280).set_scene(MyScene()).run()
+```
+
+---
+
+## Asset Loading
+
+HyperKit projects include an `assets/` folder:
+
+```text
+assets/
+├── images/
+├── audio/
+├── fonts/
+└── data/
+```
+
+Use `AssetManager` to load assets:
+
+```python
+from hyperkit import AssetManager
+
+assets = AssetManager()
+
+player_image = assets.load_image("player.png")
+jump_sound = assets.load_audio("jump.wav")
+game_font = assets.load_font("game_font.ttf")
+
+level_data = assets.load_json("level.json")
+items = assets.load_csv("items.csv")
+message = assets.load_text("message.txt")
+```
+
+Supported asset types:
+
+| Folder          | Supported Types                  |
+| --------------- | -------------------------------- |
+| `assets/images` | `.png`, `.jpg`, `.jpeg`, `.webp` |
+| `assets/audio`  | `.wav`, `.mp3`, `.ogg`           |
+| `assets/fonts`  | `.ttf`, `.otf`                   |
+| `assets/data`   | `.json`, `.csv`, `.txt`          |
+
+> FBX is not directly supported in HyperKit v0.2.
+> Export FBX source assets as PNG frames or sprite sheets before using them in a HyperKit game.
+
+---
+
+## Image Rendering
+
+HyperKit can render images using `GameObject(image_path=...)`.
+
+```python
+from hyperkit import AssetManager, GameObject
+
+assets = AssetManager()
+player_image = assets.load_image("player.png")
+
+player = GameObject(
+    x=300,
+    y=500,
+    width=120,
+    height=120,
+    image_path=player_image,
+)
+```
+
+If `image_path` is provided, HyperKit renders the image.
+If `image_path` is empty, HyperKit renders the normal shape and color.
+
+---
+
+## Audio Playback
+
+HyperKit includes a simple `AudioManager` for sound effects and background music.
+
+```python
+from hyperkit import AssetManager, AudioManager
+
+assets = AssetManager()
+audio = AudioManager()
+
+click_sound = assets.load_audio("click.wav")
+audio.play_sound(click_sound)
+```
+
+Background music example:
+
+```python
+music = assets.load_audio("background.wav")
+
+audio.play_music(music, loop=True)
+audio.stop_music()
+```
+
+Supported audio types:
+
+| Folder         | Supported Types        |
+| -------------- | ---------------------- |
+| `assets/audio` | `.wav`, `.mp3`, `.ogg` |
+
+For best compatibility during development, use `.wav` for sound effects.
+
+---
+
+## Animation Helpers
+
+HyperKit includes simple tween animation helpers for object movement, size, and color.
+
+```python
+from hyperkit import AnimationManager, GameObject
+
+animations = AnimationManager()
+
+player = GameObject(x=100, y=100, width=100, height=100)
+
+animations.move_to(player, x=400, y=600, duration=0.5)
+animations.resize_to(player, width=150, height=150, duration=0.3)
+animations.color_to(player, color=(1, 0.5, 0.2, 1), duration=0.5)
+```
+
+Update animations inside your scene update method:
+
+```python
+def update(self, dt):
+    animations.update(dt)
+    super().update(dt)
+```
+
+Supported easing names:
+
+```text
+linear
+ease_in_quad
+ease_out_quad
+ease_in_out_quad
 ```
 
 ---
@@ -174,30 +325,11 @@ hyperkit info
 
 Show project metadata from `hyperkit.toml`.
 
-Example output includes:
-
-```text
-Name
-Template
-Template folder
-Created by
-HyperKit version
-Main file
-```
-
 ```bash
 hyperkit validate
 ```
 
 Validate the current HyperKit project structure.
-
-It checks whether the project has:
-
-```text
-main.py
-hyperkit.toml
-valid template metadata
-```
 
 ```bash
 hyperkit new my-game --template tap_counter
@@ -260,6 +392,7 @@ Experimental Android build command.
 
 > Android build support is still experimental and will be improved in future versions.
 
+---
 
 ## Current Status
 
@@ -295,9 +428,9 @@ Planned improvements:
 
 * Better UI system
 * More game templates
-* Asset loading
-* Audio helper
-* Animation helper
+* Asset loading improvements
+* Audio helper improvements
+* Sprite animation helper
 * Particle helper
 * Improved mobile touch support
 * Android Gradle / Chaquopy build pipeline
@@ -337,47 +470,3 @@ MIT License.
 ## Author
 
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
-
----
-
-## Asset Loading
-
-HyperKit projects include an `assets/` folder:
-
-```text
-assets/
-├── images/
-├── audio/
-├── fonts/
-└── data/
-
-from hyperkit import AssetManager
-
-assets = AssetManager()
-
-player_image = assets.load_image("player.png")
-jump_sound = assets.load_audio("jump.wav")
-game_font = assets.load_font("game_font.ttf")
-
-level_data = assets.load_json("level.json")
-items = assets.load_csv("items.csv")
-message = assets.load_text("message.txt")
-
-
----
-
-```md
-* Audio playback helpers
-
-## Audio Playback
-
-HyperKit includes a simple `AudioManager` for sound effects and background music.
-
-```python
-from hyperkit import AssetManager, AudioManager
-
-assets = AssetManager()
-audio = AudioManager()
-
-click_sound = assets.load_audio("click.wav")
-audio.play_sound(click_sound)
