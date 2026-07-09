@@ -33,6 +33,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Sprite animation helper
 * Particle helper
 * Camera shake helper
+* Scene transition helper
 
 ---
 
@@ -396,6 +397,35 @@ def update(self, dt):
     camera_shake.update(dt)
     super().update(dt)
 ```
+
+---
+
+## Scene Transitions
+
+HyperKit includes a simple `SceneTransition` helper for fade-in and fade-out scene changes.
+
+```python
+from hyperkit import SceneTransition
+
+self.transition = SceneTransition(self)
+self.transition.fade_in(duration=0.4)
+```
+
+To change scenes with a fade-out:
+
+```python
+self.transition.fade_to_scene(NextScene(), duration=0.4)
+```
+
+Update transitions inside your scene update method:
+
+```python
+def update(self, dt):
+    self.transition.update(dt)
+    super().update(dt)
+```
+
+
 
 ---
 

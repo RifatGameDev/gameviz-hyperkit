@@ -46,6 +46,7 @@ from .animation import (
 from .sprite import SpriteAnimation, SpriteAnimationError, SpriteAnimator
 from .particle import Particle, ParticleConfig, ParticleEmitter
 from .camera import CameraShake
+from .transition import SceneTransition, SceneTransitionError
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -105,6 +106,8 @@ __all__ = [
     "ParticleConfig",
     "ParticleEmitter",
     "CameraShake",
+    "SceneTransition",
+    "SceneTransitionError",
 ]
 
 __version__ = "0.1.0"

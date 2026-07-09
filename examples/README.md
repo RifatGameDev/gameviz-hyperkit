@@ -117,3 +117,13 @@ Shows screen shake feedback using `CameraShake`.
 ```bash
 cd examples/camera_shake_demo
 python main.py
+
+---
+
+### 11. Scene Transition Demo
+
+Shows fade-in and fade-out scene transitions using `SceneTransition`.
+
+```bash
+cd examples/scene_transition_demo
+python main.py

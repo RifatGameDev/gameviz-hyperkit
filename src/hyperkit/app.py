@@ -36,6 +36,17 @@ class Game:
         scene.bind_game(self)
         return self
 
+    def change_scene(self, scene: Scene) -> "Game":
+        """Change to a new scene while the game is running."""
+        self.scene = scene
+        scene.bind_game(self)
+
+        if not scene.started:
+            scene.started = True
+            scene.start()
+
+        return self
+
     def run(self) -> None:
         if self.scene is None:
             raise RuntimeError(
