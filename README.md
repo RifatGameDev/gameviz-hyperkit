@@ -32,6 +32,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Animation helpers
 * Sprite animation helper
 * Particle helper
+* Camera shake helper
 
 ---
 
@@ -371,6 +372,28 @@ Update particles inside your scene update method:
 ```python
 def update(self, dt):
     particles.update(dt)
+    super().update(dt)
+```
+
+---
+
+## Camera Shake
+
+HyperKit includes a simple `CameraShake` helper for impact feedback.
+
+```python
+from hyperkit import CameraShake
+
+camera_shake = CameraShake(self)
+
+camera_shake.shake(intensity=18, duration=0.35)
+```
+
+Update camera shake inside your scene update method:
+
+```python
+def update(self, dt):
+    camera_shake.update(dt)
     super().update(dt)
 ```
 

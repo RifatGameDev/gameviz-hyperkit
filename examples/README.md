@@ -107,3 +107,13 @@ Shows simple particle burst effects using `ParticleEmitter`.
 ```bash
 cd examples/particle_demo
 python main.py
+
+---
+
+### 10. Camera Shake Demo
+
+Shows screen shake feedback using `CameraShake`.
+
+```bash
+cd examples/camera_shake_demo
+python main.py

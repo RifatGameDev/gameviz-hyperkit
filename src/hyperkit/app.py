@@ -78,6 +78,15 @@ class Game:
             def _update_scaler(self):
                 self.scaler.update_actual_size(self.width, self.height)
 
+            def _camera_offset(self):
+                if not game.scene:
+                    return 0.0, 0.0
+
+                return (
+                    float(getattr(game.scene, "camera_offset_x", 0.0)),
+                    float(getattr(game.scene, "camera_offset_y", 0.0)),
+                )
+
             def _draw_background(self):
                 Color(*game.background_color)
                 Rectangle(pos=(0, 0), size=self.size)
@@ -104,8 +113,10 @@ class Game:
                 )
                 label.refresh()
 
-                screen_x = self.scaler.to_screen_x(obj.x)
-                screen_y = self.scaler.to_screen_y(obj.y)
+                camera_x, camera_y = self._camera_offset()
+
+                screen_x = self.scaler.to_screen_x(obj.x + camera_x)
+                screen_y = self.scaler.to_screen_y(obj.y + camera_y)
 
                 Color(*obj.color)
                 Rectangle(
@@ -131,9 +142,11 @@ class Game:
                 )
                 label.refresh()
 
+                camera_x, camera_y = self._camera_offset()
+
                 sx, sy, sw, sh = self.scaler.to_screen_rect(
-                    obj.x,
-                    obj.y,
+                    obj.x + camera_x,
+                    obj.y + camera_y,
                     obj.width,
                     obj.height,
                 )
@@ -166,6 +179,8 @@ class Game:
                     if not game.scene:
                         return
 
+                    camera_x, camera_y = self._camera_offset()
+
                     for obj in game.scene.objects:
                         if not obj.visible or not obj.active:
                             continue
@@ -175,15 +190,12 @@ class Game:
                             continue
 
                         sx, sy, sw, sh = self.scaler.to_screen_rect(
-                            obj.x,
-                            obj.y,
+                            obj.x + camera_x,
+                            obj.y + camera_y,
                             obj.width,
                             obj.height,
                         )
 
-                        # Image rendering support.
-                        # If image_path exists, render the image.
-                        # Otherwise, render the normal shape and color.
                         if hasattr(obj, "has_image") and obj.has_image():
                             Color(1, 1, 1, 1)
                             Rectangle(
