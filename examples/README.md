@@ -127,3 +127,13 @@ Shows fade-in and fade-out scene transitions using `SceneTransition`.
 ```bash
 cd examples/scene_transition_demo
 python main.py
+
+---
+
+### 12. Timer and Cooldown Demo
+
+Shows countdown timers, repeating timers, and button cooldown logic.
+
+```bash
+cd examples/timer_cooldown_demo
+python main.py

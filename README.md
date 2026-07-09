@@ -34,6 +34,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Particle helper
 * Camera shake helper
 * Scene transition helper
+* Timer and cooldown helpers
 
 ---
 
@@ -425,7 +426,39 @@ def update(self, dt):
     super().update(dt)
 ```
 
+---
 
+## Timers and Cooldowns
+
+HyperKit includes timer helpers for delayed actions, repeating actions, and cooldown-based gameplay.
+
+```python
+from hyperkit import Cooldown, Timer
+
+spawn_timer = Timer(
+    duration=1.0,
+    repeat=True,
+    on_complete=spawn_enemy,
+)
+
+jump_cooldown = Cooldown(duration=0.5)
+```
+
+Update timers inside your scene update method:
+
+```python
+def update(self, dt):
+    spawn_timer.update(dt)
+    jump_cooldown.update(dt)
+    super().update(dt)
+```
+
+Use cooldowns to limit actions:
+
+```python
+if jump_cooldown.use():
+    player_jump()
+```
 
 ---
 
