@@ -44,6 +44,7 @@ from .animation import (
     linear,
 )
 from .sprite import SpriteAnimation, SpriteAnimationError, SpriteAnimator
+from .particle import Particle, ParticleConfig, ParticleEmitter
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -99,6 +100,9 @@ __all__ = [
     "SpriteAnimation",
     "SpriteAnimationError",
     "SpriteAnimator",
+    "Particle",
+    "ParticleConfig",
+    "ParticleEmitter",
 ]
 
 __version__ = "0.1.0"

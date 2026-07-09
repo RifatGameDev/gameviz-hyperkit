@@ -97,3 +97,13 @@ Shows frame-based sprite animation using `SpriteAnimator`.
 ```bash
 cd examples/sprite_animation_demo
 python main.py
+
+---
+
+### 9. Particle Demo
+
+Shows simple particle burst effects using `ParticleEmitter`.
+
+```bash
+cd examples/particle_demo
+python main.py

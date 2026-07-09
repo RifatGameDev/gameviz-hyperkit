@@ -31,6 +31,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Audio playback helpers
 * Animation helpers
 * Sprite animation helper
+* Particle helper
 
 ---
 
@@ -344,6 +345,32 @@ Update the sprite animation inside your scene update method:
 ```python
 def update(self, dt):
     sprite.update(dt)
+    super().update(dt)
+```
+
+---
+
+## Particle Effects
+
+HyperKit includes a simple `ParticleEmitter` for burst effects.
+
+```python
+from hyperkit import ParticleEmitter
+
+particles = ParticleEmitter(self)
+
+particles.burst(
+    x=300,
+    y=500,
+    count=20,
+)
+```
+
+Update particles inside your scene update method:
+
+```python
+def update(self, dt):
+    particles.update(dt)
     super().update(dt)
 ```
 
