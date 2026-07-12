@@ -137,3 +137,13 @@ Shows countdown timers, repeating timers, and button cooldown logic.
 ```bash
 cd examples/timer_cooldown_demo
 python main.py
+
+---
+
+### 13. Input Action Demo
+
+Shows how to map tap, area tap, and swipe inputs to named actions using `InputActionMap`.
+
+```bash
+cd examples/input_action_demo
+python main.py

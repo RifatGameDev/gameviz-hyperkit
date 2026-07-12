@@ -35,6 +35,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Camera shake helper
 * Scene transition helper
 * Timer and cooldown helpers
+* Input action mapping helper
 
 ---
 
@@ -458,6 +459,39 @@ Use cooldowns to limit actions:
 ```python
 if jump_cooldown.use():
     player_jump()
+```
+
+---
+
+## Input Action Mapping
+
+HyperKit includes an `InputActionMap` helper to map tap, area tap, and swipe input to named actions.
+
+```python
+from hyperkit import InputActionMap
+
+actions = InputActionMap()
+
+actions.map_tap("jump", callback=jump)
+actions.map_swipe("move_left", direction="left", callback=move_left)
+actions.map_area(
+    "attack",
+    x=200,
+    y=500,
+    width=300,
+    height=120,
+    callback=attack,
+)
+```
+
+Use it inside your scene input methods:
+
+```python
+def on_tap(self, x, y):
+    actions.handle_tap(x, y)
+
+def on_swipe(self, start, end, direction):
+    actions.handle_swipe(start, end, direction)
 ```
 
 ---
