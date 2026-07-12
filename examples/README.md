@@ -147,3 +147,14 @@ Shows how to map tap, area tap, and swipe inputs to named actions using `InputAc
 ```bash
 cd examples/input_action_demo
 python main.py
+
+
+---
+
+### 14. Level Loading Demo
+
+Shows how to load level objects from a JSON file using `LevelManager`.
+
+```bash
+cd examples/level_loading_demo
+python main.py

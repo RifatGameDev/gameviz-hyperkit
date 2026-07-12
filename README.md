@@ -36,6 +36,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Scene transition helper
 * Timer and cooldown helpers
 * Input action mapping helper
+* Level data loading helper
 
 ---
 
@@ -492,6 +493,49 @@ def on_tap(self, x, y):
 
 def on_swipe(self, start, end, direction):
     actions.handle_swipe(start, end, direction)
+```
+
+---
+
+## Level Data Loading
+
+HyperKit supports loading level data from JSON files inside `assets/data`.
+
+Example `assets/data/level_1.json`:
+
+```json
+{
+  "name": "Level 1",
+  "objects": [
+    {
+      "name": "coin",
+      "type": "collectible",
+      "x": 300,
+      "y": 600,
+      "width": 60,
+      "height": 60,
+      "shape": "circle",
+      "color": [1.0, 0.85, 0.2, 1.0]
+    }
+  ]
+}
+```
+
+Load the level:
+
+```python
+from pathlib import Path
+from hyperkit import LevelManager
+
+levels = LevelManager(project_path=Path(__file__).parent)
+level = levels.load("level_1.json")
+objects = levels.create_objects(level)
+```
+
+Add level objects to a scene:
+
+```python
+levels.add_to_scene(self, level)
 ```
 
 ---

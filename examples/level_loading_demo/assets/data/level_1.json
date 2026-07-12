@@ -1,0 +1,86 @@
+{
+    "name": "Training Level",
+    "width": 720,
+    "height": 1280,
+    "background_color": [
+        0.08,
+        0.08,
+        0.12,
+        1.0
+    ],
+    "metadata": {
+        "difficulty": "easy",
+        "target_score": 20
+    },
+    "objects": [
+        {
+            "name": "player",
+            "type": "spawn",
+            "x": 310,
+            "y": 520,
+            "width": 100,
+            "height": 100,
+            "shape": "circle",
+            "color": [
+                0.2,
+                0.75,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "coin_1",
+            "type": "collectible",
+            "x": 160,
+            "y": 760,
+            "width": 60,
+            "height": 60,
+            "shape": "circle",
+            "color": [
+                1.0,
+                0.85,
+                0.2,
+                1.0
+            ],
+            "data": {
+                "score": 10
+            }
+        },
+        {
+            "name": "coin_2",
+            "type": "collectible",
+            "x": 500,
+            "y": 760,
+            "width": 60,
+            "height": 60,
+            "shape": "circle",
+            "color": [
+                1.0,
+                0.85,
+                0.2,
+                1.0
+            ],
+            "data": {
+                "score": 10
+            }
+        },
+        {
+            "name": "danger_block",
+            "type": "hazard",
+            "x": 240,
+            "y": 360,
+            "width": 240,
+            "height": 70,
+            "shape": "rectangle",
+            "color": [
+                1.0,
+                0.25,
+                0.25,
+                1.0
+            ],
+            "data": {
+                "damage": 1
+            }
+        }
+    ]
+}
