@@ -158,3 +158,13 @@ Shows how to load level objects from a JSON file using `LevelManager`.
 ```bash
 cd examples/level_loading_demo
 python main.py
+
+---
+
+### 15. Camera Follow Demo
+
+Shows how the camera can follow a player object using `CameraFollow`.
+
+```bash
+cd examples/camera_follow_demo
+python main.py

@@ -93,10 +93,15 @@ class Game:
                 if not game.scene:
                     return 0.0, 0.0
 
-                return (
-                    float(getattr(game.scene, "camera_offset_x", 0.0)),
-                    float(getattr(game.scene, "camera_offset_y", 0.0)),
-                )
+                shake_x = float(getattr(game.scene, "camera_offset_x", 0.0))
+                shake_y = float(getattr(game.scene, "camera_offset_y", 0.0))
+
+                follow_x = float(
+                    getattr(game.scene, "camera_follow_offset_x", 0.0))
+                follow_y = float(
+                    getattr(game.scene, "camera_follow_offset_y", 0.0))
+
+                return shake_x + follow_x, shake_y + follow_y
 
             def _draw_background(self):
                 Color(*game.background_color)

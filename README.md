@@ -37,6 +37,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Timer and cooldown helpers
 * Input action mapping helper
 * Level data loading helper
+* Camera follow helper
 
 ---
 
@@ -536,6 +537,33 @@ Add level objects to a scene:
 
 ```python
 levels.add_to_scene(self, level)
+```
+
+---
+
+## Camera Follow
+
+HyperKit includes a simple `CameraFollow` helper for following a player or target object.
+
+```python
+from hyperkit import CameraFollow
+
+self.camera_follow = CameraFollow(
+    scene=self,
+    target=self.player,
+    screen_width=720,
+    screen_height=1280,
+)
+
+self.camera_follow.snap_to_target()
+```
+
+Update camera follow inside your scene update method:
+
+```python
+def update(self, dt):
+    self.camera_follow.update(dt)
+    super().update(dt)
 ```
 
 ---
