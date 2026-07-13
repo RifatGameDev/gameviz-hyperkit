@@ -21,15 +21,3 @@ A modern lane-based swipe runner starter game made with HyperKit.
 
 ```bash
 python main.py
-
-## Helper Systems Used
-
-This template demonstrates:
-
-- `AssetManager`
-- `ProgressBar`
-- `ParticleEmitter`
-- `CameraShake`
-- `BoundsManager`
-- `InputActionMap`
-- `ScoreManager`

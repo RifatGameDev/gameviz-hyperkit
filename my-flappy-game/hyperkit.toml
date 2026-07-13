@@ -1,0 +1,16 @@
+[project]
+name = "my-flappy-game"
+template = "flappy-mini"
+template_folder = "flappy_mini"
+created_by = "gameviz-hyperkit"
+hyperkit_version = "0.1.0"
+
+[run]
+main = "main.py"
+
+[assets]
+root = "assets"
+images = "assets/images"
+audio = "assets/audio"
+fonts = "assets/fonts"
+data = "assets/data"

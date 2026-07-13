@@ -604,6 +604,36 @@ wrap_object(obj)
 
 HyperKit templates are being upgraded to demonstrate real helper usage.
 
+---
+
+## Helper-Based Templates
+
+HyperKit templates are being upgraded to demonstrate real helper usage.
+
+Currently upgraded templates:
+
+- `tap_counter`
+- `flappy_mini`
+- `swipe_runner`
+
+These templates now demonstrate:
+
+- image-based GameObjects
+- starter visual assets
+- progress bars
+- particles
+- camera shake
+- bounds handling where needed
+- input action mapping
+- score and high-score flow
+
+Create an upgraded Tap Counter game:
+
+```bash
+hyperkit new my-tap-game --template tap_counter
+cd my-tap-game
+python main.py
+
 The Tap Counter template now includes:
 
 - image-based GameObjects
