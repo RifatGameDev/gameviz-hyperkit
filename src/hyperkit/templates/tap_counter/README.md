@@ -1,15 +1,20 @@
 # Tap Counter Template
 
-A simple HyperKit tap/click game template.
+A modern tap/click scoring prototype made with HyperKit.
 
 ## Features
 
-- Tap input
-- Object movement
-- Score system
-- High score saving
-- Game over state
-- Tap to restart
+- Tap/click scoring
+- Image-based GameObjects
+- Auto-generated starter visual assets
+- Score and high-score system
+- Progress bar
+- Particle burst feedback
+- Camera shake feedback
+- Bounds helper to keep objects inside screen
+- Input action mapping
+- Game over / restart flow
+- Responsive virtual canvas scaling
 
 ## Run
 

@@ -188,3 +188,14 @@ Shows health and XP progress bars using `ProgressBar`.
 ```bash
 cd examples/progress_bar_demo
 python main.py
+
+
+---
+
+### 18. Template Helper Showcase Demo
+
+Shows how templates can use visual assets and helper systems such as `AssetManager`, `ProgressBar`, `ParticleEmitter`, `CameraShake`, `BoundsManager`, and `InputActionMap`.
+
+```bash
+cd examples/template_helper_showcase_demo
+python main.py

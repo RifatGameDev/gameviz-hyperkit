@@ -40,6 +40,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Camera follow helper
 * Screen bounds and world bounds helpers
 * UI progress bar helper
+* Upgraded helper-based starter templates
 
 ---
 
@@ -127,6 +128,7 @@ Examples include:
 * `audio_playback_demo`
 * `animation_demo`
 * `sprite_animation_demo`
+* `template_helper_showcase_demo`
 
 Run an example:
 
@@ -595,6 +597,29 @@ bounce_object(obj)
 wrap_object(obj)
 ```
 ---
+
+---
+
+## Helper-Based Templates
+
+HyperKit templates are being upgraded to demonstrate real helper usage.
+
+The Tap Counter template now includes:
+
+- image-based GameObjects
+- starter visual assets
+- progress bar
+- particles
+- camera shake
+- bounds handling
+- input action mapping
+
+Create the upgraded template:
+
+```bash
+hyperkit new my-tap-game --template tap_counter
+cd my-tap-game
+python main.py
 
 ## UI Progress Bars
 
