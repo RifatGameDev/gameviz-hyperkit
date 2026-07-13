@@ -38,6 +38,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Input action mapping helper
 * Level data loading helper
 * Camera follow helper
+* Screen bounds and world bounds helpers
 
 ---
 
@@ -565,7 +566,33 @@ def update(self, dt):
     self.camera_follow.update(dt)
     super().update(dt)
 ```
+---
 
+## Screen and World Bounds
+
+HyperKit includes bounds helpers for keeping objects inside the screen or game world.
+
+```python
+from hyperkit import ScreenBounds, WorldBounds
+
+screen = ScreenBounds(width=720, height=1280)
+world = WorldBounds(x=0, y=0, width=2000, height=2000)
+
+screen.clamp_object(player)
+screen.bounce_object(player)
+world.wrap_object(enemy)
+```
+
+Common methods:
+
+```text
+contains_point(x, y)
+contains_object(obj)
+is_outside(obj)
+clamp_object(obj)
+bounce_object(obj)
+wrap_object(obj)
+```
 ---
 
 ## CLI Commands

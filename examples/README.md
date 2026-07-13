@@ -168,3 +168,13 @@ Shows how the camera can follow a player object using `CameraFollow`.
 ```bash
 cd examples/camera_follow_demo
 python main.py
+
+---
+
+### 16. Bounds Demo
+
+Shows screen bounds, object clamping, bouncing, and wrapping.
+
+```bash
+cd examples/bounds_demo
+python main.py

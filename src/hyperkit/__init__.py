@@ -51,6 +51,7 @@ from .timers import Cooldown, Timer, TimerError, TimerManager
 from .input_actions import InputActionBinding, InputActionEvent, InputActionMap
 from .level import LevelData, LevelError, LevelLoader, LevelManager, load_level
 from .camera_follow import CameraFollow
+from .bounds import Bounds, BoundsManager, ScreenBounds, WorldBounds
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -125,6 +126,10 @@ __all__ = [
     "LevelManager",
     "load_level",
     "CameraFollow",
+    "Bounds",
+    "BoundsManager",
+    "ScreenBounds",
+    "WorldBounds",
 ]
 
 __version__ = "0.1.0"
