@@ -178,3 +178,13 @@ Shows screen bounds, object clamping, bouncing, and wrapping.
 ```bash
 cd examples/bounds_demo
 python main.py
+
+---
+
+### 17. Progress Bar Demo
+
+Shows health and XP progress bars using `ProgressBar`.
+
+```bash
+cd examples/progress_bar_demo
+python main.py

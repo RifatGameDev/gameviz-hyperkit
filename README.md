@@ -39,6 +39,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Level data loading helper
 * Camera follow helper
 * Screen bounds and world bounds helpers
+* UI progress bar helper
 
 ---
 
@@ -593,6 +594,32 @@ clamp_object(obj)
 bounce_object(obj)
 wrap_object(obj)
 ```
+---
+
+## UI Progress Bars
+
+HyperKit includes a simple `ProgressBar` helper for health bars, XP bars, cooldown bars, and loading bars.
+
+```python
+from hyperkit import ProgressBar
+
+health_bar = ProgressBar(
+    scene=self,
+    x=60,
+    y=1120,
+    width=600,
+    height=35,
+    value=100,
+    max_value=100,
+)
+
+health_bar.set_value(75)
+health_bar.add_value(10)
+health_bar.subtract_value(20)
+```
+
+Progress bars are created using normal HyperKit objects, so they work with the existing renderer.
+
 ---
 
 ## CLI Commands

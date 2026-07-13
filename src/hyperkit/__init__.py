@@ -52,6 +52,8 @@ from .input_actions import InputActionBinding, InputActionEvent, InputActionMap
 from .level import LevelData, LevelError, LevelLoader, LevelManager, load_level
 from .camera_follow import CameraFollow
 from .bounds import Bounds, BoundsManager, ScreenBounds, WorldBounds
+from .progress import ProgressBar, ProgressBarError
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -130,6 +132,8 @@ __all__ = [
     "BoundsManager",
     "ScreenBounds",
     "WorldBounds",
+    "ProgressBar",
+    "ProgressBarError",
 ]
 
 __version__ = "0.1.0"
