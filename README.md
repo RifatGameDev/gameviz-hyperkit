@@ -848,4 +848,4 @@ MIT License.
 ## Author
 
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
-\n\n## Documentation\n\n- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)\n
+\n\n## Documentation\n\n- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)\n\n- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)\n

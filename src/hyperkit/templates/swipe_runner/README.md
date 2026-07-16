@@ -19,17 +19,23 @@ A modern lane-based swipe runner starter game made with HyperKit.
 
 ## Run
 
-```bash
 python main.py
+
+## Gameplay
+
+Swipe left or right to change lanes.
+You can also tap the left or right side of the screen.
+Collect coins to increase score.
+Avoid hazards.
+Reach the target distance to complete the round.
 
 ## Helper Systems Used
 
 This template demonstrates:
 
-- `AssetManager`
-- `ProgressBar`
-- `ParticleEmitter`
-- `CameraShake`
-- `BoundsManager`
-- `InputActionMap`
-- `ScoreManager`
+- AssetManager
+- ProgressBar
+- ParticleEmitter
+- CameraShake
+- InputActionMap
+- ScoreManager

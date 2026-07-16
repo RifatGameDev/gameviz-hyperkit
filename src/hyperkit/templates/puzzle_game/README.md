@@ -18,24 +18,22 @@ A modern matching puzzle starter game made with HyperKit.
 
 ## Run
 
-```bash
 python main.py
-```
 
 ## Gameplay
 
-Tap one tile, then tap another tile.  
-If both tiles match, your match score increases.  
+Tap one tile, then tap another tile.
+If both tiles match, your match score increases.
 Complete all matches to finish the round.
 
 ## Helper Systems Used
 
 This template demonstrates:
 
-- `AssetManager`
-- `ProgressBar`
-- `ParticleEmitter`
-- `CameraShake`
-- `BoundsManager`
-- `InputActionMap`
-- `ScoreManager`
+- AssetManager
+- ProgressBar
+- ParticleEmitter
+- CameraShake
+- BoundsManager
+- InputActionMap
+- ScoreManager

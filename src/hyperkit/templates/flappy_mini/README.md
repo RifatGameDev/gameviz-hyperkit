@@ -18,17 +18,23 @@ A modern Flappy-style starter game made with HyperKit.
 
 ## Run
 
-```bash
 python main.py
+
+## Gameplay
+
+Tap anywhere to flap the bird upward.
+Avoid the pipes and stay inside the screen.
+Pass pipes to increase your score.
+Reach the target score to complete the round.
 
 ## Helper Systems Used
 
 This template demonstrates:
 
-- `AssetManager`
-- `ProgressBar`
-- `ParticleEmitter`
-- `CameraShake`
-- `BoundsManager`
-- `InputActionMap`
-- `ScoreManager`
+- AssetManager
+- ProgressBar
+- ParticleEmitter
+- CameraShake
+- BoundsManager
+- InputActionMap
+- ScoreManager

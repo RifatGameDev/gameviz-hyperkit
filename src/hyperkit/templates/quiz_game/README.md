@@ -15,22 +15,20 @@ A modern educational quiz starter game made with HyperKit.
 
 ## Run
 
-```bash
 python main.py
-```
 
 ## Gameplay
 
-Read the question and tap one answer button.  
-Correct answers increase your score.  
+Read the question and tap one answer button.
+Correct answers increase your score.
 Finish all questions to complete the quiz.
 
 ## Helper Systems Used
 
 This template demonstrates:
 
-- `ProgressBar`
-- `ParticleEmitter`
-- `CameraShake`
-- `InputActionMap`
-- `ScoreManager`
+- ProgressBar
+- ParticleEmitter
+- CameraShake
+- InputActionMap
+- ScoreManager

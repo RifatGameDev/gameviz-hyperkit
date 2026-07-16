@@ -18,24 +18,22 @@ A modern simple physics starter game made with HyperKit.
 
 ## Run
 
-```bash
 python main.py
-```
 
 ## Gameplay
 
-Tap anywhere to move and launch the ball upward.  
-The ball falls with gravity and bounces from the ground.  
+Tap anywhere to move and launch the ball upward.
+The ball falls with gravity and bounces from the ground.
 Energy decreases when launching and regenerates over time.
 
 ## Helper Systems Used
 
 This template demonstrates:
 
-- `AssetManager`
-- `ProgressBar`
-- `ParticleEmitter`
-- `CameraShake`
-- `BoundsManager`
-- `InputActionMap`
-- `Cooldown`
+- AssetManager
+- ProgressBar
+- ParticleEmitter
+- CameraShake
+- BoundsManager
+- InputActionMap
+- Cooldown
