@@ -10,6 +10,8 @@ from pathlib import Path
 
 from .android import create_buildozer_spec
 
+from .health import format_health_report, generate_health_report
+
 try:
     import tomllib
 except ModuleNotFoundError:  # Python 3.10 fallback
@@ -400,6 +402,15 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_health(args):
+    root = getattr(args, "path", ".")
+    report = generate_health_report(root)
+
+    print(format_health_report(report))
+
+    return 0 if report.passed else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="hyperkit",
@@ -449,7 +460,19 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_doctor = sub.add_parser(
         "doctor", help="Check local HyperKit environment")
+
     p_doctor.set_defaults(func=cmd_doctor)
+
+    p_health = sub.add_parser(
+        "health",
+        help="Show HyperKit project health report",
+    )
+    p_health.add_argument(
+        "--path",
+        default=".",
+        help="Project root path to check",
+    )
+    p_health.set_defaults(func=cmd_health)
 
     return parser
 

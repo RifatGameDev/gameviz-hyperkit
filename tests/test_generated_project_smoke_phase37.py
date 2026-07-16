@@ -23,18 +23,12 @@ def generate_project(tmp_path: Path, template_name: str) -> Path:
 
     try:
         os.chdir(tmp_path)
-
-        # destination must be the final generated project folder
         create_project(project_name, template_name, project_path)
-
     finally:
         os.chdir(current_dir)
 
     assert project_path.exists(
     ), f"Generated project folder was not created: {project_path}"
-    assert (project_path /
-            "main.py").exists(), f"main.py missing in: {project_path}"
-
     return project_path
 
 

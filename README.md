@@ -41,6 +41,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * Screen bounds and world bounds helpers
 * UI progress bar helper
 * Upgraded helper-based starter templates
+* [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
 
 ---
 
@@ -725,6 +726,10 @@ Or dash-style names:
 
 ```bash
 hyperkit new my-game --template tap-counter
+```
+
+```bash
+hyperkit health
 ```
 
 Available templates:

@@ -53,6 +53,7 @@ from .level import LevelData, LevelError, LevelLoader, LevelManager, load_level
 from .camera_follow import CameraFollow
 from .bounds import Bounds, BoundsManager, ScreenBounds, WorldBounds
 from .progress import ProgressBar, ProgressBarError
+from .health import HealthCheck, HealthReport, format_health_report, generate_health_report
 
 
 try:  # Kivy may not be available in headless test environments.
@@ -134,6 +135,10 @@ __all__ = [
     "WorldBounds",
     "ProgressBar",
     "ProgressBarError",
+    "HealthCheck",
+    "HealthReport",
+    "format_health_report",
+    "generate_health_report",
 ]
 
 __version__ = "0.1.0"

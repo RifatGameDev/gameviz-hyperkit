@@ -1,0 +1,144 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from pathlib import Path
+
+
+@dataclass
+class HealthCheck:
+    name: str
+    path: str
+    passed: bool
+    message: str
+
+
+@dataclass
+class HealthReport:
+    root: Path
+    checks: list[HealthCheck] = field(default_factory=list)
+
+    @property
+    def passed(self) -> bool:
+        return all(check.passed for check in self.checks)
+
+    @property
+    def total(self) -> int:
+        return len(self.checks)
+
+    @property
+    def passed_count(self) -> int:
+        return sum(1 for check in self.checks if check.passed)
+
+    @property
+    def failed_count(self) -> int:
+        return self.total - self.passed_count
+
+    def add_check(self, name: str, path: str, exists: bool) -> None:
+        self.checks.append(
+            HealthCheck(
+                name=name,
+                path=path,
+                passed=exists,
+                message="OK" if exists else "Missing",
+            )
+        )
+
+
+REQUIRED_PATHS = {
+    "Package metadata": "pyproject.toml",
+    "Main README": "README.md",
+    "Changelog": "CHANGELOG.md",
+    "Templates documentation": "docs/TEMPLATES.md",
+    "Template helper guide": "docs/TEMPLATE_HELPERS.md",
+    "Template quality checklist": "docs/TEMPLATE_QUALITY_CHECKLIST.md",
+    "Release readiness checklist": "docs/RELEASE_READINESS_CHECKLIST.md",
+    "Version history": "docs/VERSION_HISTORY.md",
+    "Generated project smoke docs": "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
+    "Package source": "src/hyperkit/__init__.py",
+    "CLI source": "src/hyperkit/cli.py",
+    "Templates folder": "src/hyperkit/templates",
+    "Examples folder": "examples",
+    "Tests folder": "tests",
+    "Template quality tests": "tests/test_template_quality_phase34.py",
+    "Release readiness tests": "tests/test_release_readiness_phase35.py",
+    "Changelog tests": "tests/test_changelog_phase36.py",
+    "Generated project smoke tests": "tests/test_generated_project_smoke_phase37.py",
+    "Generated project smoke docs": "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
+    "Project health docs": "docs/PROJECT_HEALTH_REPORT.md",
+    "Package source": "src/hyperkit/__init__.py",
+}
+
+
+REQUIRED_TEMPLATES = [
+    "tap_counter",
+    "flappy_mini",
+    "swipe_runner",
+    "puzzle_game",
+    "quiz_game",
+    "simple_physics",
+]
+
+
+def generate_health_report(root: str | Path = ".") -> HealthReport:
+    root_path = Path(root).resolve()
+    report = HealthReport(root=root_path)
+
+    for name, relative_path in REQUIRED_PATHS.items():
+        path = root_path / relative_path
+        report.add_check(name=name, path=relative_path, exists=path.exists())
+
+    for template_name in REQUIRED_TEMPLATES:
+        template_folder = root_path / "src" / "hyperkit" / "templates" / template_name
+        main_file = template_folder / "main.py"
+        readme_file = template_folder / "README.md"
+
+        report.add_check(
+            name=f"Template folder: {template_name}",
+            path=template_folder.relative_to(root_path).as_posix(),
+            exists=template_folder.exists(),
+        )
+
+        report.add_check(
+            name=f"Template main.py: {template_name}",
+            path=main_file.relative_to(root_path).as_posix(),
+            exists=main_file.exists(),
+        )
+
+        report.add_check(
+            name=f"Template README: {template_name}",
+            path=readme_file.relative_to(root_path).as_posix(),
+            exists=readme_file.exists(),
+        )
+
+    return report
+
+
+def format_health_report(report: HealthReport) -> str:
+    lines: list[str] = []
+
+    lines.append("HyperKit Project Health Report")
+    lines.append("=" * 32)
+    lines.append(f"Root: {report.root}")
+    lines.append("")
+    lines.append(f"Passed: {report.passed_count}/{report.total}")
+    lines.append(f"Failed: {report.failed_count}")
+    lines.append("")
+
+    for check in report.checks:
+        status = "OK" if check.passed else "MISSING"
+        lines.append(f"[{status}] {check.name} - {check.path}")
+
+    lines.append("")
+
+    if report.passed:
+        lines.append("Project health status: PASS")
+    else:
+        lines.append("Project health status: FAIL")
+
+    return "\n".join(lines)
+
+
+def run_health_check(root: str | Path = ".") -> int:
+    report = generate_health_report(root)
+    print(format_health_report(report))
+    return 0 if report.passed else 1
