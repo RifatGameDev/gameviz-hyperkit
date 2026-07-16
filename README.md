@@ -604,17 +604,16 @@ wrap_object(obj)
 
 HyperKit templates are being upgraded to demonstrate real helper usage.
 
----
-
-## Helper-Based Templates
-
-HyperKit templates are being upgraded to demonstrate real helper usage.
-
 Currently upgraded templates:
 
 - `tap_counter`
 - `flappy_mini`
 - `swipe_runner`
+- `puzzle_game`
+- `quiz_game`
+- `simple_physics`
+
+
 
 These templates now demonstrate:
 
@@ -649,6 +648,13 @@ Create the upgraded template:
 ```bash
 hyperkit new my-tap-game --template tap_counter
 cd my-tap-game
+python main.py
+
+Create an upgraded Puzzle Game:
+
+```bash
+hyperkit new my-puzzle-game --template puzzle_game
+cd my-puzzle-game
 python main.py
 
 ## UI Progress Bars

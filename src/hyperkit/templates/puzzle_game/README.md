@@ -1,19 +1,41 @@
 # Puzzle Game Template
 
-A simple color matching puzzle prototype made with HyperKit.
+A modern matching puzzle starter game made with HyperKit.
 
 ## Features
 
-- 3x3 color tile grid
-- Target color instruction
-- Tap correct tile to score
-- Wrong tap reduces score
-- High score saving
-- Win/game over state
-- Tap to restart
-- Responsive screen scaling
+- Tile-based matching puzzle
+- Image-based puzzle tiles
+- Auto-generated starter visual assets
+- Score and high-score system
+- Progress bar
+- Particle feedback
+- Camera shake feedback
+- Bounds handling
+- Input action mapping
+- Completion / restart flow
+- Responsive virtual canvas scaling
 
 ## Run
 
 ```bash
 python main.py
+```
+
+## Gameplay
+
+Tap one tile, then tap another tile.  
+If both tiles match, your match score increases.  
+Complete all matches to finish the round.
+
+## Helper Systems Used
+
+This template demonstrates:
+
+- `AssetManager`
+- `ProgressBar`
+- `ParticleEmitter`
+- `CameraShake`
+- `BoundsManager`
+- `InputActionMap`
+- `ScoreManager`

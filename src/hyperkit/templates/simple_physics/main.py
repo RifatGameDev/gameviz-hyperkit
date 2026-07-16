@@ -1,71 +1,108 @@
-from random import randint
+from pathlib import Path
+import struct
+import zlib
 
-from hyperkit import Game, GameObject, Scene, ScoreManager, TextLabel
+from hyperkit import (
+    AssetManager,
+    BoundsManager,
+    CameraShake,
+    Cooldown,
+    Game,
+    GameObject,
+    InputActionMap,
+    ParticleEmitter,
+    ProgressBar,
+    Scene,
+    ScreenBounds,
+    TextLabel,
+)
+
+
+def save_demo_png(path: Path, color: tuple[int, int, int, int]) -> None:
+    width = 32
+    height = 32
+
+    raw = b"".join(b"\x00" + bytes(color) * width for _ in range(height))
+    compressed = zlib.compress(raw)
+
+    def chunk(chunk_type: bytes, data: bytes) -> bytes:
+        return (
+            struct.pack(">I", len(data))
+            + chunk_type
+            + data
+            + struct.pack(">I", zlib.crc32(chunk_type + data) & 0xFFFFFFFF)
+        )
+
+    png = b"\x89PNG\r\n\x1a\n"
+    png += chunk(b"IHDR", struct.pack(">IIBBBBB",
+                 width, height, 8, 6, 0, 0, 0))
+    png += chunk(b"IDAT", compressed)
+    png += chunk(b"IEND", b"")
+
+    path.write_bytes(png)
+
+
+def ensure_template_assets(project_path: Path) -> None:
+    images_path = project_path / "assets" / "images"
+    images_path.mkdir(parents=True, exist_ok=True)
+
+    ball_path = images_path / "physics_ball.png"
+
+    if not ball_path.exists():
+        save_demo_png(ball_path, (70, 180, 255, 255))
 
 
 class SimplePhysicsScene(Scene):
-    """Simple Physics game template.
-
-    Goal:
-    - Tap/click to launch the ball upward.
-    - Gravity pulls the ball down.
-    - Ball bounces on walls and floor.
-    - Collect coins to score.
-    - Reach target score to win.
-    - Tap after game over/win to restart.
-    """
+    """Modern simple physics template using HyperKit helpers."""
 
     def start(self):
         self.screen_width = 720
         self.screen_height = 1280
 
-        self.gravity = -1600
-        self.bounce_factor = 0.75
-        self.jump_force = 850
-        self.target_score = 10
+        project_path = Path(__file__).parent
+        ensure_template_assets(project_path)
 
-        self.score = ScoreManager(high_score_key="simple_physics_high_score")
+        self.assets = AssetManager(project_path=project_path)
+        self.particles = ParticleEmitter(self)
+        self.camera_shake = CameraShake(self)
+        self.bounds = BoundsManager(
+            screen=ScreenBounds(width=self.screen_width,
+                                height=self.screen_height)
+        )
+        self.actions = InputActionMap()
+        self.launch_cooldown = Cooldown(duration=0.4)
+
+        self.gravity = -1200
+        self.energy = 100
 
         self.ball = self.add(
             GameObject(
-                x=320,
-                y=450,
-                width=80,
-                height=80,
-                vx=180,
+                x=310,
+                y=760,
+                width=100,
+                height=100,
+                vx=260,
                 vy=0,
-                color=(0.25, 0.75, 1.0, 1),
+                image_path=self.assets.load_image("physics_ball.png"),
                 shape="circle",
                 name="physics_ball",
             )
         )
 
-        self.floor = self.add(
+        self.ground = self.add(
             GameObject(
                 x=0,
-                y=70,
+                y=240,
                 width=720,
-                height=35,
+                height=50,
                 color=(0.25, 0.9, 0.35, 1),
-                name="floor",
+                name="ground",
             )
         )
 
-        self.coin = self.add(
-            GameObject(
-                x=randint(80, 560),
-                y=randint(350, 980),
-                width=55,
-                height=55,
-                color=(1.0, 0.85, 0.15, 1),
-                shape="circle",
-                name="coin",
-            )
-        )
-
-        self.title_label = self.add(
+        self.add(
             TextLabel(
-                x=70,
+                x=80,
                 y=1180,
                 text="Simple Physics",
                 font_size=38,
@@ -74,120 +111,99 @@ class SimplePhysicsScene(Scene):
             )
         )
 
-        self.score_label = self.add(
-            TextLabel(
-                x=30,
-                y=1125,
-                text="Score: 0",
-                font_size=30,
-                color=(1, 1, 1, 1),
-            )
-        )
-
-        self.best_label = self.add(
-            TextLabel(
-                x=30,
-                y=1085,
-                text=f"Best: {self.score.high_score}",
-                font_size=26,
-                color=(0.8, 0.9, 1, 1),
-            )
+        self.energy_bar = ProgressBar(
+            scene=self,
+            x=60,
+            y=1090,
+            width=600,
+            height=32,
+            value=self.energy,
+            max_value=100,
+            fill_color=(0.25, 0.75, 1.0, 1),
+            text_format="Energy: {value:.0f}/{max_value:.0f}",
+            name="physics_energy",
         )
 
         self.message_label = self.add(
             TextLabel(
-                x=90,
-                y=1010,
-                text="Tap to launch. Collect coins!",
-                font_size=28,
+                x=60,
+                y=1015,
+                text="Tap to launch the ball upward.",
+                font_size=26,
                 color=(1, 0.9, 0.4, 1),
             )
         )
 
-        self.start_game()
-        self.update_labels()
+        self.actions.map_tap("launch", callback=self.launch_ball)
 
-    def update_labels(self):
-        self.score_label.set_text(f"Score: {self.score.value}")
-        self.best_label.set_text(f"Best: {self.score.high_score}")
+        self.start_game()
+
+    def launch_ball(self, event):
+        if not self.launch_cooldown.use():
+            self.message_label.set_text(
+                f"Cooldown: {self.launch_cooldown.remaining:.1f}s"
+            )
+            return
+
+        x = float(event.x or self.ball.x)
+        y = float(event.y or self.ball.y)
+
+        self.ball.x = x - self.ball.width / 2
+        self.bounds.keep_on_screen(self.ball)
+
+        self.ball.vy = 780
+        self.energy = max(0, self.energy - 10)
+        self.energy_bar.set_value(self.energy)
+
+        self.message_label.set_text("Launch!")
+        self.camera_shake.shake(intensity=6, duration=0.08)
+
+        self.particles.burst(
+            x=self.ball.x + self.ball.width / 2,
+            y=self.ball.y,
+            count=18,
+            color=(1.0, 0.85, 0.2, 1),
+            lifetime=0.45,
+            gravity=-300,
+        )
 
     def on_tap(self, x, y):
-        if self.is_game_over():
-            self.reset_round()
-            return
-
-        if not self.is_playing():
-            return
-
-        self.ball.vy = self.jump_force
-
-        if x < self.ball.x:
-            self.ball.vx = -260
-        elif x > self.ball.x + self.ball.width:
-            self.ball.vx = 260
-
-        self.message_label.set_text("")
+        self.actions.handle_tap(x, y)
 
     def update(self, dt):
-        if not self.is_playing():
-            return
-
         self.ball.vy += self.gravity * dt
+        self.ball.x += self.ball.vx * dt
+        self.ball.y += self.ball.vy * dt
+
+        if self.ball.y <= self.ground.y + self.ground.height:
+            self.ball.y = self.ground.y + self.ground.height
+            self.ball.vy = abs(self.ball.vy) * 0.65
+
+            if self.ball.vy > 80:
+                self.camera_shake.shake(intensity=7, duration=0.08)
+                self.particles.burst(
+                    x=self.ball.x + self.ball.width / 2,
+                    y=self.ball.y,
+                    count=10,
+                    color=(0.8, 0.8, 0.8, 1),
+                    lifetime=0.3,
+                    gravity=-200,
+                )
+
+        self.bounds.bounce_on_screen(self.ball, bounce=1.0)
+
+        self.launch_cooldown.update(dt)
+        self.particles.update(dt)
+        self.camera_shake.update(dt)
+
+        if self.energy < 100:
+            self.energy = min(100, self.energy + 8 * dt)
+            self.energy_bar.set_value(self.energy)
 
         super().update(dt)
-
-        self.handle_wall_bounce()
-        self.handle_floor_bounce()
-        self.handle_coin_collection()
-
-    def handle_wall_bounce(self):
-        if self.ball.x <= 0:
-            self.ball.x = 0
-            self.ball.vx = abs(self.ball.vx)
-
-        if self.ball.x + self.ball.width >= self.screen_width:
-            self.ball.x = self.screen_width - self.ball.width
-            self.ball.vx = -abs(self.ball.vx)
-
-        if self.ball.y + self.ball.height >= self.screen_height:
-            self.ball.y = self.screen_height - self.ball.height
-            self.ball.vy = -abs(self.ball.vy) * self.bounce_factor
-
-    def handle_floor_bounce(self):
-        floor_top = self.floor.y + self.floor.height
-
-        if self.ball.y <= floor_top:
-            self.ball.y = floor_top
-            self.ball.vy = abs(self.ball.vy) * self.bounce_factor
-
-            if abs(self.ball.vy) < 120:
-                self.ball.vy = 0
-
-    def handle_coin_collection(self):
-        if self.ball.collides_with(self.coin):
-            self.score.add(1)
-            self.update_labels()
-            self.move_coin()
-
-            if self.score.value >= self.target_score:
-                self.win_game()
-
-    def move_coin(self):
-        self.coin.x = randint(80, 560)
-        self.coin.y = randint(280, 1000)
-
-    def win_game(self):
-        self.end_game()
-        self.ball.vx = 0
-        self.ball.vy = 0
-        self.ball.color = (0.2, 1.0, 0.45, 1)
-        self.message_label.set_text("You won! Tap anywhere to restart.")
-
-    def reset_round(self):
-        self.clear()
-        self.start()
 
 
 if __name__ == "__main__":
     Game(title="Simple Physics", width=720, height=1280).set_scene(
-        SimplePhysicsScene()).run()
+        SimplePhysicsScene()
+    ).run()

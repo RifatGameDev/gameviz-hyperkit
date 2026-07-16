@@ -1,21 +1,41 @@
-# Simple Physics Game Template
+# Simple Physics Template
 
-A simple physics-based prototype made with HyperKit.
+A modern simple physics starter game made with HyperKit.
 
 ## Features
 
-- Gravity
-- Bouncing ball
-- Wall and floor bounce
-- Tap-to-launch input
-- Coin collection
-- Score system
-- High score saving
-- Win/game over state
-- Tap to restart
-- Responsive screen scaling
+- Gravity-based ball movement
+- Bounce behavior
+- Image-based physics ball
+- Auto-generated starter visual asset
+- Energy progress bar
+- Cooldown-based launch action
+- Particle feedback
+- Camera shake feedback
+- Bounds handling
+- Input action mapping
+- Responsive virtual canvas scaling
 
 ## Run
 
 ```bash
 python main.py
+```
+
+## Gameplay
+
+Tap anywhere to move and launch the ball upward.  
+The ball falls with gravity and bounces from the ground.  
+Energy decreases when launching and regenerates over time.
+
+## Helper Systems Used
+
+This template demonstrates:
+
+- `AssetManager`
+- `ProgressBar`
+- `ParticleEmitter`
+- `CameraShake`
+- `BoundsManager`
+- `InputActionMap`
+- `Cooldown`
