@@ -66,6 +66,13 @@ REQUIRED_PATHS = {
     "Generated project smoke docs": "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "Project health docs": "docs/PROJECT_HEALTH_REPORT.md",
     "Package source": "src/hyperkit/__init__.py",
+    "Release build automation docs": "docs/RELEASE_BUILD_AUTOMATION.md",
+    "Release build automation tests": "tests/test_release_check_phase39.py",
+    "Generated project smoke tests": "tests/test_generated_project_smoke_phase37.py",
+    "Release build automation tests": "tests/test_release_check_phase39.py",
+    "Final pre-release audit docs": "docs/FINAL_PRE_RELEASE_AUDIT.md",
+    "Final pre-release audit source": "src/hyperkit/audit.py",
+    "Final pre-release audit tests": "tests/test_pre_release_audit_phase40.py",
 }
 
 

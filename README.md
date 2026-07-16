@@ -7,6 +7,12 @@ It is designed for beginners, students, game jam developers, and small teams who
 > HyperKit is not a full game engine like Unity, Unreal, or Godot.
 > It is a prototype-focused SDK with reusable systems and ready-made templates.
 
+## Package Identity
+
+- Package name: `gameviz-hyperkit`
+- Import name: `hyperkit`
+- CLI command: `hyperkit`
+
 ---
 
 ## Features
@@ -42,6 +48,7 @@ It is designed for beginners, students, game jam developers, and small teams who
 * UI progress bar helper
 * Upgraded helper-based starter templates
 * [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
+* [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
 
 ---
 
@@ -603,7 +610,7 @@ wrap_object(obj)
 
 ## Helper-Based Templates
 
-HyperKit templates are being upgraded to demonstrate real helper usage.
+HyperKit templates are upgraded to demonstrate real helper usage.
 
 Currently upgraded templates:
 
@@ -614,9 +621,7 @@ Currently upgraded templates:
 - `quiz_game`
 - `simple_physics`
 
-
-
-These templates now demonstrate:
+These templates demonstrate:
 
 - image-based GameObjects
 - starter visual assets
@@ -633,23 +638,7 @@ Create an upgraded Tap Counter game:
 hyperkit new my-tap-game --template tap_counter
 cd my-tap-game
 python main.py
-
-The Tap Counter template now includes:
-
-- image-based GameObjects
-- starter visual assets
-- progress bar
-- particles
-- camera shake
-- bounds handling
-- input action mapping
-
-Create the upgraded template:
-
-```bash
-hyperkit new my-tap-game --template tap_counter
-cd my-tap-game
-python main.py
+```
 
 Create an upgraded Puzzle Game:
 
@@ -657,6 +646,9 @@ Create an upgraded Puzzle Game:
 hyperkit new my-puzzle-game --template puzzle_game
 cd my-puzzle-game
 python main.py
+```
+
+---
 
 ## UI Progress Bars
 
@@ -686,94 +678,100 @@ Progress bars are created using normal HyperKit objects, so they work with the e
 
 ## CLI Commands
 
+Check the local HyperKit environment:
+
 ```bash
 hyperkit doctor
 ```
 
-Check the local HyperKit environment, Python version, Kivy installation, and build tool status.
+Show all available HyperKit game templates:
 
 ```bash
 hyperkit list-templates
 ```
 
-Show all available HyperKit game templates.
+Create a new game project from a template:
+
+```bash
+hyperkit new my-game --template tap_counter
+```
+
+Show project metadata from `hyperkit.toml`:
 
 ```bash
 hyperkit info
 ```
 
-Show project metadata from `hyperkit.toml`.
+Validate the current HyperKit project structure:
 
 ```bash
 hyperkit validate
 ```
 
-Validate the current HyperKit project structure.
-
-```bash
-hyperkit new my-game --template tap_counter
-```
-
-Create a new game project from a template.
-
-You can use underscore-style names:
-
-```bash
-hyperkit new my-game --template tap_counter
-```
-
-Or dash-style names:
-
-```bash
-hyperkit new my-game --template tap-counter
-```
-
-```bash
-hyperkit health
-```
-
-Available templates:
-
-```text
-tap_counter / tap-counter
-flappy_mini / flappy-mini
-swipe_runner / swipe-runner
-puzzle_game / puzzle-game
-quiz_game / quiz-game
-simple_physics / simple-physics
-```
+Run a HyperKit project:
 
 ```bash
 hyperkit run
 ```
 
-Run a HyperKit project from the current folder.
+Run a HyperKit project from a specific folder:
 
 ```bash
 hyperkit run --path path/to/project
 ```
 
-Run a HyperKit project from a specific folder.
+Show the project health report:
+
+```bash
+hyperkit health
+```
+
+Show the release readiness report:
+
+```bash
+hyperkit release-check
+```
+
+Create experimental Android build configuration:
 
 ```bash
 hyperkit init-android
 ```
 
-Create experimental Android build configuration.
+Create Android configuration with a custom game title:
 
 ```bash
 hyperkit init-android --title "My Game"
 ```
 
-Create Android configuration with a custom game title.
+Run the experimental Android build command:
 
 ```bash
 hyperkit build android
 ```
 
-Experimental Android build command.
+Show the final pre-release audit report:
+
+```bash
+hyperkit pre-release-audit
+```
 
 > Android build support is still experimental and will be improved in future versions.
+
+---
+
+## Documentation
+
+- [Version History](docs/VERSION_HISTORY.md)
+- [Changelog](CHANGELOG.md)
+- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)
+- [Templates Guide](docs/TEMPLATES.md)
+- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)
+- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)
+- [Generated Project Smoke Tests](docs/GENERATED_PROJECT_SMOKE_TESTS.md)
+- [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
+- [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
+- [Final Pre-release Audit](docs/FINAL_PRE_RELEASE_AUDIT.md)
 
 ---
 
@@ -797,11 +795,11 @@ Stable public release target:
 
 ## Current Limitations
 
-* This is not a full game engine.
-* Advanced 3D rendering is not supported.
-* Android APK build support is still experimental.
-* The current focus is 2D hypercasual and hybrid casual prototypes.
-* Templates are designed for learning and prototyping, not final commercial game production yet.
+- This is not a full game engine.
+- Advanced 3D rendering is not supported.
+- Android APK build support is still experimental.
+- The current focus is 2D hypercasual and hybrid casual prototypes.
+- Templates are designed for learning and prototyping, not final commercial game production yet.
 
 ---
 
@@ -809,16 +807,16 @@ Stable public release target:
 
 Planned improvements:
 
-* Better UI system
-* More game templates
-* Asset loading improvements
-* Audio helper improvements
-* Sprite animation improvements
-* Particle helper
-* Improved mobile touch support
-* Android Gradle / Chaquopy build pipeline
-* AdMob / analytics helper layer
-* Better documentation and examples
+- Better UI system
+- More game templates
+- Asset loading improvements
+- Audio helper improvements
+- Sprite animation improvements
+- Particle helper
+- Improved mobile touch support
+- Android Gradle / Chaquopy build pipeline
+- AdMob / analytics helper layer
+- Better documentation and examples
 
 ---
 
@@ -852,5 +850,18 @@ MIT License.
 
 ## Author
 
+
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
-\n\n## Documentation\n\n- [Version History](docs/VERSION_HISTORY.md)\n\n- [Changelog](CHANGELOG.md)\n\n- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)\n\n- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)\n\n- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)\n
+
+
+## Documentation
+
+- [Version History](docs/VERSION_HISTORY.md)
+
+- [Changelog](CHANGELOG.md)
+
+- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)
+
+- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)
+
+- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)

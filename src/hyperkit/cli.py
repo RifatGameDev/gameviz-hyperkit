@@ -11,6 +11,8 @@ from pathlib import Path
 from .android import create_buildozer_spec
 
 from .health import format_health_report, generate_health_report
+from .release import format_release_report, generate_release_report
+from .audit import format_pre_release_audit_report, generate_pre_release_audit_report
 
 try:
     import tomllib
@@ -411,6 +413,24 @@ def cmd_health(args):
     return 0 if report.passed else 1
 
 
+def cmd_release_check(args):
+    root = getattr(args, "path", ".")
+    report = generate_release_report(root)
+
+    print(format_release_report(report))
+
+    return 0 if report.passed else 1
+
+
+def cmd_pre_release_audit(args):
+    root = getattr(args, "path", ".")
+    report = generate_pre_release_audit_report(root)
+
+    print(format_pre_release_audit_report(report))
+
+    return 0 if report.passed else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="hyperkit",
@@ -473,6 +493,28 @@ def build_parser() -> argparse.ArgumentParser:
         help="Project root path to check",
     )
     p_health.set_defaults(func=cmd_health)
+
+    p_release_check = sub.add_parser(
+        "release-check",
+        help="Show HyperKit release readiness report",
+    )
+    p_release_check.add_argument(
+        "--path",
+        default=".",
+        help="Project root path to check",
+    )
+    p_release_check.set_defaults(func=cmd_release_check)
+
+    p_pre_release_audit = sub.add_parser(
+        "pre-release-audit",
+        help="Show HyperKit final pre-release audit report",
+    )
+    p_pre_release_audit.add_argument(
+        "--path",
+        default=".",
+        help="Project root path to check",
+    )
+    p_pre_release_audit.set_defaults(func=cmd_pre_release_audit)
 
     return parser
 

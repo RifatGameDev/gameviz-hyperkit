@@ -54,6 +54,8 @@ from .camera_follow import CameraFollow
 from .bounds import Bounds, BoundsManager, ScreenBounds, WorldBounds
 from .progress import ProgressBar, ProgressBarError
 from .health import HealthCheck, HealthReport, format_health_report, generate_health_report
+from .release import ReleaseCheck, ReleaseReport, format_release_report, generate_release_report
+from .audit import PreReleaseAuditCheck, PreReleaseAuditReport, format_pre_release_audit_report, generate_pre_release_audit_report
 
 
 try:  # Kivy may not be available in headless test environments.
@@ -139,6 +141,14 @@ __all__ = [
     "HealthReport",
     "format_health_report",
     "generate_health_report",
+    "ReleaseCheck",
+    "ReleaseReport",
+    "format_release_report",
+    "generate_release_report",
+    "PreReleaseAuditCheck",
+    "PreReleaseAuditReport",
+    "format_pre_release_audit_report",
+    "generate_pre_release_audit_report",
 ]
 
 __version__ = "0.1.0"
