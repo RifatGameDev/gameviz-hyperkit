@@ -848,4 +848,4 @@ MIT License.
 ## Author
 
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
-\n\n## Documentation\n\n- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)\n\n- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)\n\n- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)\n
+\n\n## Documentation\n\n- [Version History](docs/VERSION_HISTORY.md)\n\n- [Changelog](CHANGELOG.md)\n\n- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)\n\n- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)\n\n- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)\n
