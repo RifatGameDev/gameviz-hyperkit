@@ -1,215 +1,163 @@
 # HyperKit Templates
 
-HyperKit templates are starter projects for quickly creating 2D hypercasual and hybrid casual game prototypes.
-
-Each template can be created using:
-
-```bash
-hyperkit new my-game --template template_name
-```
-
-Then run:
-
-```bash
-cd my-game
-python main.py
-```
+HyperKit includes ready-to-use starter templates for common mobile 2D game styles.
 
 ---
 
-## 1. Tap Counter
+## Available Templates
 
-Command:
+### Tap Counter
+
+A simple tap scoring game.
 
 ```bash
 hyperkit new my-tap-game --template tap_counter
 ```
 
-Alternative:
+Best for:
 
-```bash
-hyperkit new my-tap-game --template tap-counter
-```
-
-Features:
-
-* Tap/click input
-* Object movement
-* Score system
-* High-score saving
-* Game over state
-* Tap to restart
-
-Good for:
-
-* Tap-to-score games
-* Tap-to-move games
-* Tap timing prototypes
-* Beginner game logic practice
+- tap games
+- clicker games
+- score-based prototypes
+- simple feedback testing
 
 ---
 
-## 2. Flappy Mini
+### Flappy Mini
 
-Command:
+A Flappy-style obstacle avoidance game.
 
 ```bash
 hyperkit new my-flappy-game --template flappy_mini
 ```
 
-Alternative:
+Best for:
 
-```bash
-hyperkit new my-flappy-game --template flappy-mini
-```
-
-Features:
-
-* Tap-to-jump input
-* Gravity
-* Moving pipe obstacles
-* Collision detection
-* Score and high score
-* Game over
-* Tap to restart
-
-Good for:
-
-* Flappy-style games
-* Tap-to-fly prototypes
-* Simple physics prototypes
+- tap-to-flap games
+- obstacle avoidance
+- arcade prototypes
 
 ---
 
-## 3. Swipe Runner
+### Swipe Runner
 
-Command:
-
-```bash
-hyperkit new my-runner --template swipe_runner
-```
-
-Alternative:
+A lane-based runner game.
 
 ```bash
-hyperkit new my-runner --template swipe-runner
+hyperkit new my-runner-game --template swipe_runner
 ```
 
-Features:
+Best for:
 
-* 3-lane player movement
-* Swipe left/right input
-* Obstacle spawning
-* Collision detection
-* Score over time
-* Increasing difficulty
-* Game over
-* Tap to restart
-
-Good for:
-
-* Endless runner prototypes
-* Lane-switching games
-* Obstacle avoidance games
-* Swipe-based mobile games
+- endless runner prototypes
+- swipe movement
+- lane-based mobile games
 
 ---
 
-## 4. Puzzle Game
+### Puzzle Game
 
-Command:
-
-```bash
-hyperkit new my-puzzle --template puzzle_game
-```
-
-Alternative:
+A simple tile matching puzzle.
 
 ```bash
-hyperkit new my-puzzle --template puzzle-game
+hyperkit new my-puzzle-game --template puzzle_game
 ```
 
-Features:
+Best for:
 
-* 3x3 color tile grid
-* Target color instruction
-* Tap correct tile to score
-* Wrong tap penalty
-* High-score saving
-* Win state
-* Tap to restart
-
-Good for:
-
-* Color matching games
-* Simple puzzle games
-* Brain-training prototypes
-* Kids learning games
+- matching puzzles
+- simple memory games
+- grid-based prototypes
 
 ---
 
-## 5. Quiz Game
+### Quiz Game
 
-Command:
-
-```bash
-hyperkit new my-quiz --template quiz_game
-```
-
-Alternative:
+A multiple-choice educational quiz game.
 
 ```bash
-hyperkit new my-quiz --template quiz-game
+hyperkit new my-quiz-game --template quiz_game
 ```
 
-Features:
+Best for:
 
-* Question display
-* 4 answer options
-* Tap answer input
-* Correct/wrong feedback
-* Score system
-* High-score saving
-* Result screen
-* Tap to restart
-
-Good for:
-
-* Educational games
-* Quiz apps
-* Learning prototypes
-* Training apps
+- educational games
+- quiz apps
+- learning prototypes
 
 ---
 
-## 6. Simple Physics
+### Simple Physics
 
-Command:
+A simple physics-based ball demo.
 
 ```bash
 hyperkit new my-physics-game --template simple_physics
 ```
 
-Alternative:
+Best for:
 
-```bash
-hyperkit new my-physics-game --template simple-physics
+- bounce mechanics
+- simple gravity tests
+- physics prototypes
+
+---
+
+## Helper-Based Templates
+
+Most templates now demonstrate modern HyperKit helper systems:
+
+- `AssetManager`
+- `ScoreManager`
+- `ProgressBar`
+- `ParticleEmitter`
+- `CameraShake`
+- `BoundsManager`
+- `InputActionMap`
+- `Cooldown`
+
+Read the full guide:
+
+```text
+docs/TEMPLATE_HELPERS.md
 ```
 
-Features:
+---
 
-* Gravity
-* Bouncing ball
-* Wall and floor bounce
-* Tap-to-launch input
-* Coin collection
-* Score and high score
-* Win state
-* Tap to restart
+## Recommended Workflow
 
-Good for:
+Create a project:
 
-* Simple physics games
-* Bounce games
-* Coin collection prototypes
-* Physics learning demos
+```bash
+hyperkit new my-game --template tap_counter
+```
+
+Go to the project:
+
+```bash
+cd my-game
+```
+
+Run it:
+
+```bash
+python main.py
+```
+
+Validate it:
+
+```bash
+hyperkit validate
+```
+
+---
+
+## Template Development Notes
+
+When adding or upgrading a template:
+
+1. Keep the template beginner friendly.
+2. Use HyperKit helpers only when they make the template clearer.
+3. Keep generated assets small and replaceable.
+4. Add or update the template README.
+5. Add tests to confirm the template exists and uses expected helpers.
