@@ -85,6 +85,8 @@ REQUIRED_PATHS = {
     "Puzzle Game media folder": "docs/media/templates/puzzle_game/README.md",
     "Quiz Game media folder": "docs/media/templates/quiz_game/README.md",
     "Simple Physics media folder": "docs/media/templates/simple_physics/README.md",
+    "CLI error message docs": "docs/CLI_ERROR_MESSAGES.md",
+    "CLI error message tests": "tests/test_cli_error_messages_phase45.py",
 }
 
 

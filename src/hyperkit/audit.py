@@ -79,6 +79,7 @@ REQUIRED_README_LINKS = [
     "docs/QUICK_START_TUTORIAL.md",
     "docs/TEMPLATE_MEDIA_GUIDE.md",
     "docs/TEMPLATE_SCREENSHOTS.md",
+    "docs/CLI_ERROR_MESSAGES.md",
 ]
 
 

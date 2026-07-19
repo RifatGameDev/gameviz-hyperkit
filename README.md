@@ -336,6 +336,7 @@ python -m twine upload --repository testpypi dist/*
 - [Beginner Quick Start Tutorial](docs/QUICK_START_TUTORIAL.md)
 - [Template Media Guide](docs/TEMPLATE_MEDIA_GUIDE.md)
 - [Template Screenshots and Demo Media](docs/TEMPLATE_SCREENSHOTS.md)
+- [CLI Error Messages](docs/CLI_ERROR_MESSAGES.md)
 
 ---
 

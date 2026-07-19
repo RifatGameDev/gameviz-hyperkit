@@ -4,6 +4,7 @@ import argparse
 import shutil
 import subprocess
 import sys
+from difflib import get_close_matches
 from importlib import resources
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
@@ -13,6 +14,7 @@ from .android import create_buildozer_spec
 from .health import format_health_report, generate_health_report
 from .release import format_release_report, generate_release_report
 from .audit import format_pre_release_audit_report, generate_pre_release_audit_report
+
 
 try:
     import tomllib
@@ -63,6 +65,26 @@ def available_template_names() -> list[str]:
     return list(TEMPLATES.keys())
 
 
+def format_available_templates() -> str:
+    return ", ".join(available_template_names())
+
+
+def suggest_template_name(template: str) -> str | None:
+    template_key = normalize_template_name(template)
+
+    matches = get_close_matches(
+        template_key,
+        available_template_names(),
+        n=1,
+        cutoff=0.55,
+    )
+
+    if matches:
+        return matches[0]
+
+    return None
+
+
 def validate_template_name(template: str) -> str:
     template_key = normalize_template_name(template)
 
@@ -70,6 +92,33 @@ def validate_template_name(template: str) -> str:
         available = ", ".join(available_template_names())
         raise ValueError(
             f"Unknown template '{template}'. Available templates: {available}")
+
+    return template_key
+
+
+def validate_template_name(template: str) -> str:
+    if not template or not template.strip():
+        raise ValueError(
+            "Template name is required. "
+            "Run 'hyperkit list-templates' to see available templates."
+        )
+
+    template_key = normalize_template_name(template)
+
+    if template_key not in TEMPLATES:
+        available = format_available_templates()
+        suggestion = suggest_template_name(template)
+
+        message = (
+            f"Unknown template '{template}'. "
+            f"Available templates: {available}. "
+            "Run 'hyperkit list-templates' to see details."
+        )
+
+        if suggestion:
+            message += f" Did you mean '{suggestion}'?"
+
+        raise ValueError(message)
 
     return template_key
 
@@ -349,8 +398,22 @@ def cmd_run(args: argparse.Namespace) -> int:
     project_path = Path(args.path).resolve()
     main_file = project_path / "main.py"
 
+    if not project_path.exists():
+        print(f"Project path does not exist: {project_path}", file=sys.stderr)
+        print(
+            "Tip: run this command inside a HyperKit project, "
+            "or use 'hyperkit run --path path/to/project'.",
+            file=sys.stderr,
+        )
+        return 1
+
     if not main_file.exists():
-        print(f"Could not find {main_file}", file=sys.stderr)
+        print(f"Could not find main.py in: {project_path}", file=sys.stderr)
+        print(
+            "Tip: make sure this is a generated HyperKit project, "
+            "or use 'hyperkit run --path path/to/project'.",
+            file=sys.stderr,
+        )
         return 1
 
     return subprocess.call([sys.executable, str(main_file)])
