@@ -334,6 +334,8 @@ python -m twine upload --repository testpypi dist/*
 - [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
 - [Final Pre-release Audit](docs/FINAL_PRE_RELEASE_AUDIT.md)
 - [Beginner Quick Start Tutorial](docs/QUICK_START_TUTORIAL.md)
+- [Template Media Guide](docs/TEMPLATE_MEDIA_GUIDE.md)
+- [Template Screenshots and Demo Media](docs/TEMPLATE_SCREENSHOTS.md)
 
 ---
 

@@ -58,6 +58,8 @@ REQUIRED_RELEASE_FILES = [
     "docs/RELEASE_BUILD_AUTOMATION.md",
     "docs/FINAL_PRE_RELEASE_AUDIT.md",
     "docs/QUICK_START_TUTORIAL.md",
+    "docs/TEMPLATE_MEDIA_GUIDE.md",
+    "docs/TEMPLATE_SCREENSHOTS.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -69,6 +71,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_pre_release_audit_phase40.py",
     "tests/test_public_readme_phase42.py",
     "tests/test_quick_start_tutorial_phase43.py",
+    "tests/test_template_media_phase44.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

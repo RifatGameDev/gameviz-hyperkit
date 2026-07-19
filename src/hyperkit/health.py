@@ -76,6 +76,15 @@ REQUIRED_PATHS = {
     "Beginner quick-start tutorial": "docs/QUICK_START_TUTORIAL.md",
     "Beginner quick-start tutorial tests": "tests/test_quick_start_tutorial_phase43.py",
     "Public README tests": "tests/test_public_readme_phase42.py",
+    "Template media guide": "docs/TEMPLATE_MEDIA_GUIDE.md",
+    "Template screenshots documentation": "docs/TEMPLATE_SCREENSHOTS.md",
+    "Template media tests": "tests/test_template_media_phase44.py",
+    "Tap Counter media folder": "docs/media/templates/tap_counter/README.md",
+    "Flappy Mini media folder": "docs/media/templates/flappy_mini/README.md",
+    "Swipe Runner media folder": "docs/media/templates/swipe_runner/README.md",
+    "Puzzle Game media folder": "docs/media/templates/puzzle_game/README.md",
+    "Quiz Game media folder": "docs/media/templates/quiz_game/README.md",
+    "Simple Physics media folder": "docs/media/templates/simple_physics/README.md",
 }
 
 
