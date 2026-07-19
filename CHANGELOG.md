@@ -63,7 +63,21 @@ HyperKit follows a simple version history format for now:
 
 ---
 
-## 0.1.0
+## [0.1.1.dev1] - TestPyPI Validation Build
+
+### Added
+
+- TestPyPI validation build for checking package upload and installation workflow.
+- Final pre-release audit command.
+- Release readiness command.
+- Project health report command.
+
+### Notes
+
+- This version is for TestPyPI testing only.
+- Do not publish this development version to real PyPI.
+
+<!-- ## 0.1.0
 
 ### Added
 
@@ -88,4 +102,4 @@ HyperKit follows a simple version history format for now:
   - `quiz_game`
   - `simple_physics`
 - Example demos.
-- TestPyPI package publishing test.
+- TestPyPI package publishing test. -->
