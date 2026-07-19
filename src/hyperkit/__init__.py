@@ -57,6 +57,13 @@ from .health import HealthCheck, HealthReport, format_health_report, generate_he
 from .release import ReleaseCheck, ReleaseReport, format_release_report, generate_release_report
 from .audit import PreReleaseAuditCheck, PreReleaseAuditReport, format_pre_release_audit_report, generate_pre_release_audit_report
 
+from .template_validation import (
+    TemplateValidationCheck,
+    TemplateValidationReport,
+    format_template_validation_report,
+    generate_template_validation_report,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -149,6 +156,10 @@ __all__ = [
     "PreReleaseAuditReport",
     "format_pre_release_audit_report",
     "generate_pre_release_audit_report",
+    "TemplateValidationCheck",
+    "TemplateValidationReport",
+    "format_template_validation_report",
+    "generate_template_validation_report",
 ]
 
 __version__ = "0.1.0"

@@ -87,6 +87,9 @@ REQUIRED_PATHS = {
     "Simple Physics media folder": "docs/media/templates/simple_physics/README.md",
     "CLI error message docs": "docs/CLI_ERROR_MESSAGES.md",
     "CLI error message tests": "tests/test_cli_error_messages_phase45.py",
+    "Template validation source": "src/hyperkit/template_validation.py",
+    "Template validation docs": "docs/TEMPLATE_VALIDATION.md",
+    "Template validation tests": "tests/test_template_validation_phase46.py",
 }
 
 

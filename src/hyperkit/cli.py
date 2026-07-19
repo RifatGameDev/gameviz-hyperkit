@@ -15,6 +15,11 @@ from .health import format_health_report, generate_health_report
 from .release import format_release_report, generate_release_report
 from .audit import format_pre_release_audit_report, generate_pre_release_audit_report
 
+from .template_validation import (
+    format_template_validation_report,
+    generate_template_validation_report,
+)
+
 
 try:
     import tomllib
@@ -394,6 +399,15 @@ def cmd_validate(args: argparse.Namespace) -> int:
     return 1
 
 
+def cmd_validate_templates(args: argparse.Namespace) -> int:
+    root = getattr(args, "path", ".")
+    report = generate_template_validation_report(root)
+
+    print(format_template_validation_report(report))
+
+    return 0 if report.passed else 1
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     project_path = Path(args.path).resolve()
     main_file = project_path / "main.py"
@@ -578,6 +592,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Project root path to check",
     )
     p_pre_release_audit.set_defaults(func=cmd_pre_release_audit)
+
+    p_validate_templates = sub.add_parser(
+        "validate-templates",
+        help="Validate built-in HyperKit templates",
+    )
+    p_validate_templates.add_argument(
+        "--path",
+        default=".",
+        help="Repository root path to check",
+    )
+    p_validate_templates.set_defaults(func=cmd_validate_templates)
 
     return parser
 

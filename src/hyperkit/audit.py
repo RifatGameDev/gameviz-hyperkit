@@ -80,6 +80,7 @@ REQUIRED_README_LINKS = [
     "docs/TEMPLATE_MEDIA_GUIDE.md",
     "docs/TEMPLATE_SCREENSHOTS.md",
     "docs/CLI_ERROR_MESSAGES.md",
+    "docs/TEMPLATE_VALIDATION.md",
 ]
 
 

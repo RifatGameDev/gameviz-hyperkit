@@ -291,6 +291,12 @@ Run experimental Android build:
 hyperkit build android
 ```
 
+Validate built-in templates:
+
+```bash
+hyperkit validate-templates
+```
+
 ---
 
 ## Development Commands
@@ -337,6 +343,7 @@ python -m twine upload --repository testpypi dist/*
 - [Template Media Guide](docs/TEMPLATE_MEDIA_GUIDE.md)
 - [Template Screenshots and Demo Media](docs/TEMPLATE_SCREENSHOTS.md)
 - [CLI Error Messages](docs/CLI_ERROR_MESSAGES.md)
+- [Template Validation](docs/TEMPLATE_VALIDATION.md)
 
 ---
 
