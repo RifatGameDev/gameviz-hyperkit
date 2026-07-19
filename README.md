@@ -1,11 +1,27 @@
 # GameViz HyperKit
 
-**GameViz HyperKit** is a lightweight Python SDK for quickly creating **2D hypercasual and hybrid casual game prototypes**.
+**GameViz HyperKit** is a lightweight Python SDK for creating **2D hypercasual and hybrid casual game prototypes** quickly.
 
-It is designed for beginners, students, game jam developers, and small teams who want to test simple game ideas faster using Python.
+It is designed for beginners, students, game jam developers, indie developers, and small teams who want to test simple mobile-style game ideas using Python.
 
-> HyperKit is not a full game engine like Unity, Unreal, or Godot.
-> It is a prototype-focused SDK with reusable systems and ready-made templates.
+> HyperKit is not a full game engine like Unity, Unreal, or Godot.  
+> It is a prototype-focused SDK with reusable systems, helper modules, and ready-made templates.
+
+---
+
+## Current Release Status
+
+HyperKit is currently in active development.
+
+Current package validation status:
+
+- TestPyPI validation build: `0.1.1.dev1`
+- Real PyPI release: not published yet
+- Stable public release target: future `1.0.0`
+
+For now, HyperKit should be considered an early SDK preview.
+
+---
 
 ## Package Identity
 
@@ -15,62 +31,76 @@ It is designed for beginners, students, game jam developers, and small teams who
 
 ---
 
-## Features
+## Who Is HyperKit For?
 
-* 2D game prototype structure
-* Scene system
-* GameObject system
-* Tap/click input
-* Swipe input
-* Score and high-score system
-* Save system
-* Collision helpers
-* Simple physics helpers
-* Text label and basic UI helpers
-* Responsive virtual canvas scaling
-* Ready-made hypercasual game templates
-* CLI project generator
-* Project metadata with `hyperkit.toml`
-* Starter asset folder structure
-* Asset loading helpers
-* Image rendering support for `GameObject`
-* Audio playback helpers
-* Animation helpers
-* Sprite animation helper
-* Particle helper
-* Camera shake helper
-* Scene transition helper
-* Timer and cooldown helpers
-* Input action mapping helper
-* Level data loading helper
-* Camera follow helper
-* Screen bounds and world bounds helpers
-* UI progress bar helper
-* Upgraded helper-based starter templates
-* [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
-* [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
+HyperKit is useful for:
+
+- learning 2D game development with Python
+- building quick hypercasual game prototypes
+- creating tap, swipe, runner, puzzle, quiz, and physics-style demos
+- testing simple game ideas before moving to a larger engine
+- students and indie developers who want a small code-first game toolkit
+
+---
+
+## Main Features
+
+- 2D game project structure
+- Scene system
+- GameObject system
+- Tap/click input
+- Swipe input
+- Score and high-score system
+- Save system
+- Collision helpers
+- Simple physics helpers
+- Text label and basic UI helpers
+- Responsive virtual canvas scaling
+- Asset loading helpers
+- Image rendering support
+- Audio playback helpers
+- Animation helpers
+- Sprite animation helper
+- Particle helper
+- Camera shake helper
+- Scene transition helper
+- Timer and cooldown helpers
+- Input action mapping helper
+- Level data loading helper
+- Camera follow helper
+- Screen bounds and world bounds helpers
+- UI progress bar helper
+- CLI project generator
+- Ready-made starter templates
+- Project health and release validation commands
 
 ---
 
 ## Installation
 
-For local development:
+For local development from the repository:
 
 ```bash
 pip install -e .
 ```
 
-After installation, check if HyperKit is working:
+Check that HyperKit is working:
 
 ```bash
 hyperkit doctor
 ```
 
+Install the current TestPyPI validation build:
+
+```bash
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ gameviz-hyperkit==0.1.1.dev1
+```
+
 ---
 
-## Create a New Game
+## Quick Start
 
-Create a new project from a template:
+Create a new game project:
 
 ```bash
 hyperkit new my-game --template tap_counter
@@ -78,13 +108,13 @@ cd my-game
 python main.py
 ```
 
-You can also use dash-style names:
+You can also use dash-style template names:
 
 ```bash
 hyperkit new my-game --template tap-counter
 ```
 
-Generated projects include a starter asset structure:
+Generated projects include:
 
 ```text
 my-game/
@@ -103,7 +133,7 @@ my-game/
 
 ## Available Templates
 
-Check available templates:
+Check all templates:
 
 ```bash
 hyperkit list-templates
@@ -111,43 +141,18 @@ hyperkit list-templates
 
 Current templates:
 
-| Template       | Command Name                        | Description                                    |
-| -------------- | ----------------------------------- | ---------------------------------------------- |
-| Tap Counter    | `tap_counter` / `tap-counter`       | Tap/click scoring prototype                    |
-| Flappy Mini    | `flappy_mini` / `flappy-mini`       | Flappy-style tap-to-jump prototype             |
-| Swipe Runner   | `swipe_runner` / `swipe-runner`     | 3-lane swipe runner prototype                  |
-| Puzzle Game    | `puzzle_game` / `puzzle-game`       | Color matching puzzle prototype                |
-| Quiz Game      | `quiz_game` / `quiz-game`           | Educational quiz game prototype                |
+| Template | Command Name | Description |
+| --- | --- | --- |
+| Tap Counter | `tap_counter` / `tap-counter` | Tap/click scoring prototype |
+| Flappy Mini | `flappy_mini` / `flappy-mini` | Flappy-style tap-to-jump prototype |
+| Swipe Runner | `swipe_runner` / `swipe-runner` | 3-lane swipe runner prototype |
+| Puzzle Game | `puzzle_game` / `puzzle-game` | Color matching puzzle prototype |
+| Quiz Game | `quiz_game` / `quiz-game` | Educational quiz game prototype |
 | Simple Physics | `simple_physics` / `simple-physics` | Gravity, bounce, and coin collection prototype |
 
 ---
 
-## Examples
-
-Official example projects are available in the `examples/` folder.
-
-Examples include:
-
-* `basic_tap_demo`
-* `swipe_input_demo`
-* `score_highscore_demo`
-* `asset_loading_demo`
-* `image_rendering_demo`
-* `audio_playback_demo`
-* `animation_demo`
-* `sprite_animation_demo`
-* `template_helper_showcase_demo`
-
-Run an example:
-
-```bash
-cd examples/basic_tap_demo
-python main.py
-```
-
----
-
-## Example Usage
+## Basic Example
 
 ```python
 from hyperkit import Game, GameObject, Scene, ScoreManager, TextLabel
@@ -192,9 +197,9 @@ Game(title="My HyperKit Game", width=720, height=1280).set_scene(MyScene()).run(
 
 ---
 
-## Asset Loading
+## Asset Folders
 
-HyperKit projects include an `assets/` folder:
+HyperKit projects use a simple asset structure:
 
 ```text
 assets/
@@ -204,532 +209,74 @@ assets/
 └── data/
 ```
 
-Use `AssetManager` to load assets:
-
-```python
-from hyperkit import AssetManager
-
-assets = AssetManager()
-
-player_image = assets.load_image("player.png")
-jump_sound = assets.load_audio("jump.wav")
-game_font = assets.load_font("game_font.ttf")
-
-level_data = assets.load_json("level.json")
-items = assets.load_csv("items.csv")
-message = assets.load_text("message.txt")
-```
-
 Supported asset types:
 
-| Folder          | Supported Types                  |
-| --------------- | -------------------------------- |
+| Folder | Supported Types |
+| --- | --- |
 | `assets/images` | `.png`, `.jpg`, `.jpeg`, `.webp` |
-| `assets/audio`  | `.wav`, `.mp3`, `.ogg`           |
-| `assets/fonts`  | `.ttf`, `.otf`                   |
-| `assets/data`   | `.json`, `.csv`, `.txt`          |
-
-> FBX is not directly supported in HyperKit v0.2.
-> Export FBX source assets as PNG frames or sprite sheets before using them in a HyperKit game.
-
----
-
-## Image Rendering
-
-HyperKit can render images using `GameObject(image_path=...)`.
-
-```python
-from hyperkit import AssetManager, GameObject
-
-assets = AssetManager()
-player_image = assets.load_image("player.png")
-
-player = GameObject(
-    x=300,
-    y=500,
-    width=120,
-    height=120,
-    image_path=player_image,
-)
-```
-
-If `image_path` is provided, HyperKit renders the image.
-If `image_path` is empty, HyperKit renders the normal shape and color.
-
----
-
-## Audio Playback
-
-HyperKit includes a simple `AudioManager` for sound effects and background music.
-
-```python
-from hyperkit import AssetManager, AudioManager
-
-assets = AssetManager()
-audio = AudioManager()
-
-click_sound = assets.load_audio("click.wav")
-audio.play_sound(click_sound)
-```
-
-Background music example:
-
-```python
-music = assets.load_audio("background.wav")
-
-audio.play_music(music, loop=True)
-audio.stop_music()
-```
-
-Supported audio types:
-
-| Folder         | Supported Types        |
-| -------------- | ---------------------- |
 | `assets/audio` | `.wav`, `.mp3`, `.ogg` |
-
-For best compatibility during development, use `.wav` for sound effects.
-
----
-
-## Animation Helpers
-
-HyperKit includes simple tween animation helpers for object movement, size, and color.
-
-```python
-from hyperkit import AnimationManager, GameObject
-
-animations = AnimationManager()
-
-player = GameObject(x=100, y=100, width=100, height=100)
-
-animations.move_to(player, x=400, y=600, duration=0.5)
-animations.resize_to(player, width=150, height=150, duration=0.3)
-animations.color_to(player, color=(1, 0.5, 0.2, 1), duration=0.5)
-```
-
-Update animations inside your scene update method:
-
-```python
-def update(self, dt):
-    animations.update(dt)
-    super().update(dt)
-```
-
-Supported easing names:
-
-```text
-linear
-ease_in_quad
-ease_out_quad
-ease_in_out_quad
-```
-
----
-
-## Sprite Animation
-
-HyperKit supports simple frame-based sprite animation using `SpriteAnimator`.
-
-```python
-from hyperkit import AssetManager, GameObject, SpriteAnimator
-
-assets = AssetManager()
-
-player = GameObject(
-    x=300,
-    y=500,
-    width=120,
-    height=120,
-)
-
-sprite = SpriteAnimator(player)
-
-sprite.add_animation(
-    "run",
-    frames=[
-        assets.load_image("run_1.png"),
-        assets.load_image("run_2.png"),
-        assets.load_image("run_3.png"),
-    ],
-    fps=8,
-    loop=True,
-)
-
-sprite.play("run")
-```
-
-Update the sprite animation inside your scene update method:
-
-```python
-def update(self, dt):
-    sprite.update(dt)
-    super().update(dt)
-```
-
----
-
-## Particle Effects
-
-HyperKit includes a simple `ParticleEmitter` for burst effects.
-
-```python
-from hyperkit import ParticleEmitter
-
-particles = ParticleEmitter(self)
-
-particles.burst(
-    x=300,
-    y=500,
-    count=20,
-)
-```
-
-Update particles inside your scene update method:
-
-```python
-def update(self, dt):
-    particles.update(dt)
-    super().update(dt)
-```
-
----
-
-## Camera Shake
-
-HyperKit includes a simple `CameraShake` helper for impact feedback.
-
-```python
-from hyperkit import CameraShake
-
-camera_shake = CameraShake(self)
-
-camera_shake.shake(intensity=18, duration=0.35)
-```
-
-Update camera shake inside your scene update method:
-
-```python
-def update(self, dt):
-    camera_shake.update(dt)
-    super().update(dt)
-```
-
----
-
-## Scene Transitions
-
-HyperKit includes a simple `SceneTransition` helper for fade-in and fade-out scene changes.
-
-```python
-from hyperkit import SceneTransition
-
-self.transition = SceneTransition(self)
-self.transition.fade_in(duration=0.4)
-```
-
-To change scenes with a fade-out:
-
-```python
-self.transition.fade_to_scene(NextScene(), duration=0.4)
-```
-
-Update transitions inside your scene update method:
-
-```python
-def update(self, dt):
-    self.transition.update(dt)
-    super().update(dt)
-```
-
----
-
-## Timers and Cooldowns
-
-HyperKit includes timer helpers for delayed actions, repeating actions, and cooldown-based gameplay.
-
-```python
-from hyperkit import Cooldown, Timer
-
-spawn_timer = Timer(
-    duration=1.0,
-    repeat=True,
-    on_complete=spawn_enemy,
-)
-
-jump_cooldown = Cooldown(duration=0.5)
-```
-
-Update timers inside your scene update method:
-
-```python
-def update(self, dt):
-    spawn_timer.update(dt)
-    jump_cooldown.update(dt)
-    super().update(dt)
-```
-
-Use cooldowns to limit actions:
-
-```python
-if jump_cooldown.use():
-    player_jump()
-```
-
----
-
-## Input Action Mapping
-
-HyperKit includes an `InputActionMap` helper to map tap, area tap, and swipe input to named actions.
-
-```python
-from hyperkit import InputActionMap
-
-actions = InputActionMap()
-
-actions.map_tap("jump", callback=jump)
-actions.map_swipe("move_left", direction="left", callback=move_left)
-actions.map_area(
-    "attack",
-    x=200,
-    y=500,
-    width=300,
-    height=120,
-    callback=attack,
-)
-```
-
-Use it inside your scene input methods:
-
-```python
-def on_tap(self, x, y):
-    actions.handle_tap(x, y)
-
-def on_swipe(self, start, end, direction):
-    actions.handle_swipe(start, end, direction)
-```
-
----
-
-## Level Data Loading
-
-HyperKit supports loading level data from JSON files inside `assets/data`.
-
-Example `assets/data/level_1.json`:
-
-```json
-{
-  "name": "Level 1",
-  "objects": [
-    {
-      "name": "coin",
-      "type": "collectible",
-      "x": 300,
-      "y": 600,
-      "width": 60,
-      "height": 60,
-      "shape": "circle",
-      "color": [1.0, 0.85, 0.2, 1.0]
-    }
-  ]
-}
-```
-
-Load the level:
-
-```python
-from pathlib import Path
-from hyperkit import LevelManager
-
-levels = LevelManager(project_path=Path(__file__).parent)
-level = levels.load("level_1.json")
-objects = levels.create_objects(level)
-```
-
-Add level objects to a scene:
-
-```python
-levels.add_to_scene(self, level)
-```
-
----
-
-## Camera Follow
-
-HyperKit includes a simple `CameraFollow` helper for following a player or target object.
-
-```python
-from hyperkit import CameraFollow
-
-self.camera_follow = CameraFollow(
-    scene=self,
-    target=self.player,
-    screen_width=720,
-    screen_height=1280,
-)
-
-self.camera_follow.snap_to_target()
-```
-
-Update camera follow inside your scene update method:
-
-```python
-def update(self, dt):
-    self.camera_follow.update(dt)
-    super().update(dt)
-```
----
-
-## Screen and World Bounds
-
-HyperKit includes bounds helpers for keeping objects inside the screen or game world.
-
-```python
-from hyperkit import ScreenBounds, WorldBounds
-
-screen = ScreenBounds(width=720, height=1280)
-world = WorldBounds(x=0, y=0, width=2000, height=2000)
-
-screen.clamp_object(player)
-screen.bounce_object(player)
-world.wrap_object(enemy)
-```
-
-Common methods:
-
-```text
-contains_point(x, y)
-contains_object(obj)
-is_outside(obj)
-clamp_object(obj)
-bounce_object(obj)
-wrap_object(obj)
-```
----
-
----
-
-## Helper-Based Templates
-
-HyperKit templates are upgraded to demonstrate real helper usage.
-
-Currently upgraded templates:
-
-- `tap_counter`
-- `flappy_mini`
-- `swipe_runner`
-- `puzzle_game`
-- `quiz_game`
-- `simple_physics`
-
-These templates demonstrate:
-
-- image-based GameObjects
-- starter visual assets
-- progress bars
-- particles
-- camera shake
-- bounds handling where needed
-- input action mapping
-- score and high-score flow
-
-Create an upgraded Tap Counter game:
-
-```bash
-hyperkit new my-tap-game --template tap_counter
-cd my-tap-game
-python main.py
-```
-
-Create an upgraded Puzzle Game:
-
-```bash
-hyperkit new my-puzzle-game --template puzzle_game
-cd my-puzzle-game
-python main.py
-```
-
----
-
-## UI Progress Bars
-
-HyperKit includes a simple `ProgressBar` helper for health bars, XP bars, cooldown bars, and loading bars.
-
-```python
-from hyperkit import ProgressBar
-
-health_bar = ProgressBar(
-    scene=self,
-    x=60,
-    y=1120,
-    width=600,
-    height=35,
-    value=100,
-    max_value=100,
-)
-
-health_bar.set_value(75)
-health_bar.add_value(10)
-health_bar.subtract_value(20)
-```
-
-Progress bars are created using normal HyperKit objects, so they work with the existing renderer.
+| `assets/fonts` | `.ttf`, `.otf` |
+| `assets/data` | `.json`, `.csv`, `.txt` |
+
+> FBX is not directly supported in HyperKit.  
+> For 2D games, export FBX source assets as PNG images, animation frames, or sprite sheets.
 
 ---
 
 ## CLI Commands
 
-Check the local HyperKit environment:
+Check environment:
 
 ```bash
 hyperkit doctor
 ```
 
-Show all available HyperKit game templates:
+Show templates:
 
 ```bash
 hyperkit list-templates
 ```
 
-Create a new game project from a template:
+Create a new project:
 
 ```bash
 hyperkit new my-game --template tap_counter
 ```
 
-Show project metadata from `hyperkit.toml`:
-
-```bash
-hyperkit info
-```
-
-Validate the current HyperKit project structure:
-
-```bash
-hyperkit validate
-```
-
-Run a HyperKit project:
+Run a project:
 
 ```bash
 hyperkit run
 ```
 
-Run a HyperKit project from a specific folder:
+Show project metadata:
 
 ```bash
-hyperkit run --path path/to/project
+hyperkit info
 ```
 
-Show the project health report:
+Validate a generated project:
+
+```bash
+hyperkit validate
+```
+
+Show package health report:
 
 ```bash
 hyperkit health
 ```
 
-Show the release readiness report:
+Show release readiness report:
 
 ```bash
 hyperkit release-check
+```
+
+Show final pre-release audit report:
+
+```bash
+hyperkit pre-release-audit
 ```
 
 Create experimental Android build configuration:
@@ -738,89 +285,15 @@ Create experimental Android build configuration:
 hyperkit init-android
 ```
 
-Create Android configuration with a custom game title:
-
-```bash
-hyperkit init-android --title "My Game"
-```
-
-Run the experimental Android build command:
+Run experimental Android build:
 
 ```bash
 hyperkit build android
 ```
 
-Show the final pre-release audit report:
-
-```bash
-hyperkit pre-release-audit
-```
-
-> Android build support is still experimental and will be improved in future versions.
-
 ---
 
-## Documentation
-
-- [Version History](docs/VERSION_HISTORY.md)
-- [Changelog](CHANGELOG.md)
-- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)
-- [Templates Guide](docs/TEMPLATES.md)
-- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)
-- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)
-- [Generated Project Smoke Tests](docs/GENERATED_PROJECT_SMOKE_TESTS.md)
-- [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
-- [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
-- [Final Pre-release Audit](docs/FINAL_PRE_RELEASE_AUDIT.md)
-
----
-
-## Current Status
-
-HyperKit is currently in active development.
-
-Current version goal:
-
-```text
-0.2.x = SDK core + multiple working templates
-```
-
-Stable public release target:
-
-```text
-1.0.0 = polished SDK, documentation, tests, examples, and mobile build support
-```
-
----
-
-## Current Limitations
-
-- This is not a full game engine.
-- Advanced 3D rendering is not supported.
-- Android APK build support is still experimental.
-- The current focus is 2D hypercasual and hybrid casual prototypes.
-- Templates are designed for learning and prototyping, not final commercial game production yet.
-
----
-
-## Roadmap
-
-Planned improvements:
-
-- Better UI system
-- More game templates
-- Asset loading improvements
-- Audio helper improvements
-- Sprite animation improvements
-- Particle helper
-- Improved mobile touch support
-- Android Gradle / Chaquopy build pipeline
-- AdMob / analytics helper layer
-- Better documentation and examples
-
----
-
-## Development
+## Development Commands
 
 Run tests:
 
@@ -840,6 +313,55 @@ Check package:
 twine check dist/*
 ```
 
+Upload to TestPyPI:
+
+```bash
+python -m twine upload --repository testpypi dist/*
+```
+
+---
+
+## Documentation
+
+- [Version History](docs/VERSION_HISTORY.md)
+- [Changelog](CHANGELOG.md)
+- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)
+- [Templates Guide](docs/TEMPLATES.md)
+- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)
+- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)
+- [Generated Project Smoke Tests](docs/GENERATED_PROJECT_SMOKE_TESTS.md)
+- [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
+- [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
+- [Final Pre-release Audit](docs/FINAL_PRE_RELEASE_AUDIT.md)
+
+---
+
+## Current Limitations
+
+- HyperKit is not a full game engine.
+- Advanced 3D rendering is not supported.
+- Android APK build support is still experimental.
+- AdMob and analytics helpers are not implemented yet.
+- The current focus is 2D hypercasual and hybrid casual prototypes.
+- Templates are designed for learning and prototyping, not final commercial production yet.
+
+---
+
+## Roadmap
+
+Planned improvements:
+
+- better beginner documentation
+- more polished starter templates
+- template screenshots and GIFs
+- improved CLI error messages
+- stronger asset and audio workflow
+- mobile-friendly project structure
+- Android build workflow improvements
+- AdMob and analytics helper layer
+- more complete example games
+- future stable `1.0.0` release
+
 ---
 
 ## License
@@ -850,18 +372,4 @@ MIT License.
 
 ## Author
 
-
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
-
-
-## Documentation
-
-- [Version History](docs/VERSION_HISTORY.md)
-
-- [Changelog](CHANGELOG.md)
-
-- [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)
-
-- [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)
-
-- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)
