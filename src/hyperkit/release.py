@@ -57,6 +57,7 @@ REQUIRED_RELEASE_FILES = [
     "docs/PROJECT_HEALTH_REPORT.md",
     "docs/RELEASE_BUILD_AUTOMATION.md",
     "docs/FINAL_PRE_RELEASE_AUDIT.md",
+    "docs/QUICK_START_TUTORIAL.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -66,6 +67,8 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_generated_project_smoke_phase37.py",
     "tests/test_health_phase38.py",
     "tests/test_pre_release_audit_phase40.py",
+    "tests/test_public_readme_phase42.py",
+    "tests/test_quick_start_tutorial_phase43.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

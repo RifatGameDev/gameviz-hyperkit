@@ -73,6 +73,9 @@ REQUIRED_PATHS = {
     "Final pre-release audit docs": "docs/FINAL_PRE_RELEASE_AUDIT.md",
     "Final pre-release audit source": "src/hyperkit/audit.py",
     "Final pre-release audit tests": "tests/test_pre_release_audit_phase40.py",
+    "Beginner quick-start tutorial": "docs/QUICK_START_TUTORIAL.md",
+    "Beginner quick-start tutorial tests": "tests/test_quick_start_tutorial_phase43.py",
+    "Public README tests": "tests/test_public_readme_phase42.py",
 }
 
 

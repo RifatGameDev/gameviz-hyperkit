@@ -333,6 +333,7 @@ python -m twine upload --repository testpypi dist/*
 - [Project Health Report](docs/PROJECT_HEALTH_REPORT.md)
 - [Release Build Automation](docs/RELEASE_BUILD_AUTOMATION.md)
 - [Final Pre-release Audit](docs/FINAL_PRE_RELEASE_AUDIT.md)
+- [Beginner Quick Start Tutorial](docs/QUICK_START_TUTORIAL.md)
 
 ---
 
