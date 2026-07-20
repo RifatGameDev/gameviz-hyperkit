@@ -92,6 +92,8 @@ REQUIRED_PATHS = {
     "Template validation tests": "tests/test_template_validation_phase46.py",
     "Production template polish checklist": "docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md",
     "Production template polish tests": "tests/test_production_template_polish_phase47.py",
+    "Tap Counter polish docs": "docs/TAP_COUNTER_POLISH_PHASE48.md",
+    "Tap Counter polish tests": "tests/test_tap_counter_polish_phase48.py",
 }
 
 

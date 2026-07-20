@@ -63,6 +63,7 @@ SCAN_FOLDERS = [
 
 FORBIDDEN_SCAN_IGNORE_FILES = {
     "tests/test_generated_project_smoke_phase37.py",
+    "tests/test_tap_counter_polish_phase48.py",
 }
 
 REQUIRED_README_LINKS = [
@@ -82,6 +83,7 @@ REQUIRED_README_LINKS = [
     "docs/CLI_ERROR_MESSAGES.md",
     "docs/TEMPLATE_VALIDATION.md",
     "docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md",
+    "docs/TAP_COUNTER_POLISH_PHASE48.md",
 ]
 
 

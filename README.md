@@ -345,6 +345,7 @@ python -m twine upload --repository testpypi dist/*
 - [CLI Error Messages](docs/CLI_ERROR_MESSAGES.md)
 - [Template Validation](docs/TEMPLATE_VALIDATION.md)
 - [Production Template Polish Checklist](docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md)
+- [Tap Counter Polish - Phase 48](docs/TAP_COUNTER_POLISH_PHASE48.md)
 
 ---
 
