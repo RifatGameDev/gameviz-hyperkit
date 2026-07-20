@@ -347,6 +347,7 @@ python -m twine upload --repository testpypi dist/*
 - [Production Template Polish Checklist](docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md)
 - [Tap Counter Polish - Phase 48](docs/TAP_COUNTER_POLISH_PHASE48.md)
 - [Flappy Mini Polish - Phase 49](docs/FLAPPY_MINI_POLISH_PHASE49.md)
+- [Swipe Runner Polish - Phase 50](docs/SWIPE_RUNNER_POLISH_PHASE50.md)
 
 ---
 
