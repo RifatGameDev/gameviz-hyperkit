@@ -94,6 +94,8 @@ REQUIRED_PATHS = {
     "Production template polish tests": "tests/test_production_template_polish_phase47.py",
     "Tap Counter polish docs": "docs/TAP_COUNTER_POLISH_PHASE48.md",
     "Tap Counter polish tests": "tests/test_tap_counter_polish_phase48.py",
+    "Flappy Mini polish docs": "docs/FLAPPY_MINI_POLISH_PHASE49.md",
+    "Flappy Mini polish tests": "tests/test_flappy_mini_polish_phase49.py",
 }
 
 
