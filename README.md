@@ -344,6 +344,7 @@ python -m twine upload --repository testpypi dist/*
 - [Template Screenshots and Demo Media](docs/TEMPLATE_SCREENSHOTS.md)
 - [CLI Error Messages](docs/CLI_ERROR_MESSAGES.md)
 - [Template Validation](docs/TEMPLATE_VALIDATION.md)
+- [Production Template Polish Checklist](docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md)
 
 ---
 

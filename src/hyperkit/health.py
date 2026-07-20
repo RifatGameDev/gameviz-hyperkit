@@ -90,6 +90,8 @@ REQUIRED_PATHS = {
     "Template validation source": "src/hyperkit/template_validation.py",
     "Template validation docs": "docs/TEMPLATE_VALIDATION.md",
     "Template validation tests": "tests/test_template_validation_phase46.py",
+    "Production template polish checklist": "docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md",
+    "Production template polish tests": "tests/test_production_template_polish_phase47.py",
 }
 
 

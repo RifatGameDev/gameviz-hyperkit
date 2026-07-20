@@ -62,6 +62,7 @@ REQUIRED_RELEASE_FILES = [
     "docs/TEMPLATE_SCREENSHOTS.md",
     "docs/CLI_ERROR_MESSAGES.md",
     "docs/TEMPLATE_VALIDATION.md",
+    "docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -76,6 +77,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_template_media_phase44.py",
     "tests/test_cli_error_messages_phase45.py",
     "tests/test_template_validation_phase46.py",
+    "tests/test_production_template_polish_phase47.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
