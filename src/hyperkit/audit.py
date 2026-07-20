@@ -66,6 +66,7 @@ FORBIDDEN_SCAN_IGNORE_FILES = {
     "tests/test_tap_counter_polish_phase48.py",
     "tests/test_flappy_mini_polish_phase49.py",
     "tests/test_swipe_runner_polish_phase50.py",
+    "tests/test_puzzle_game_polish_phase51.py",
 }
 
 REQUIRED_README_LINKS = [
@@ -88,6 +89,7 @@ REQUIRED_README_LINKS = [
     "docs/TAP_COUNTER_POLISH_PHASE48.md",
     "docs/FLAPPY_MINI_POLISH_PHASE49.md",
     "docs/SWIPE_RUNNER_POLISH_PHASE50.md",
+    "docs/PUZZLE_GAME_POLISH_PHASE51.md",
 ]
 
 

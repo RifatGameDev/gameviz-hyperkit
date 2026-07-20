@@ -98,6 +98,8 @@ REQUIRED_PATHS = {
     "Flappy Mini polish tests": "tests/test_flappy_mini_polish_phase49.py",
     "Swipe Runner polish docs": "docs/SWIPE_RUNNER_POLISH_PHASE50.md",
     "Swipe Runner polish tests": "tests/test_swipe_runner_polish_phase50.py",
+    "Puzzle Game polish docs": "docs/PUZZLE_GAME_POLISH_PHASE51.md",
+    "Puzzle Game polish tests": "tests/test_puzzle_game_polish_phase51.py",
 }
 
 

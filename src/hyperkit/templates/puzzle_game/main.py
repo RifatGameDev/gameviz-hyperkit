@@ -1,7 +1,4 @@
-from pathlib import Path
-import random
-import struct
-import zlib
+from __future__ import annotations
 
 from hyperkit import (
     AssetManager,
@@ -19,267 +16,234 @@ from hyperkit import (
 )
 
 
-def save_demo_png(path: Path, color: tuple[int, int, int, int]) -> None:
-    width = 32
-    height = 32
-
-    raw = b"".join(b"\x00" + bytes(color) * width for _ in range(height))
-    compressed = zlib.compress(raw)
-
-    def chunk(chunk_type: bytes, data: bytes) -> bytes:
-        return (
-            struct.pack(">I", len(data))
-            + chunk_type
-            + data
-            + struct.pack(">I", zlib.crc32(chunk_type + data) & 0xFFFFFFFF)
-        )
-
-    png = b"\x89PNG\r\n\x1a\n"
-    png += chunk(b"IHDR", struct.pack(">IIBBBBB",
-                 width, height, 8, 6, 0, 0, 0))
-    png += chunk(b"IDAT", compressed)
-    png += chunk(b"IEND", b"")
-
-    path.write_bytes(png)
-
-
-def ensure_template_assets(project_path: Path) -> None:
-    images_path = project_path / "assets" / "images"
-    images_path.mkdir(parents=True, exist_ok=True)
-
-    colors = {
-        "tile_blue.png": (70, 170, 255, 255),
-        "tile_gold.png": (255, 210, 60, 255),
-        "tile_green.png": (70, 220, 120, 255),
-    }
-
-    for filename, color in colors.items():
-        path = images_path / filename
-        if not path.exists():
-            save_demo_png(path, color)
-
-
 class PuzzleGameScene(Scene):
-    """Modern puzzle template using HyperKit helpers."""
-
     def start(self):
-        self.screen_width = 720
-        self.screen_height = 1280
-        self.target_matches = 6
+        self.grid_size = 3
+        self.tile_size = 150
+        self.tile_gap = 20
+        self.grid_start_x = 105
+        self.grid_start_y = 380
+        self.score_goal = 9
+        self.active_tile_index = 0
+        self.game_over = False
 
-        project_path = Path(__file__).parent
-        ensure_template_assets(project_path)
-
-        self.assets = AssetManager(project_path=project_path)
+        self.assets = AssetManager()
         self.score = ScoreManager(high_score_key="puzzle_game_high_score")
-        self.particles = ParticleEmitter(self)
         self.camera_shake = CameraShake(self)
-        self.bounds = BoundsManager(
-            screen=ScreenBounds(width=self.screen_width,
-                                height=self.screen_height)
-        )
-        self.actions = InputActionMap()
+        self.particles = ParticleEmitter(self)
+        self.bounds_manager = BoundsManager()
+        self.screen_bounds = ScreenBounds(width=720, height=1280)
+        self.input_actions = InputActionMap()
 
-        self.selected_tile = None
         self.tiles = []
-        self.tile_images = [
-            self.assets.load_image("tile_blue.png"),
-            self.assets.load_image("tile_gold.png"),
-            self.assets.load_image("tile_green.png"),
-        ]
 
-        self.add(
+        self.background = self.add(
+            GameObject(
+                x=0,
+                y=0,
+                width=720,
+                height=1280,
+                color=(0.08, 0.09, 0.14, 1),
+                shape="rect",
+            )
+        )
+
+        self.title_label = self.add(
             TextLabel(
-                x=80,
+                x=45,
                 y=1180,
                 text="Puzzle Game",
-                font_size=38,
-                bold=True,
+                font_size=44,
                 color=(1, 1, 1, 1),
+                bold=True,
+            )
+        )
+
+        self.help_label = self.add(
+            TextLabel(
+                x=45,
+                y=1125,
+                text="Tap the glowing tile. Follow the pattern and reach the goal.",
+                font_size=22,
+                color=(0.82, 0.9, 1, 1),
             )
         )
 
         self.score_label = self.add(
             TextLabel(
-                x=50,
-                y=1125,
-                text="Matches: 0",
-                font_size=30,
+                x=45,
+                y=1045,
+                text="Score: 0",
+                font_size=34,
                 color=(1, 1, 1, 1),
+                bold=True,
             )
         )
 
-        self.best_label = self.add(
+        self.high_score_label = self.add(
             TextLabel(
-                x=50,
-                y=1085,
-                text=f"Best: {self.score.high_score}",
+                x=45,
+                y=995,
+                text=f"High Score: {self.score.high_score}",
                 font_size=26,
-                color=(0.8, 0.9, 1, 1),
+                color=(0.95, 0.82, 0.3, 1),
+            )
+        )
+
+        self.progress_label = self.add(
+            TextLabel(
+                x=45,
+                y=920,
+                text=f"Goal Progress: 0 / {self.score_goal}",
+                font_size=24,
+                color=(0.78, 0.92, 1, 1),
             )
         )
 
         self.progress_bar = ProgressBar(
             scene=self,
-            x=60,
-            y=1015,
-            width=600,
-            height=32,
+            x=45,
+            y=875,
+            width=630,
+            height=30,
             value=0,
-            max_value=self.target_matches,
-            fill_color=(0.25, 0.75, 1.0, 1),
-            text_format="Matches: {value:.0f}/{max_value:.0f}",
-            name="puzzle_progress",
+            max_value=self.score_goal,
         )
 
-        self.message_label = self.add(
+        self._create_grid()
+
+        self.status_label = self.add(
             TextLabel(
-                x=70,
-                y=940,
-                text="Tap matching tiles.",
-                font_size=28,
-                color=(1, 0.9, 0.4, 1),
+                x=45,
+                y=120,
+                text="Ready. Tap the glowing tile!",
+                font_size=26,
+                color=(0.8, 1, 0.85, 1),
             )
         )
 
-        self.create_tiles()
+        self._highlight_active_tile()
         self.start_game()
-        self.update_labels()
 
-    def create_tiles(self):
-        start_x = 110
-        start_y = 360
-        size = 120
-        gap = 35
-
-        values = [0, 0, 1, 1, 2, 2]
-        random.shuffle(values)
-
-        for index, value in enumerate(values):
-            row = index // 3
-            col = index % 3
-
-            tile = self.add(
-                GameObject(
-                    x=start_x + col * (size + gap),
-                    y=start_y + row * (size + gap),
-                    width=size,
-                    height=size,
-                    image_path=self.tile_images[value],
-                    name=f"tile_{index}",
+    def _create_grid(self):
+        for row in range(self.grid_size):
+            for col in range(self.grid_size):
+                tile = self.add(
+                    GameObject(
+                        x=self.grid_start_x + col *
+                        (self.tile_size + self.tile_gap),
+                        y=self.grid_start_y + row *
+                        (self.tile_size + self.tile_gap),
+                        width=self.tile_size,
+                        height=self.tile_size,
+                        color=(0.18, 0.22, 0.34, 1),
+                        shape="rect",
+                        image_path=None,
+                    )
                 )
-            )
-            tile.data["value"] = value
-            tile.data["matched"] = False
-
-            self.tiles.append(tile)
-
-            self.actions.map_area(
-                action=f"select_tile_{index}",
-                x=tile.x,
-                y=tile.y,
-                width=tile.width,
-                height=tile.height,
-                callback=self.select_tile,
-                data={"tile_index": index},
-            )
-
-    def update_labels(self):
-        self.score_label.set_text(f"Matches: {self.score.value}")
-        self.best_label.set_text(f"Best: {self.score.high_score}")
-        self.progress_bar.set_value(self.score.value)
-
-    def select_tile(self, event):
-        if not self.is_playing():
-            return
-
-        tile_index = event.data["tile_index"]
-        tile = self.tiles[tile_index]
-
-        if tile.data.get("matched"):
-            self.message_label.set_text("Already matched.")
-            return
-
-        if self.selected_tile is None:
-            self.selected_tile = tile
-            tile.width = 135
-            tile.height = 135
-            self.bounds.keep_on_screen(tile)
-            self.message_label.set_text("Select another tile.")
-            return
-
-        first = self.selected_tile
-        second = tile
-
-        first.width = 120
-        first.height = 120
-
-        if first is second:
-            self.selected_tile = None
-            self.message_label.set_text("Choose a different tile.")
-            return
-
-        if first.data["value"] == second.data["value"]:
-            first.data["matched"] = True
-            second.data["matched"] = True
-            first.color = (0.5, 1.0, 0.5, 1)
-            second.color = (0.5, 1.0, 0.5, 1)
-
-            self.score.add(1)
-            self.update_labels()
-            self.message_label.set_text("Match found!")
-
-            self.camera_shake.shake(intensity=6, duration=0.08)
-            self.particles.burst(
-                x=second.x + second.width / 2,
-                y=second.y + second.height / 2,
-                count=18,
-                color=(0.2, 1.0, 0.45, 1),
-                lifetime=0.45,
-            )
-
-            if self.score.value >= self.target_matches // 2:
-                self.complete_round()
-        else:
-            self.message_label.set_text("Not a match.")
-            self.camera_shake.shake(intensity=10, duration=0.12)
-
-        self.selected_tile = None
-
-    def complete_round(self):
-        self.end_game()
-        self.message_label.set_text("Puzzle complete! Tap to restart.")
-        self.camera_shake.shake(intensity=18, duration=0.25)
-
-        self.particles.burst(
-            x=360,
-            y=640,
-            count=40,
-            color=(1.0, 0.85, 0.2, 1),
-            lifetime=0.8,
-        )
-
-    def on_tap(self, x, y):
-        if self.is_game_over():
-            self.reset_round()
-            return
-
-        event = self.actions.handle_tap(x, y)
-
-        if event is None:
-            self.message_label.set_text("Tap a tile.")
+                self.tiles.append(tile)
 
     def update(self, dt):
-        self.particles.update(dt)
         self.camera_shake.update(dt)
+        self.particles.update(dt)
         super().update(dt)
 
-    def reset_round(self):
-        self.clear()
-        self.start()
+    def on_tap(self, x, y):
+        if self.game_over:
+            self._restart()
+            return
+
+        tapped_index = self._find_tapped_tile(x, y)
+
+        if tapped_index is None:
+            self.status_label.set_text("Tap inside the puzzle grid.")
+            return
+
+        if tapped_index == self.active_tile_index:
+            self._handle_correct_tap()
+        else:
+            self._handle_wrong_tap()
+
+    def _find_tapped_tile(self, x, y):
+        for index, tile in enumerate(self.tiles):
+            inside_x = tile.x <= x <= tile.x + tile.width
+            inside_y = tile.y <= y <= tile.y + tile.height
+
+            if inside_x and inside_y:
+                return index
+
+        return None
+
+    def _handle_correct_tap(self):
+        self.score.add(1)
+
+        current_score = self.score.value
+        progress_value = min(current_score, self.score_goal)
+
+        self.score_label.set_text(f"Score: {current_score}")
+        self.high_score_label.set_text(f"High Score: {self.score.high_score}")
+        self.progress_label.set_text(
+            f"Goal Progress: {progress_value} / {self.score_goal}"
+        )
+        self.progress_bar.set_value(progress_value)
+
+        active_tile = self.tiles[self.active_tile_index]
+
+        self.particles.burst(
+            x=active_tile.x + active_tile.width / 2,
+            y=active_tile.y + active_tile.height / 2,
+            count=10,
+        )
+
+        if current_score >= self.score_goal:
+            self.status_label.set_text(
+                "Puzzle complete! Tap again for a new run.")
+            self._set_win_state()
+            return
+
+        self.active_tile_index = (self.active_tile_index + 4) % len(self.tiles)
+        self._highlight_active_tile()
+        self.status_label.set_text("Correct! Follow the next glowing tile.")
+
+    def _handle_wrong_tap(self):
+        self.game_over = True
+        self.camera_shake.shake(intensity=16, duration=0.35)
+        self.status_label.set_text("Wrong tile. Tap to restart.")
+
+        for tile in self.tiles:
+            tile.color = (0.55, 0.12, 0.16, 1)
+
+    def _highlight_active_tile(self):
+        for index, tile in enumerate(self.tiles):
+            if index == self.active_tile_index:
+                tile.color = (0.25, 0.85, 1.0, 1)
+            else:
+                tile.color = (0.18, 0.22, 0.34, 1)
+
+    def _set_win_state(self):
+        self.game_over = True
+        self.camera_shake.shake(intensity=8, duration=0.2)
+
+        for tile in self.tiles:
+            tile.color = (0.25, 1.0, 0.48, 1)
+
+    def _restart(self):
+        self.game_over = False
+        self.active_tile_index = 0
+
+        self.score.reset()
+        self.score_label.set_text("Score: 0")
+        self.high_score_label.set_text(f"High Score: {self.score.high_score}")
+        self.progress_label.set_text(f"Goal Progress: 0 / {self.score_goal}")
+        self.progress_bar.set_value(0)
+        self.status_label.set_text("Ready. Tap the glowing tile!")
+
+        self._highlight_active_tile()
 
 
 if __name__ == "__main__":
-    Game(title="Puzzle Game", width=720, height=1280).set_scene(
-        PuzzleGameScene()
-    ).run()
+    Game(
+        title="HyperKit Puzzle Game",
+        width=720,
+        height=1280,
+    ).set_scene(PuzzleGameScene()).run()
