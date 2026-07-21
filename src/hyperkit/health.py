@@ -104,6 +104,9 @@ REQUIRED_PATHS = {
     "Quiz Game polish tests": "tests/test_quiz_game_polish_phase52.py",
     "Simple Physics polish docs": "docs/SIMPLE_PHYSICS_POLISH_PHASE53.md",
     "Simple Physics polish tests": "tests/test_simple_physics_polish_phase53.py",
+    "Template polish summary docs": "docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md",
+    "Template stabilization checklist": "docs/TEMPLATE_STABILIZATION_CHECKLIST.md",
+    "Template polish summary tests": "tests/test_template_polish_summary_phase54.py",
 }
 
 

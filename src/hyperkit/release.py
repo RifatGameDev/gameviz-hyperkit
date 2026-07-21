@@ -69,6 +69,8 @@ REQUIRED_RELEASE_FILES = [
     "docs/PUZZLE_GAME_POLISH_PHASE51.md",
     "docs/QUIZ_GAME_POLISH_PHASE52.md",
     "docs/SIMPLE_PHYSICS_POLISH_PHASE53.md",
+    "docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md",
+    "docs/TEMPLATE_STABILIZATION_CHECKLIST.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -90,6 +92,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_puzzle_game_polish_phase51.py",
     "tests/test_quiz_game_polish_phase52.py",
     "tests/test_simple_physics_polish_phase53.py",
+    "tests/test_template_polish_summary_phase54.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

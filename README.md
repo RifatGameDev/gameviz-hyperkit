@@ -351,6 +351,8 @@ python -m twine upload --repository testpypi dist/*
 - [Puzzle Game Polish - Phase 51](docs/PUZZLE_GAME_POLISH_PHASE51.md)
 - [Quiz Game Polish - Phase 52](docs/QUIZ_GAME_POLISH_PHASE52.md)
 - [Simple Physics Polish - Phase 53](docs/SIMPLE_PHYSICS_POLISH_PHASE53.md)
+- [Template Polish Summary - Phase 54](docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md)
+- [Template Stabilization Checklist](docs/TEMPLATE_STABILIZATION_CHECKLIST.md)
 
 ---
 
