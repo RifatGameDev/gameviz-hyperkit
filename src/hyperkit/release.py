@@ -73,6 +73,8 @@ REQUIRED_RELEASE_FILES = [
     "docs/TEMPLATE_STABILIZATION_CHECKLIST.md",
     "src/hyperkit/generated_project_validation.py",
     "docs/GENERATED_PROJECT_VALIDATION_PHASE55.md",
+    "docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md",
+    "docs/TEMPLATE_MANUAL_QA_CHECKLIST.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -96,6 +98,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_simple_physics_polish_phase53.py",
     "tests/test_template_polish_summary_phase54.py",
     "tests/test_generated_project_validation_phase55.py",
+    "tests/test_template_runtime_readiness_phase56.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

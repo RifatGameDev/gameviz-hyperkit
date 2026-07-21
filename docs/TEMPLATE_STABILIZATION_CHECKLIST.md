@@ -154,6 +154,23 @@ A template can be considered stable-ready when:
 
 ---
 
+## Manual Runtime QA
+
+Automated validation must be followed by manual runtime testing.
+
+Use:
+
+- [Template Runtime Readiness](TEMPLATE_RUNTIME_READINESS_PHASE56.md)
+- [Template Manual QA Checklist](TEMPLATE_MANUAL_QA_CHECKLIST.md)
+
+Each generated template should be launched with:
+
+`python main.py`
+
+A template should not be marked beta-ready until its critical manual QA checks pass.
+
+
+
 ## Current Status
 
 The templates have completed their first polish pass.

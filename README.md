@@ -358,6 +358,8 @@ python -m twine upload --repository testpypi dist/*
 - [Template Polish Summary - Phase 54](docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md)
 - [Template Stabilization Checklist](docs/TEMPLATE_STABILIZATION_CHECKLIST.md)
 - [Generated Project Validation - Phase 55](docs/GENERATED_PROJECT_VALIDATION_PHASE55.md)
+- [Template Runtime Readiness - Phase 56](docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md)
+- [Template Manual QA Checklist](docs/TEMPLATE_MANUAL_QA_CHECKLIST.md)
 
 ---
 

@@ -116,6 +116,15 @@ REQUIRED_PATHS = {
     "Generated project validation tests": (
         "tests/test_generated_project_validation_phase55.py"
     ),
+    "Template runtime readiness docs": (
+        "docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md"
+    ),
+    "Template manual QA checklist": (
+        "docs/TEMPLATE_MANUAL_QA_CHECKLIST.md"
+    ),
+    "Template runtime readiness tests": (
+        "tests/test_template_runtime_readiness_phase56.py"
+    ),
 }
 
 
