@@ -75,6 +75,15 @@ REQUIRED_RELEASE_FILES = [
     "docs/GENERATED_PROJECT_VALIDATION_PHASE55.md",
     "docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md",
     "docs/TEMPLATE_MANUAL_QA_CHECKLIST.md",
+    "docs/MANUAL_QA_RESULT_TEMPLATE.md",
+    "docs/RELEASE_EVIDENCE_STRUCTURE.md",
+    "docs/release-evidence/README.md",
+    "docs/release-evidence/templates/tap_counter/README.md",
+    "docs/release-evidence/templates/flappy_mini/README.md",
+    "docs/release-evidence/templates/swipe_runner/README.md",
+    "docs/release-evidence/templates/puzzle_game/README.md",
+    "docs/release-evidence/templates/quiz_game/README.md",
+    "docs/release-evidence/templates/simple_physics/README.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -99,6 +108,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_template_polish_summary_phase54.py",
     "tests/test_generated_project_validation_phase55.py",
     "tests/test_template_runtime_readiness_phase56.py",
+    "tests/test_release_evidence_phase57.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

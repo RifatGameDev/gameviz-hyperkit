@@ -190,6 +190,20 @@ For every template:
 
 ---
 
+## Recording QA Results
+
+Use the following document to record the result for each tested template:
+
+- [Manual QA Result Template](MANUAL_QA_RESULT_TEMPLATE.md)
+
+Store completed QA results and supporting files under:
+
+- [Release Evidence Workspace](release-evidence/README.md)
+
+Save one completed `manual-qa-result.md` file inside the matching template evidence folder.
+
+---
+
 ## QA Result
 
 Record one result for each template:

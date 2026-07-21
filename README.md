@@ -360,6 +360,9 @@ python -m twine upload --repository testpypi dist/*
 - [Generated Project Validation - Phase 55](docs/GENERATED_PROJECT_VALIDATION_PHASE55.md)
 - [Template Runtime Readiness - Phase 56](docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md)
 - [Template Manual QA Checklist](docs/TEMPLATE_MANUAL_QA_CHECKLIST.md)
+- [Manual QA Result Template](docs/MANUAL_QA_RESULT_TEMPLATE.md)
+- [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
+- [Release Evidence Workspace](docs/release-evidence/README.md)
 
 ---
 

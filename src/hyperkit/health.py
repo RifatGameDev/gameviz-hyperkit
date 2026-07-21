@@ -125,6 +125,12 @@ REQUIRED_PATHS = {
     "Template runtime readiness tests": (
         "tests/test_template_runtime_readiness_phase56.py"
     ),
+    "Manual QA result template": "docs/MANUAL_QA_RESULT_TEMPLATE.md",
+    "Release evidence structure docs": "docs/RELEASE_EVIDENCE_STRUCTURE.md",
+    "Release evidence workspace": "docs/release-evidence/README.md",
+    "Release evidence tests": (
+        "tests/test_release_evidence_phase57.py"
+    ),
 }
 
 

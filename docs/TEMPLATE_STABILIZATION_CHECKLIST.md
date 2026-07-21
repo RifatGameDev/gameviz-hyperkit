@@ -169,7 +169,21 @@ Each generated template should be launched with:
 
 A template should not be marked beta-ready until its critical manual QA checks pass.
 
+---
 
+## Release Evidence
+
+Manual QA must produce release evidence for every template.
+
+Use:
+
+- [Manual QA Result Template](MANUAL_QA_RESULT_TEMPLATE.md)
+- [Release Evidence Structure](RELEASE_EVIDENCE_STRUCTURE.md)
+- [Release Evidence Workspace](release-evidence/README.md)
+
+A template should not be marked beta-ready until its result and supporting evidence have been recorded.
+
+---
 
 ## Current Status
 
