@@ -1,0 +1,42 @@
+{
+    "schema_version": 1,
+    "updated_at": "2026-07-21",
+    "templates": {
+        "tap_counter": {
+            "display_name": "Tap Counter",
+            "status": "pending",
+            "result_file": "",
+            "notes": "Runtime QA has not started."
+        },
+        "flappy_mini": {
+            "display_name": "Flappy Mini",
+            "status": "pending",
+            "result_file": "",
+            "notes": "Runtime QA has not started."
+        },
+        "swipe_runner": {
+            "display_name": "Swipe Runner",
+            "status": "pending",
+            "result_file": "",
+            "notes": "Runtime QA has not started."
+        },
+        "puzzle_game": {
+            "display_name": "Puzzle Game",
+            "status": "pending",
+            "result_file": "",
+            "notes": "Runtime QA has not started."
+        },
+        "quiz_game": {
+            "display_name": "Quiz Game",
+            "status": "pending",
+            "result_file": "",
+            "notes": "Runtime QA has not started."
+        },
+        "simple_physics": {
+            "display_name": "Simple Physics",
+            "status": "pending",
+            "result_file": "",
+            "notes": "Runtime QA has not started."
+        }
+    }
+}

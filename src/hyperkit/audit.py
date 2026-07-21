@@ -103,6 +103,7 @@ REQUIRED_README_LINKS = [
     "docs/MANUAL_QA_RESULT_TEMPLATE.md",
     "docs/RELEASE_EVIDENCE_STRUCTURE.md",
     "docs/release-evidence/README.md",
+    "docs/RUNTIME_QA_TRACKER_PHASE58.md",
 ]
 
 

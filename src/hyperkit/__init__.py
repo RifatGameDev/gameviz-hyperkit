@@ -72,6 +72,17 @@ from .generated_project_validation import (
     generate_generated_project_validation_report,
 )
 
+from .release_evidence import (
+    ALLOWED_QA_STATUSES,
+    PASSING_QA_STATUSES,
+    TEMPLATE_DISPLAY_NAMES,
+    ReleaseEvidenceCheck,
+    ReleaseEvidenceReport,
+    format_release_evidence_report,
+    generate_release_evidence_report,
+    run_release_evidence_validation,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -173,6 +184,14 @@ __all__ = [
     "POLISHED_TEMPLATES",
     "format_generated_project_validation_report",
     "generate_generated_project_validation_report",
+    "ALLOWED_QA_STATUSES",
+    "PASSING_QA_STATUSES",
+    "TEMPLATE_DISPLAY_NAMES",
+    "ReleaseEvidenceCheck",
+    "ReleaseEvidenceReport",
+    "format_release_evidence_report",
+    "generate_release_evidence_report",
+    "run_release_evidence_validation",
 ]
 
 __version__ = "0.1.0"

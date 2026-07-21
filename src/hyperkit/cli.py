@@ -25,6 +25,11 @@ from .generated_project_validation import (
     generate_generated_project_validation_report,
 )
 
+from .release_evidence import (
+    format_release_evidence_report,
+    generate_release_evidence_report,
+)
+
 try:
     import tomllib
 except ModuleNotFoundError:  # Python 3.10 fallback
@@ -424,6 +429,28 @@ def cmd_validate_generated_projects(args: argparse.Namespace) -> int:
     return 0 if report.passed else 1
 
 
+def cmd_validate_release_evidence(args: argparse.Namespace) -> int:
+    root = getattr(args, "path", ".")
+    require_complete = getattr(args, "require_complete", False)
+
+    report = generate_release_evidence_report(root)
+
+    print(format_release_evidence_report(report))
+
+    if not report.passed:
+        return 1
+
+    if require_complete and not report.all_complete:
+        print("")
+        print(
+            "Strict evidence validation failed: "
+            "runtime QA evidence is not complete."
+        )
+        return 1
+
+    return 0
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     project_path = Path(args.path).resolve()
     main_file = project_path / "main.py"
@@ -636,6 +663,30 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_validate_generated_projects.set_defaults(
         func=cmd_validate_generated_projects
+    )
+
+    p_validate_release_evidence = sub.add_parser(
+        "validate-release-evidence",
+        help="Validate runtime QA tracker and release evidence",
+    )
+
+    p_validate_release_evidence.add_argument(
+        "--path",
+        default=".",
+        help="Repository root path to validate",
+    )
+
+    p_validate_release_evidence.add_argument(
+        "--require-complete",
+        action="store_true",
+        help=(
+            "Fail unless every polished template has completed "
+            "passing runtime QA evidence"
+        ),
+    )
+
+    p_validate_release_evidence.set_defaults(
+        func=cmd_validate_release_evidence
     )
 
     return parser

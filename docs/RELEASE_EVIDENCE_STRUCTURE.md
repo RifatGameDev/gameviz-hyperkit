@@ -133,6 +133,22 @@ For each template:
 
 ---
 
+## Evidence Completeness Validation
+
+Validate the QA tracker and evidence folders with:
+
+`hyperkit validate-release-evidence`
+
+This development-mode validation allows templates with `pending` or `in_progress` status.
+
+For strict beta or stable release validation, run:
+
+`hyperkit validate-release-evidence --require-complete`
+
+Strict validation requires all polished templates to have completed passing evidence.
+
+---
+
 ## Completion Criteria
 
 The release evidence structure is complete when every template folder contains:

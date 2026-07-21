@@ -131,6 +131,19 @@ REQUIRED_PATHS = {
     "Release evidence tests": (
         "tests/test_release_evidence_phase57.py"
     ),
+
+    "Release evidence validation source": (
+        "src/hyperkit/release_evidence.py"
+    ),
+    "Runtime QA tracker docs": (
+        "docs/RUNTIME_QA_TRACKER_PHASE58.md"
+    ),
+    "Runtime QA tracker data": (
+        "docs/release-evidence/qa-tracker.json"
+    ),
+    "Runtime QA tracker tests": (
+        "tests/test_runtime_qa_tracker_phase58.py"
+    ),
 }
 
 

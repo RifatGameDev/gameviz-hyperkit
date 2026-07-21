@@ -303,6 +303,12 @@ Validate generated projects for all polished templates:
 hyperkit validate-generated-projects
 ```
 
+Validate the runtime QA tracker and evidence structure:
+
+```bash
+hyperkit validate-release-evidence
+```
+
 ## Development Commands
 
 Run tests:
@@ -363,6 +369,7 @@ python -m twine upload --repository testpypi dist/*
 - [Manual QA Result Template](docs/MANUAL_QA_RESULT_TEMPLATE.md)
 - [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
 - [Release Evidence Workspace](docs/release-evidence/README.md)
+- [Runtime QA Tracker - Phase 58](docs/RUNTIME_QA_TRACKER_PHASE58.md)
 
 ---
 

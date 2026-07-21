@@ -200,6 +200,14 @@ Store completed QA results and supporting files under:
 
 - [Release Evidence Workspace](release-evidence/README.md)
 
+After recording a result, update:
+
+`docs/release-evidence/qa-tracker.json`
+
+Then run:
+
+`hyperkit validate-release-evidence`
+
 Save one completed `manual-qa-result.md` file inside the matching template evidence folder.
 
 ---
