@@ -20,6 +20,10 @@ from .template_validation import (
     generate_template_validation_report,
 )
 
+from .generated_project_validation import (
+    format_generated_project_validation_report,
+    generate_generated_project_validation_report,
+)
 
 try:
     import tomllib
@@ -408,6 +412,18 @@ def cmd_validate_templates(args: argparse.Namespace) -> int:
     return 0 if report.passed else 1
 
 
+def cmd_validate_generated_projects(args: argparse.Namespace) -> int:
+    work_root = getattr(args, "work_path", None)
+
+    report = generate_generated_project_validation_report(
+        work_root=work_root
+    )
+
+    print(format_generated_project_validation_report(report))
+
+    return 0 if report.passed else 1
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     project_path = Path(args.path).resolve()
     main_file = project_path / "main.py"
@@ -603,6 +619,24 @@ def build_parser() -> argparse.ArgumentParser:
         help="Repository root path to check",
     )
     p_validate_templates.set_defaults(func=cmd_validate_templates)
+
+    p_validate_generated_projects = sub.add_parser(
+        "validate-generated-projects",
+        help="Generate and validate all polished HyperKit templates",
+    )
+
+    p_validate_generated_projects.add_argument(
+        "--work-path",
+        default=None,
+        help=(
+            "Optional directory for generated validation projects. "
+            "A temporary directory is used by default."
+        ),
+    )
+
+    p_validate_generated_projects.set_defaults(
+        func=cmd_validate_generated_projects
+    )
 
     return parser
 

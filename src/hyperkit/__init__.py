@@ -64,6 +64,14 @@ from .template_validation import (
     generate_template_validation_report,
 )
 
+from .generated_project_validation import (
+    GeneratedProjectValidationCheck,
+    GeneratedProjectValidationReport,
+    POLISHED_TEMPLATES,
+    format_generated_project_validation_report,
+    generate_generated_project_validation_report,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -160,6 +168,11 @@ __all__ = [
     "TemplateValidationReport",
     "format_template_validation_report",
     "generate_template_validation_report",
+    "GeneratedProjectValidationCheck",
+    "GeneratedProjectValidationReport",
+    "POLISHED_TEMPLATES",
+    "format_generated_project_validation_report",
+    "generate_generated_project_validation_report",
 ]
 
 __version__ = "0.1.0"

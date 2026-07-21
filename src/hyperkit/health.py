@@ -107,6 +107,15 @@ REQUIRED_PATHS = {
     "Template polish summary docs": "docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md",
     "Template stabilization checklist": "docs/TEMPLATE_STABILIZATION_CHECKLIST.md",
     "Template polish summary tests": "tests/test_template_polish_summary_phase54.py",
+    "Generated project validation source": (
+        "src/hyperkit/generated_project_validation.py"
+    ),
+    "Generated project validation docs": (
+        "docs/GENERATED_PROJECT_VALIDATION_PHASE55.md"
+    ),
+    "Generated project validation tests": (
+        "tests/test_generated_project_validation_phase55.py"
+    ),
 }
 
 

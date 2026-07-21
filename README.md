@@ -297,7 +297,11 @@ Validate built-in templates:
 hyperkit validate-templates
 ```
 
----
+Validate generated projects for all polished templates:
+
+```bash
+hyperkit validate-generated-projects
+```
 
 ## Development Commands
 
@@ -353,6 +357,7 @@ python -m twine upload --repository testpypi dist/*
 - [Simple Physics Polish - Phase 53](docs/SIMPLE_PHYSICS_POLISH_PHASE53.md)
 - [Template Polish Summary - Phase 54](docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md)
 - [Template Stabilization Checklist](docs/TEMPLATE_STABILIZATION_CHECKLIST.md)
+- [Generated Project Validation - Phase 55](docs/GENERATED_PROJECT_VALIDATION_PHASE55.md)
 
 ---
 

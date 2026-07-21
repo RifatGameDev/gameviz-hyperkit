@@ -71,6 +71,8 @@ REQUIRED_RELEASE_FILES = [
     "docs/SIMPLE_PHYSICS_POLISH_PHASE53.md",
     "docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md",
     "docs/TEMPLATE_STABILIZATION_CHECKLIST.md",
+    "src/hyperkit/generated_project_validation.py",
+    "docs/GENERATED_PROJECT_VALIDATION_PHASE55.md",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -93,6 +95,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_quiz_game_polish_phase52.py",
     "tests/test_simple_physics_polish_phase53.py",
     "tests/test_template_polish_summary_phase54.py",
+    "tests/test_generated_project_validation_phase55.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

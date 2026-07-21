@@ -74,6 +74,10 @@ The generated project should include:
 - working template logic
 - clear starter code
 
+All polished templates should pass:
+
+`hyperkit validate-generated-projects`
+
 ---
 
 ## Documentation Checklist
@@ -119,6 +123,8 @@ Before beta or stable release, run:
 `hyperkit release-check`
 
 `hyperkit pre-release-audit`
+
+`hyperkit validate-generated-projects`
 
 ---
 
