@@ -100,6 +100,8 @@ REQUIRED_PATHS = {
     "Swipe Runner polish tests": "tests/test_swipe_runner_polish_phase50.py",
     "Puzzle Game polish docs": "docs/PUZZLE_GAME_POLISH_PHASE51.md",
     "Puzzle Game polish tests": "tests/test_puzzle_game_polish_phase51.py",
+    "Quiz Game polish docs": "docs/QUIZ_GAME_POLISH_PHASE52.md",
+    "Quiz Game polish tests": "tests/test_quiz_game_polish_phase52.py",
 }
 
 

@@ -1,4 +1,8 @@
+from __future__ import annotations
+
 from hyperkit import (
+    AssetManager,
+    BoundsManager,
     CameraShake,
     Game,
     GameObject,
@@ -7,233 +11,300 @@ from hyperkit import (
     ProgressBar,
     Scene,
     ScoreManager,
+    ScreenBounds,
     TextLabel,
 )
 
 
 class QuizGameScene(Scene):
-    """Modern quiz template using HyperKit helpers."""
-
     def start(self):
         self.questions = [
             {
-                "question": "What is 2 + 2?",
-                "choices": ["3", "4", "5"],
-                "answer": 1,
+                "question": "Which engine is popular for mobile games?",
+                "answers": ["Unity", "Spreadsheet", "Browser"],
+                "correct": 0,
             },
             {
-                "question": "Which one is a game engine?",
-                "choices": ["Unity", "Excel", "Notepad"],
-                "answer": 0,
+                "question": "What input does this quiz use?",
+                "answers": ["Tap", "Voice only", "GPS"],
+                "correct": 0,
             },
             {
-                "question": "What input is common in mobile games?",
-                "choices": ["Swipe", "Printer", "Scanner"],
-                "answer": 0,
+                "question": "What does a score system track?",
+                "answers": ["Points", "Weather", "Battery"],
+                "correct": 0,
+            },
+            {
+                "question": "What is useful for UI feedback?",
+                "answers": ["ProgressBar", "Printer", "Cable"],
+                "correct": 0,
             },
         ]
 
-        self.current_index = 0
-        self.correct_count = 0
+        self.current_question_index = 0
+        self.score_goal = len(self.questions)
+        self.game_over = False
+        self.answer_buttons = []
+        self.answer_labels = []
 
+        self.assets = AssetManager()
         self.score = ScoreManager(high_score_key="quiz_game_high_score")
-        self.particles = ParticleEmitter(self)
         self.camera_shake = CameraShake(self)
-        self.actions = InputActionMap()
+        self.particles = ParticleEmitter(self)
+        self.bounds_manager = BoundsManager()
+        self.screen_bounds = ScreenBounds(width=720, height=1280)
+        self.input_actions = InputActionMap()
 
-        self.add(
+        self.background = self.add(
+            GameObject(
+                x=0,
+                y=0,
+                width=720,
+                height=1280,
+                color=(0.08, 0.09, 0.14, 1),
+                shape="rect",
+            )
+        )
+
+        self.title_label = self.add(
             TextLabel(
-                x=90,
+                x=45,
                 y=1180,
                 text="Quiz Game",
-                font_size=38,
-                bold=True,
+                font_size=44,
                 color=(1, 1, 1, 1),
+                bold=True,
+            )
+        )
+
+        self.help_label = self.add(
+            TextLabel(
+                x=45,
+                y=1125,
+                text="Tap the correct answer and complete the quiz.",
+                font_size=22,
+                color=(0.82, 0.9, 1, 1),
             )
         )
 
         self.score_label = self.add(
             TextLabel(
-                x=60,
-                y=1125,
-                text="Correct: 0",
-                font_size=30,
+                x=45,
+                y=1045,
+                text="Score: 0",
+                font_size=34,
                 color=(1, 1, 1, 1),
+                bold=True,
             )
         )
 
-        self.best_label = self.add(
+        self.high_score_label = self.add(
             TextLabel(
-                x=60,
-                y=1085,
-                text=f"Best: {self.score.high_score}",
+                x=45,
+                y=995,
+                text=f"High Score: {self.score.high_score}",
                 font_size=26,
-                color=(0.8, 0.9, 1, 1),
+                color=(0.95, 0.82, 0.3, 1),
+            )
+        )
+
+        self.progress_label = self.add(
+            TextLabel(
+                x=45,
+                y=920,
+                text=f"Question: 1 / {self.score_goal}",
+                font_size=24,
+                color=(0.78, 0.92, 1, 1),
             )
         )
 
         self.progress_bar = ProgressBar(
             scene=self,
-            x=60,
-            y=1015,
-            width=600,
-            height=32,
+            x=45,
+            y=875,
+            width=630,
+            height=30,
             value=0,
-            max_value=len(self.questions),
-            fill_color=(0.25, 0.75, 1.0, 1),
-            text_format="Question: {value:.0f}/{max_value:.0f}",
-            name="quiz_progress",
+            max_value=self.score_goal,
         )
 
         self.question_label = self.add(
             TextLabel(
-                x=60,
-                y=900,
-                text="",
-                font_size=30,
+                x=45,
+                y=760,
+                text="Question",
+                font_size=28,
+                color=(1, 1, 1, 1),
                 bold=True,
-                color=(1, 0.9, 0.4, 1),
             )
         )
 
-        self.message_label = self.add(
+        self._create_answer_buttons()
+
+        self.status_label = self.add(
             TextLabel(
-                x=80,
-                y=380,
-                text="Tap an answer.",
+                x=45,
+                y=120,
+                text="Ready. Choose an answer!",
                 font_size=26,
-                color=(0.9, 0.9, 0.9, 1),
+                color=(0.8, 1, 0.85, 1),
             )
         )
 
-        self.choice_buttons = []
-        self.choice_labels = []
+        self._show_question()
+        self.start_game()
 
-        for i in range(3):
-            y = 720 - i * 130
+    def _create_answer_buttons(self):
+        button_y_positions = [600, 470, 340]
 
+        for index, y in enumerate(button_y_positions):
             button = self.add(
                 GameObject(
-                    x=90,
+                    x=70,
                     y=y,
-                    width=540,
-                    height=90,
-                    color=(0.2, 0.45, 0.9, 1),
-                    name=f"choice_button_{i}",
+                    width=580,
+                    height=85,
+                    color=(0.18, 0.22, 0.34, 1),
+                    shape="rect",
+                    image_path=None,
                 )
             )
 
             label = self.add(
                 TextLabel(
-                    x=125,
-                    y=y + 28,
-                    text="",
-                    font_size=28,
+                    x=100,
+                    y=y + 26,
+                    text=f"Answer {index + 1}",
+                    font_size=24,
                     color=(1, 1, 1, 1),
+                    bold=True,
                 )
             )
 
-            self.choice_buttons.append(button)
-            self.choice_labels.append(label)
-
-        self.load_question()
-        self.start_game()
-
-    def update_labels(self):
-        self.score_label.set_text(f"Correct: {self.correct_count}")
-        self.best_label.set_text(f"Best: {self.score.high_score}")
-        self.progress_bar.set_value(self.current_index + 1)
-
-    def load_question(self):
-        self.actions.clear()
-
-        question = self.questions[self.current_index]
-        self.question_label.set_text(question["question"])
-
-        for i, choice in enumerate(question["choices"]):
-            self.choice_buttons[i].color = (0.2, 0.45, 0.9, 1)
-            self.choice_labels[i].set_text(f"{i + 1}. {choice}")
-
-            self.actions.map_area(
-                action=f"answer_{i}",
-                x=self.choice_buttons[i].x,
-                y=self.choice_buttons[i].y,
-                width=self.choice_buttons[i].width,
-                height=self.choice_buttons[i].height,
-                callback=self.answer_question,
-                data={"choice_index": i},
-            )
-
-        self.update_labels()
-
-    def answer_question(self, event):
-        if not self.is_playing():
-            return
-
-        selected = event.data["choice_index"]
-        question = self.questions[self.current_index]
-
-        if selected == question["answer"]:
-            self.correct_count += 1
-            self.score.add(1)
-            self.choice_buttons[selected].color = (0.2, 0.8, 0.35, 1)
-            self.message_label.set_text("Correct!")
-
-            self.particles.burst(
-                x=360,
-                y=650,
-                count=22,
-                color=(0.2, 1.0, 0.45, 1),
-                lifetime=0.5,
-            )
-            self.camera_shake.shake(intensity=5, duration=0.08)
-        else:
-            self.choice_buttons[selected].color = (1.0, 0.25, 0.25, 1)
-            self.message_label.set_text("Wrong answer.")
-            self.camera_shake.shake(intensity=14, duration=0.18)
-
-        self.current_index += 1
-
-        if self.current_index >= len(self.questions):
-            self.complete_quiz()
-        else:
-            self.load_question()
-
-    def complete_quiz(self):
-        self.end_game()
-        self.update_labels()
-        self.message_label.set_text("Quiz complete! Tap to restart.")
-        self.camera_shake.shake(intensity=18, duration=0.25)
-
-        self.particles.burst(
-            x=360,
-            y=640,
-            count=36,
-            color=(1.0, 0.85, 0.2, 1),
-            lifetime=0.8,
-        )
-
-    def on_tap(self, x, y):
-        if self.is_game_over():
-            self.reset_round()
-            return
-
-        event = self.actions.handle_tap(x, y)
-
-        if event is None:
-            self.message_label.set_text("Tap an answer button.")
+            self.answer_buttons.append(button)
+            self.answer_labels.append(label)
 
     def update(self, dt):
-        self.particles.update(dt)
         self.camera_shake.update(dt)
+        self.particles.update(dt)
         super().update(dt)
 
-    def reset_round(self):
-        self.clear()
-        self.start()
+    def on_tap(self, x, y):
+        if self.game_over:
+            self._restart()
+            return
+
+        answer_index = self._find_tapped_answer(x, y)
+
+        if answer_index is None:
+            self.status_label.set_text("Tap one of the answer boxes.")
+            return
+
+        self._check_answer(answer_index)
+
+    def _find_tapped_answer(self, x, y):
+        for index, button in enumerate(self.answer_buttons):
+            inside_x = button.x <= x <= button.x + button.width
+            inside_y = button.y <= y <= button.y + button.height
+
+            if inside_x and inside_y:
+                return index
+
+        return None
+
+    def _check_answer(self, answer_index: int):
+        current_question = self.questions[self.current_question_index]
+
+        if answer_index == current_question["correct"]:
+            self._handle_correct_answer(answer_index)
+        else:
+            self._handle_wrong_answer(answer_index)
+
+    def _handle_correct_answer(self, answer_index: int):
+        self.score.add(1)
+
+        selected_button = self.answer_buttons[answer_index]
+        selected_button.color = (0.25, 1.0, 0.48, 1)
+
+        self.particles.burst(
+            x=selected_button.x + selected_button.width / 2,
+            y=selected_button.y + selected_button.height / 2,
+            count=12,
+        )
+
+        self.current_question_index += 1
+        self._update_score_ui()
+
+        if self.current_question_index >= len(self.questions):
+            self._set_quiz_complete()
+            return
+
+        self.status_label.set_text("Correct! Next question.")
+        self._show_question()
+
+    def _handle_wrong_answer(self, answer_index: int):
+        selected_button = self.answer_buttons[answer_index]
+        selected_button.color = (1.0, 0.28, 0.28, 1)
+
+        self.camera_shake.shake(intensity=14, duration=0.3)
+        self.status_label.set_text("Wrong answer. Try the next one carefully.")
+
+        self.current_question_index += 1
+        self._update_score_ui()
+
+        if self.current_question_index >= len(self.questions):
+            self._set_quiz_complete()
+            return
+
+        self._show_question()
+
+    def _show_question(self):
+        current_question = self.questions[self.current_question_index]
+
+        self.question_label.set_text(current_question["question"])
+
+        for index, answer in enumerate(current_question["answers"]):
+            self.answer_labels[index].set_text(answer)
+            self.answer_buttons[index].color = (0.18, 0.22, 0.34, 1)
+
+        self.progress_label.set_text(
+            f"Question: {self.current_question_index + 1} / {self.score_goal}"
+        )
+        self.progress_bar.set_value(self.current_question_index)
+
+    def _update_score_ui(self):
+        self.score_label.set_text(f"Score: {self.score.value}")
+        self.high_score_label.set_text(f"High Score: {self.score.high_score}")
+        self.progress_bar.set_value(self.current_question_index)
+
+    def _set_quiz_complete(self):
+        self.game_over = True
+        self.progress_bar.set_value(self.score_goal)
+
+        if self.score.value == self.score_goal:
+            self.status_label.set_text("Perfect score! Tap to restart.")
+            self.camera_shake.shake(intensity=8, duration=0.2)
+        else:
+            self.status_label.set_text("Quiz complete. Tap to try again.")
+
+        for button in self.answer_buttons:
+            button.color = (0.25, 0.85, 1.0, 1)
+
+    def _restart(self):
+        self.game_over = False
+        self.current_question_index = 0
+
+        self.score.reset()
+        self.score_label.set_text("Score: 0")
+        self.high_score_label.set_text(f"High Score: {self.score.high_score}")
+        self.status_label.set_text("Ready. Choose an answer!")
+
+        self._show_question()
 
 
 if __name__ == "__main__":
-    Game(title="Quiz Game", width=720, height=1280).set_scene(
-        QuizGameScene()
-    ).run()
+    Game(
+        title="HyperKit Quiz Game",
+        width=720,
+        height=1280,
+    ).set_scene(QuizGameScene()).run()
