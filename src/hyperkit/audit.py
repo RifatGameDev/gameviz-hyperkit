@@ -68,6 +68,7 @@ FORBIDDEN_SCAN_IGNORE_FILES = {
     "tests/test_swipe_runner_polish_phase50.py",
     "tests/test_puzzle_game_polish_phase51.py",
     "tests/test_quiz_game_polish_phase52.py",
+    "tests/test_simple_physics_polish_phase53.py",
 }
 
 REQUIRED_README_LINKS = [
@@ -92,6 +93,7 @@ REQUIRED_README_LINKS = [
     "docs/SWIPE_RUNNER_POLISH_PHASE50.md",
     "docs/PUZZLE_GAME_POLISH_PHASE51.md",
     "docs/QUIZ_GAME_POLISH_PHASE52.md",
+    "docs/SIMPLE_PHYSICS_POLISH_PHASE53.md",
 ]
 
 

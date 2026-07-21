@@ -102,6 +102,8 @@ REQUIRED_PATHS = {
     "Puzzle Game polish tests": "tests/test_puzzle_game_polish_phase51.py",
     "Quiz Game polish docs": "docs/QUIZ_GAME_POLISH_PHASE52.md",
     "Quiz Game polish tests": "tests/test_quiz_game_polish_phase52.py",
+    "Simple Physics polish docs": "docs/SIMPLE_PHYSICS_POLISH_PHASE53.md",
+    "Simple Physics polish tests": "tests/test_simple_physics_polish_phase53.py",
 }
 
 
