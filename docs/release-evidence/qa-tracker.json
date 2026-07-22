@@ -28,9 +28,9 @@
         },
         "quiz_game": {
             "display_name": "Quiz Game",
-            "status": "pending",
-            "result_file": "",
-            "notes": "Runtime QA has not started."
+            "status": "pass",
+            "result_file": "templates/quiz_game/manual-qa-result.md",
+            "notes": "Manual runtime QA passed on Windows with Python 3.11."
         },
         "simple_physics": {
             "display_name": "Simple Physics",

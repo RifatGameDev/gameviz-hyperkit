@@ -103,6 +103,10 @@ REQUIRED_RELEASE_FILES = [
     "docs/release-evidence/templates/puzzle_game/validation-output.txt",
     "docs/release-evidence/templates/puzzle_game/runtime-notes.md",
     "docs/release-evidence/templates/puzzle_game/screenshot.png",
+    "docs/release-evidence/templates/quiz_game/manual-qa-result.md",
+    "docs/release-evidence/templates/quiz_game/validation-output.txt",
+    "docs/release-evidence/templates/quiz_game/runtime-notes.md",
+    "docs/release-evidence/templates/quiz_game/screenshot.png",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -133,6 +137,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_flappy_mini_runtime_qa_phase60.py",
     "tests/test_swipe_runner_runtime_qa_phase61.py",
     "tests/test_puzzle_game_runtime_qa_phase62.py",
+    "tests/test_quiz_game_runtime_qa_phase63.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

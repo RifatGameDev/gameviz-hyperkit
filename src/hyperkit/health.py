@@ -221,6 +221,25 @@ REQUIRED_PATHS = {
     "Puzzle Game runtime QA tests": (
         "tests/test_puzzle_game_runtime_qa_phase62.py"
     ),
+    "Quiz Game manual QA result": (
+        "docs/release-evidence/templates/"
+        "quiz_game/manual-qa-result.md"
+    ),
+    "Quiz Game validation evidence": (
+        "docs/release-evidence/templates/"
+        "quiz_game/validation-output.txt"
+    ),
+    "Quiz Game runtime notes": (
+        "docs/release-evidence/templates/"
+        "quiz_game/runtime-notes.md"
+    ),
+    "Quiz Game runtime screenshot": (
+        "docs/release-evidence/templates/"
+        "quiz_game/screenshot.png"
+    ),
+    "Quiz Game runtime QA tests": (
+        "tests/test_quiz_game_runtime_qa_phase63.py"
+    ),
 }
 
 
