@@ -202,6 +202,25 @@ REQUIRED_PATHS = {
     "Swipe Runner runtime QA tests": (
         "tests/test_swipe_runner_runtime_qa_phase61.py"
     ),
+    "Puzzle Game manual QA result": (
+        "docs/release-evidence/templates/"
+        "puzzle_game/manual-qa-result.md"
+    ),
+    "Puzzle Game validation evidence": (
+        "docs/release-evidence/templates/"
+        "puzzle_game/validation-output.txt"
+    ),
+    "Puzzle Game runtime notes": (
+        "docs/release-evidence/templates/"
+        "puzzle_game/runtime-notes.md"
+    ),
+    "Puzzle Game runtime screenshot": (
+        "docs/release-evidence/templates/"
+        "puzzle_game/screenshot.png"
+    ),
+    "Puzzle Game runtime QA tests": (
+        "tests/test_puzzle_game_runtime_qa_phase62.py"
+    ),
 }
 
 
