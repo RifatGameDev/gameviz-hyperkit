@@ -4,6 +4,7 @@ import argparse
 import shutil
 import subprocess
 import sys
+from difflib import get_close_matches
 from importlib import resources
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
@@ -13,6 +14,21 @@ from .android import create_buildozer_spec
 from .health import format_health_report, generate_health_report
 from .release import format_release_report, generate_release_report
 from .audit import format_pre_release_audit_report, generate_pre_release_audit_report
+
+from .template_validation import (
+    format_template_validation_report,
+    generate_template_validation_report,
+)
+
+from .generated_project_validation import (
+    format_generated_project_validation_report,
+    generate_generated_project_validation_report,
+)
+
+from .release_evidence import (
+    format_release_evidence_report,
+    generate_release_evidence_report,
+)
 
 try:
     import tomllib
@@ -63,6 +79,26 @@ def available_template_names() -> list[str]:
     return list(TEMPLATES.keys())
 
 
+def format_available_templates() -> str:
+    return ", ".join(available_template_names())
+
+
+def suggest_template_name(template: str) -> str | None:
+    template_key = normalize_template_name(template)
+
+    matches = get_close_matches(
+        template_key,
+        available_template_names(),
+        n=1,
+        cutoff=0.55,
+    )
+
+    if matches:
+        return matches[0]
+
+    return None
+
+
 def validate_template_name(template: str) -> str:
     template_key = normalize_template_name(template)
 
@@ -70,6 +106,33 @@ def validate_template_name(template: str) -> str:
         available = ", ".join(available_template_names())
         raise ValueError(
             f"Unknown template '{template}'. Available templates: {available}")
+
+    return template_key
+
+
+def validate_template_name(template: str) -> str:
+    if not template or not template.strip():
+        raise ValueError(
+            "Template name is required. "
+            "Run 'hyperkit list-templates' to see available templates."
+        )
+
+    template_key = normalize_template_name(template)
+
+    if template_key not in TEMPLATES:
+        available = format_available_templates()
+        suggestion = suggest_template_name(template)
+
+        message = (
+            f"Unknown template '{template}'. "
+            f"Available templates: {available}. "
+            "Run 'hyperkit list-templates' to see details."
+        )
+
+        if suggestion:
+            message += f" Did you mean '{suggestion}'?"
+
+        raise ValueError(message)
 
     return template_key
 
@@ -345,12 +408,69 @@ def cmd_validate(args: argparse.Namespace) -> int:
     return 1
 
 
+def cmd_validate_templates(args: argparse.Namespace) -> int:
+    root = getattr(args, "path", ".")
+    report = generate_template_validation_report(root)
+
+    print(format_template_validation_report(report))
+
+    return 0 if report.passed else 1
+
+
+def cmd_validate_generated_projects(args: argparse.Namespace) -> int:
+    work_root = getattr(args, "work_path", None)
+
+    report = generate_generated_project_validation_report(
+        work_root=work_root
+    )
+
+    print(format_generated_project_validation_report(report))
+
+    return 0 if report.passed else 1
+
+
+def cmd_validate_release_evidence(args: argparse.Namespace) -> int:
+    root = getattr(args, "path", ".")
+    require_complete = getattr(args, "require_complete", False)
+
+    report = generate_release_evidence_report(root)
+
+    print(format_release_evidence_report(report))
+
+    if not report.passed:
+        return 1
+
+    if require_complete and not report.all_complete:
+        print("")
+        print(
+            "Strict evidence validation failed: "
+            "runtime QA evidence is not complete."
+        )
+        return 1
+
+    return 0
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     project_path = Path(args.path).resolve()
     main_file = project_path / "main.py"
 
+    if not project_path.exists():
+        print(f"Project path does not exist: {project_path}", file=sys.stderr)
+        print(
+            "Tip: run this command inside a HyperKit project, "
+            "or use 'hyperkit run --path path/to/project'.",
+            file=sys.stderr,
+        )
+        return 1
+
     if not main_file.exists():
-        print(f"Could not find {main_file}", file=sys.stderr)
+        print(f"Could not find main.py in: {project_path}", file=sys.stderr)
+        print(
+            "Tip: make sure this is a generated HyperKit project, "
+            "or use 'hyperkit run --path path/to/project'.",
+            file=sys.stderr,
+        )
         return 1
 
     return subprocess.call([sys.executable, str(main_file)])
@@ -515,6 +635,59 @@ def build_parser() -> argparse.ArgumentParser:
         help="Project root path to check",
     )
     p_pre_release_audit.set_defaults(func=cmd_pre_release_audit)
+
+    p_validate_templates = sub.add_parser(
+        "validate-templates",
+        help="Validate built-in HyperKit templates",
+    )
+    p_validate_templates.add_argument(
+        "--path",
+        default=".",
+        help="Repository root path to check",
+    )
+    p_validate_templates.set_defaults(func=cmd_validate_templates)
+
+    p_validate_generated_projects = sub.add_parser(
+        "validate-generated-projects",
+        help="Generate and validate all polished HyperKit templates",
+    )
+
+    p_validate_generated_projects.add_argument(
+        "--work-path",
+        default=None,
+        help=(
+            "Optional directory for generated validation projects. "
+            "A temporary directory is used by default."
+        ),
+    )
+
+    p_validate_generated_projects.set_defaults(
+        func=cmd_validate_generated_projects
+    )
+
+    p_validate_release_evidence = sub.add_parser(
+        "validate-release-evidence",
+        help="Validate runtime QA tracker and release evidence",
+    )
+
+    p_validate_release_evidence.add_argument(
+        "--path",
+        default=".",
+        help="Repository root path to validate",
+    )
+
+    p_validate_release_evidence.add_argument(
+        "--require-complete",
+        action="store_true",
+        help=(
+            "Fail unless every polished template has completed "
+            "passing runtime QA evidence"
+        ),
+    )
+
+    p_validate_release_evidence.set_defaults(
+        func=cmd_validate_release_evidence
+    )
 
     return parser
 

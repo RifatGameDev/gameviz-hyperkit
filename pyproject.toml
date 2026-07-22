@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gameviz-hyperkit"
-version = "0.1.1.dev1"
+version = "0.1.1"
 description = "A lightweight Python SDK for 2D hypercasual and hybrid-casual mobile game prototypes."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -27,6 +27,7 @@ classifiers = [
 ]
 dependencies = [
     "kivy>=2.3.0",
+    "tomli>=2.0.1; python_version < '3.11'",
 ]
 
 [project.optional-dependencies]
@@ -40,9 +41,9 @@ android = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/gameviz-rifat/gameviz-hyperkit"
-Repository = "https://github.com/gameviz-rifat/gameviz-hyperkit"
-Issues = "https://github.com/gameviz-rifat/gameviz-hyperkit/issues"
+Homepage = "https://github.com/RifatGameDev/gameviz-hyperkit"
+Repository = "https://github.com/RifatGameDev/gameviz-hyperkit"
+Issues = "https://github.com/RifatGameDev/gameviz-hyperkit/issues"
 
 [project.scripts]
 hyperkit = "hyperkit.cli:main"

@@ -1,0 +1,23 @@
+{
+    "phase": 68,
+    "package": "gameviz-hyperkit",
+    "version": "0.1.1",
+    "release_candidate_source": "0.1.1rc2",
+    "status": "pass",
+    "python_matrix": {
+        "3.9": "pass",
+        "3.10": "pass",
+        "3.11": "pass",
+        "3.12": "pass"
+    },
+    "artifacts": {
+        "wheel": "pass",
+        "sdist": "pass",
+        "twine_check": "pass",
+        "metadata": "pass"
+    },
+    "release_blocking_issues": [],
+    "stable_artifacts_approved": true,
+    "ready_for_pypi": true,
+    "published_to_pypi": false
+}

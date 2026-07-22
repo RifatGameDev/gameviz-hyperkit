@@ -63,6 +63,14 @@ SCAN_FOLDERS = [
 
 FORBIDDEN_SCAN_IGNORE_FILES = {
     "tests/test_generated_project_smoke_phase37.py",
+    "tests/test_tap_counter_polish_phase48.py",
+    "tests/test_flappy_mini_polish_phase49.py",
+    "tests/test_swipe_runner_polish_phase50.py",
+    "tests/test_puzzle_game_polish_phase51.py",
+    "tests/test_quiz_game_polish_phase52.py",
+    "tests/test_simple_physics_polish_phase53.py",
+    "tests/test_template_polish_summary_phase54.py",
+    "tests/test_tap_counter_runtime_qa_phase59.py",
 }
 
 REQUIRED_README_LINKS = [
@@ -76,6 +84,27 @@ REQUIRED_README_LINKS = [
     "docs/PROJECT_HEALTH_REPORT.md",
     "docs/RELEASE_BUILD_AUTOMATION.md",
     "docs/FINAL_PRE_RELEASE_AUDIT.md",
+    "docs/QUICK_START_TUTORIAL.md",
+    "docs/TEMPLATE_MEDIA_GUIDE.md",
+    "docs/TEMPLATE_SCREENSHOTS.md",
+    "docs/CLI_ERROR_MESSAGES.md",
+    "docs/TEMPLATE_VALIDATION.md",
+    "docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md",
+    "docs/TAP_COUNTER_POLISH_PHASE48.md",
+    "docs/FLAPPY_MINI_POLISH_PHASE49.md",
+    "docs/SWIPE_RUNNER_POLISH_PHASE50.md",
+    "docs/PUZZLE_GAME_POLISH_PHASE51.md",
+    "docs/QUIZ_GAME_POLISH_PHASE52.md",
+    "docs/SIMPLE_PHYSICS_POLISH_PHASE53.md",
+    "docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md",
+    "docs/TEMPLATE_STABILIZATION_CHECKLIST.md",
+    "docs/GENERATED_PROJECT_VALIDATION_PHASE55.md",
+    "docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md",
+    "docs/TEMPLATE_MANUAL_QA_CHECKLIST.md",
+    "docs/MANUAL_QA_RESULT_TEMPLATE.md",
+    "docs/RELEASE_EVIDENCE_STRUCTURE.md",
+    "docs/release-evidence/README.md",
+    "docs/RUNTIME_QA_TRACKER_PHASE58.md",
 ]
 
 

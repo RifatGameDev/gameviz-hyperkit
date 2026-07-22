@@ -14,6 +14,36 @@ HyperKit follows a simple version history format for now:
 
 ## Unreleased
 
+## 0.1.1 - 2026-07-22
+
+### Added
+
+- Six polished starter templates for common 2D hypercasual game concepts.
+- Complete manual runtime QA evidence for every built-in template.
+- Generated-project validation and strict release-evidence certification.
+- Installed-package validation through TestPyPI.
+- Release health, readiness, and pre-release audit commands.
+
+### Improved
+
+- Template documentation, gameplay feedback, restart flows, and persistence.
+- CLI project generation and error handling.
+- Runtime stability across all supported templates.
+- Flappy Mini pipe-gap position variation.
+- Release preparation and package-validation workflows.
+
+### Fixed
+
+- Python 3.9 and Python 3.10 TOML compatibility using the conditional `tomli` fallback.
+- The Python 3.10 startup failure caused by direct `tomllib` imports.
+- Local-machine paths leaking into committed release evidence.
+
+### Validation
+
+- `0.1.1rc2` was validated through TestPyPI.
+- Python 3.10 and Python 3.11 installed-package checks passed.
+- All six templates passed manual runtime QA.
+
 ### Added
 
 - Helper-based starter template upgrades.
@@ -49,9 +79,10 @@ HyperKit follows a simple version history format for now:
 
 ### Fixed
 
-- Template README consistency issues.
-- Template helper documentation coverage.
-- Package release readiness validation coverage.
+- Added Python 3.9 and Python 3.10 compatibility for TOML parsing.
+- Added `tomli` as a conditional dependency for Python versions below 3.11.
+- Added a `tomllib` compatibility fallback in production modules.
+- Fixed the startup failure caused by `ModuleNotFoundError: No module named 'tomllib'`.
 
 ### Documentation
 
@@ -63,19 +94,25 @@ HyperKit follows a simple version history format for now:
 
 ---
 
-## [0.1.1.dev1] - TestPyPI Validation Build
-
 ### Added
 
-- TestPyPI validation build for checking package upload and installation workflow.
-- Final pre-release audit command.
-- Release readiness command.
-- Project health report command.
+- Complete manual runtime QA evidence for all six templates.
+- Strict release-evidence validation.
+- Final QA certification and release-candidate readiness checks.
+- Generated-project validation across all built-in templates.
+
+### Improved
+
+- Flappy Mini now varies its vertical pipe-gap position.
+- Template documentation, runtime notes, screenshots, and validation evidence.
+- Release health checks and pre-release auditing.
+- Runtime reliability for Tap Counter, Flappy Mini, Swipe Runner, Puzzle Game, Quiz Game, and Simple Physics.
 
 ### Notes
 
-- This version is for TestPyPI testing only.
-- Do not publish this development version to real PyPI.
+- This release candidate supersedes `0.1.1rc1`.
+- Python 3.10 and Python 3.11 validation must pass before uploading RC2 to TestPyPI.
+- Stable PyPI publication is not yet approved.
 
 <!-- ## 0.1.0
 

@@ -1,0 +1,145 @@
+HyperKit 0.1.1rc1 Artifact Validation 
+====================================== 
+ 
+[DISTRIBUTION FILES] 
+ Volume in drive D is Work
+ Volume Serial Number is FCA3-DCDF
+
+ Directory of <PROJECT_ROOT>\dist
+
+07/22/2026  12:54 PM    <DIR>          .
+07/22/2026  12:54 PM    <DIR>          ..
+07/22/2026  12:54 PM            77,504 gameviz_hyperkit-0.1.1rc1-py3-none-any.whl
+07/22/2026  12:54 PM            83,842 gameviz_hyperkit-0.1.1rc1.tar.gz
+               2 File(s)        161,346 bytes
+
+ Directory of D:\
+
+06/19/2025  03:45 PM        32,001,964 2025-06-19 14-56-42.mp4
+04/10/2025  07:27 PM        77,496,400 3.mp4
+12/29/2024  02:01 PM    <DIR>          360 Video ilyn
+10/16/2025  04:32 PM       523,888,595 7.mp4
+06/25/2025  11:46 AM    <DIR>          Ad Video
+07/16/2026  12:42 PM    <DIR>          AI
+08/17/2025  06:06 PM    <DIR>          All C drives
+01/19/2026  07:19 PM    <DIR>          Apps
+09/14/2025  06:10 PM    <DIR>          AR_Face_BurstDebugInformation_DoNotShip
+09/14/2025  05:46 PM        27,786,287 AR_Tupi.apk
+09/14/2025  06:10 PM        27,804,995 AR_Tupi_2.apk
+09/25/2025  01:38 PM    <DIR>          assets
+06/25/2025  12:08 PM    <DIR>          Assets and materials
+10/16/2025  06:41 PM        31,777,296 CocosNucifera_01.FBX
+12/30/2025  07:54 PM       158,768,181 Demo_Map.mp4
+12/30/2025  05:00 PM       158,886,899 Demo_Map_2_(8).mp4
+12/30/2025  07:45 PM       158,921,318 Demo_Map_2_(8)_1.mp4
+08/03/2025  02:00 PM    <DIR>          Developers
+01/18/2026  04:08 PM    <DIR>          Figma
+11/04/2025  06:17 PM        44,808,383 Fusion_Mobile.apk
+11/04/2025  06:10 PM    <DIR>          Fusion_Multiplayer_BurstDebugInformation_DoNotShip
+02/16/2025  04:32 PM    <DIR>          ILYN World portal
+10/26/2025  04:03 PM        85,644,556 ILYN.unitypackage
+01/05/2026  06:43 PM       152,215,982 ILYN_Office.mp4
+04/06/2025  03:22 PM           110,084 nid-2359965106.pdf
+06/25/2025  11:59 AM    <DIR>          Office docs
+02/17/2025  06:38 PM       367,941,667 Office_interior.mp4
+03/17/2025  05:42 PM       378,930,810 Office_interior_(22).mp4
+02/26/2026  03:35 PM           260,971 Office_interior_(22)_1.mp4
+07/22/2025  11:28 AM    <DIR>          PMP
+09/30/2025  03:41 PM        57,864,599 protfolio.blend
+09/30/2025  03:41 PM        57,864,599 protfolio.blend1
+09/30/2025  07:10 PM        59,689,953 protfolio_B.blend
+09/30/2025  07:08 PM        59,689,953 protfolio_B.blend1
+09/24/2025  05:50 PM       252,498,065 Ramadan_Map_3.mp4
+06/22/2026  05:21 PM    <DIR>          Rifat
+05/07/2023  08:14 PM        45,754,341 RuralAustralia_Example_01_(3).mp4
+07/27/2025  06:22 PM        10,789,592 SK.psd
+06/25/2025  12:07 PM    <DIR>          Software
+12/04/2022  12:31 PM    <DIR>          Spaces Videos
+06/23/2026  04:12 PM    <DIR>          Temp
+07/21/2025  11:38 AM    <DIR>          Unity
+09/14/2025  03:34 PM    <DIR>          UnityProjects
+05/23/2026  04:47 PM    <DIR>          Unreal
+04/05/2026  04:21 PM    <DIR>          Video
+11/09/2025  06:30 PM    <DIR>          _Git
+              23 File(s)  2,771,395,490 bytes
+              23 Dir(s)  739,816,189,952 bytes free
+ Volume in drive D is Work
+ Volume Serial Number is FCA3-DCDF
+
+ Directory of <PROJECT_ROOT>\dist
+
+07/22/2026  12:54 PM    <DIR>          .
+07/22/2026  12:54 PM    <DIR>          ..
+07/22/2026  12:54 PM            77,504 gameviz_hyperkit-0.1.1rc1-py3-none-any.whl
+07/22/2026  12:54 PM            83,842 gameviz_hyperkit-0.1.1rc1.tar.gz
+               2 File(s)        161,346 bytes
+
+ Directory of D:\
+
+06/19/2025  03:45 PM        32,001,964 2025-06-19 14-56-42.mp4
+04/10/2025  07:27 PM        77,496,400 3.mp4
+12/29/2024  02:01 PM    <DIR>          360 Video ilyn
+10/16/2025  04:32 PM       523,888,595 7.mp4
+06/25/2025  11:46 AM    <DIR>          Ad Video
+07/16/2026  12:42 PM    <DIR>          AI
+08/17/2025  06:06 PM    <DIR>          All C drives
+01/19/2026  07:19 PM    <DIR>          Apps
+09/14/2025  06:10 PM    <DIR>          AR_Face_BurstDebugInformation_DoNotShip
+09/14/2025  05:46 PM        27,786,287 AR_Tupi.apk
+09/14/2025  06:10 PM        27,804,995 AR_Tupi_2.apk
+09/25/2025  01:38 PM    <DIR>          assets
+06/25/2025  12:08 PM    <DIR>          Assets and materials
+10/16/2025  06:41 PM        31,777,296 CocosNucifera_01.FBX
+12/30/2025  07:54 PM       158,768,181 Demo_Map.mp4
+12/30/2025  05:00 PM       158,886,899 Demo_Map_2_(8).mp4
+12/30/2025  07:45 PM       158,921,318 Demo_Map_2_(8)_1.mp4
+08/03/2025  02:00 PM    <DIR>          Developers
+01/18/2026  04:08 PM    <DIR>          Figma
+11/04/2025  06:17 PM        44,808,383 Fusion_Mobile.apk
+11/04/2025  06:10 PM    <DIR>          Fusion_Multiplayer_BurstDebugInformation_DoNotShip
+02/16/2025  04:32 PM    <DIR>          ILYN World portal
+10/26/2025  04:03 PM        85,644,556 ILYN.unitypackage
+01/05/2026  06:43 PM       152,215,982 ILYN_Office.mp4
+04/06/2025  03:22 PM           110,084 nid-2359965106.pdf
+06/25/2025  11:59 AM    <DIR>          Office docs
+02/17/2025  06:38 PM       367,941,667 Office_interior.mp4
+03/17/2025  05:42 PM       378,930,810 Office_interior_(22).mp4
+02/26/2026  03:35 PM           260,971 Office_interior_(22)_1.mp4
+07/22/2025  11:28 AM    <DIR>          PMP
+09/30/2025  03:41 PM        57,864,599 protfolio.blend
+09/30/2025  03:41 PM        57,864,599 protfolio.blend1
+09/30/2025  07:10 PM        59,689,953 protfolio_B.blend
+09/30/2025  07:08 PM        59,689,953 protfolio_B.blend1
+09/24/2025  05:50 PM       252,498,065 Ramadan_Map_3.mp4
+06/22/2026  05:21 PM    <DIR>          Rifat
+05/07/2023  08:14 PM        45,754,341 RuralAustralia_Example_01_(3).mp4
+07/27/2025  06:22 PM        10,789,592 SK.psd
+06/25/2025  12:07 PM    <DIR>          Software
+12/04/2022  12:31 PM    <DIR>          Spaces Videos
+06/23/2026  04:12 PM    <DIR>          Temp
+07/21/2025  11:38 AM    <DIR>          Unity
+09/14/2025  03:34 PM    <DIR>          UnityProjects
+05/23/2026  04:47 PM    <DIR>          Unreal
+04/05/2026  04:21 PM    <DIR>          Video
+11/09/2025  06:30 PM    <DIR>          _Git
+              23 File(s)  2,771,395,490 bytes
+              23 Dir(s)  739,816,185,856 bytes free
+ Volume in drive D is Work
+ Volume Serial Number is FCA3-DCDF
+
+ Directory of <PROJECT_ROOT>\dist
+
+07/22/2026  12:54 PM    <DIR>          .
+07/22/2026  12:54 PM    <DIR>          ..
+07/22/2026  12:54 PM            77,504 gameviz_hyperkit-0.1.1rc1-py3-none-any.whl
+07/22/2026  12:54 PM            83,842 gameviz_hyperkit-0.1.1rc1.tar.gz
+               2 File(s)        161,346 bytes
+               2 Dir(s)  739,816,185,856 bytes free
+ 
+[TWINE CHECK] 
+Checking dist\gameviz_hyperkit-0.1.1rc1-py3-none-any.whl: PASSED
+Checking dist\gameviz_hyperkit-0.1.1rc1.tar.gz: PASSED
+ 
+[PACKAGE VERSION] 
+0.1.1rc1
+0.1.1rc1
