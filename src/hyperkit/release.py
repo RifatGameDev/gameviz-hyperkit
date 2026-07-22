@@ -95,6 +95,10 @@ REQUIRED_RELEASE_FILES = [
     "docs/release-evidence/templates/flappy_mini/validation-output.txt",
     "docs/release-evidence/templates/flappy_mini/runtime-notes.md",
     "docs/release-evidence/templates/flappy_mini/screenshot.png",
+    "docs/release-evidence/templates/swipe_runner/manual-qa-result.md",
+    "docs/release-evidence/templates/swipe_runner/validation-output.txt",
+    "docs/release-evidence/templates/swipe_runner/runtime-notes.md",
+    "docs/release-evidence/templates/swipe_runner/screenshot.png",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -123,6 +127,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_runtime_qa_tracker_phase58.py",
     "tests/test_tap_counter_runtime_qa_phase59.py",
     "tests/test_flappy_mini_runtime_qa_phase60.py",
+    "tests/test_swipe_runner_runtime_qa_phase61.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

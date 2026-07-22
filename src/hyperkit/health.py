@@ -182,6 +182,26 @@ REQUIRED_PATHS = {
     "Flappy Mini runtime QA tests": (
         "tests/test_flappy_mini_runtime_qa_phase60.py"
     ),
+
+    "Swipe Runner manual QA result": (
+        "docs/release-evidence/templates/"
+        "swipe_runner/manual-qa-result.md"
+    ),
+    "Swipe Runner validation evidence": (
+        "docs/release-evidence/templates/"
+        "swipe_runner/validation-output.txt"
+    ),
+    "Swipe Runner runtime notes": (
+        "docs/release-evidence/templates/"
+        "swipe_runner/runtime-notes.md"
+    ),
+    "Swipe Runner runtime screenshot": (
+        "docs/release-evidence/templates/"
+        "swipe_runner/screenshot.png"
+    ),
+    "Swipe Runner runtime QA tests": (
+        "tests/test_swipe_runner_runtime_qa_phase61.py"
+    ),
 }
 
 
