@@ -163,6 +163,25 @@ REQUIRED_PATHS = {
     "Tap Counter runtime QA tests": (
         "tests/test_tap_counter_runtime_qa_phase59.py"
     ),
+    "Flappy Mini manual QA result": (
+        "docs/release-evidence/templates/"
+        "flappy_mini/manual-qa-result.md"
+    ),
+    "Flappy Mini validation evidence": (
+        "docs/release-evidence/templates/"
+        "flappy_mini/validation-output.txt"
+    ),
+    "Flappy Mini runtime notes": (
+        "docs/release-evidence/templates/"
+        "flappy_mini/runtime-notes.md"
+    ),
+    "Flappy Mini runtime screenshot": (
+        "docs/release-evidence/templates/"
+        "flappy_mini/screenshot.png"
+    ),
+    "Flappy Mini runtime QA tests": (
+        "tests/test_flappy_mini_runtime_qa_phase60.py"
+    ),
 }
 
 

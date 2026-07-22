@@ -91,6 +91,10 @@ REQUIRED_RELEASE_FILES = [
     "docs/release-evidence/templates/tap_counter/validation-output.txt",
     "docs/release-evidence/templates/tap_counter/runtime-notes.md",
     "docs/release-evidence/templates/tap_counter/screenshot.png",
+    "docs/release-evidence/templates/flappy_mini/manual-qa-result.md",
+    "docs/release-evidence/templates/flappy_mini/validation-output.txt",
+    "docs/release-evidence/templates/flappy_mini/runtime-notes.md",
+    "docs/release-evidence/templates/flappy_mini/screenshot.png",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -118,6 +122,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_release_evidence_phase57.py",
     "tests/test_runtime_qa_tracker_phase58.py",
     "tests/test_tap_counter_runtime_qa_phase59.py",
+    "tests/test_flappy_mini_runtime_qa_phase60.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
