@@ -20,18 +20,16 @@
 - [x] Release check passed
 - [x] Pre-release audit passed
 - [x] Release-candidate version applied
-- [ ] Distribution archives built
-- [ ] Twine archive validation passed
-- [ ] TestPyPI upload completed
-- [ ] Clean-environment installation completed
-- [ ] Installed CLI smoke test completed
-- [ ] Installed template generation completed
-- [ ] Installed generated project launched successfully
+- [x] Distribution archives built
+- [x] Twine archive validation passed
+- [x] TestPyPI upload completed
+- [x] Clean-environment installation completed
+- [x] Installed CLI smoke test completed
+- [x] Installed template generation completed
+- [x] Installed generated project launched successfully
 
 ## Release Decision
 
-Current status: READY TO BUILD
-
-Approved for TestPyPI upload: Pending artifact validation
-
+Current status: TESTPYPI RC VALIDATED
+Approved for TestPyPI upload: Yes
 Approved for real PyPI publication: No
