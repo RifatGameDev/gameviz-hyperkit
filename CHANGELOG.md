@@ -14,6 +14,8 @@ HyperKit follows a simple version history format for now:
 
 ## Unreleased
 
+## 0.1.1rc2 - 2026-07-22
+
 ### Added
 
 - Helper-based starter template upgrades.
@@ -49,9 +51,10 @@ HyperKit follows a simple version history format for now:
 
 ### Fixed
 
-- Template README consistency issues.
-- Template helper documentation coverage.
-- Package release readiness validation coverage.
+- Added Python 3.9 and Python 3.10 compatibility for TOML parsing.
+- Added `tomli` as a conditional dependency for Python versions below 3.11.
+- Added a `tomllib` compatibility fallback in production modules.
+- Fixed the startup failure caused by `ModuleNotFoundError: No module named 'tomllib'`.
 
 ### Documentation
 
@@ -62,8 +65,6 @@ HyperKit follows a simple version history format for now:
 - Added this `CHANGELOG.md`.
 
 ---
-
-## [0.1.1rc1] - 2026-07-22
 
 ### Added
 
@@ -81,7 +82,8 @@ HyperKit follows a simple version history format for now:
 
 ### Notes
 
-- This is a TestPyPI release candidate.
+- This release candidate supersedes `0.1.1rc1`.
+- Python 3.10 and Python 3.11 validation must pass before uploading RC2 to TestPyPI.
 - Stable PyPI publication is not yet approved.
 
 <!-- ## 0.1.0
