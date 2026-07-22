@@ -63,19 +63,26 @@ HyperKit follows a simple version history format for now:
 
 ---
 
-## [0.1.1.dev1] - TestPyPI Validation Build
+## [0.1.1rc1] - 2026-07-22
 
 ### Added
 
-- TestPyPI validation build for checking package upload and installation workflow.
-- Final pre-release audit command.
-- Release readiness command.
-- Project health report command.
+- Complete manual runtime QA evidence for all six templates.
+- Strict release-evidence validation.
+- Final QA certification and release-candidate readiness checks.
+- Generated-project validation across all built-in templates.
+
+### Improved
+
+- Flappy Mini now varies its vertical pipe-gap position.
+- Template documentation, runtime notes, screenshots, and validation evidence.
+- Release health checks and pre-release auditing.
+- Runtime reliability for Tap Counter, Flappy Mini, Swipe Runner, Puzzle Game, Quiz Game, and Simple Physics.
 
 ### Notes
 
-- This version is for TestPyPI testing only.
-- Do not publish this development version to real PyPI.
+- This is a TestPyPI release candidate.
+- Stable PyPI publication is not yet approved.
 
 <!-- ## 0.1.0
 

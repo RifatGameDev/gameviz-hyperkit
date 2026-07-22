@@ -194,4 +194,4 @@ __all__ = [
     "run_release_evidence_validation",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1rc1"
