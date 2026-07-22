@@ -14,7 +14,35 @@ HyperKit follows a simple version history format for now:
 
 ## Unreleased
 
-## 0.1.1rc2 - 2026-07-22
+## 0.1.1 - 2026-07-22
+
+### Added
+
+- Six polished starter templates for common 2D hypercasual game concepts.
+- Complete manual runtime QA evidence for every built-in template.
+- Generated-project validation and strict release-evidence certification.
+- Installed-package validation through TestPyPI.
+- Release health, readiness, and pre-release audit commands.
+
+### Improved
+
+- Template documentation, gameplay feedback, restart flows, and persistence.
+- CLI project generation and error handling.
+- Runtime stability across all supported templates.
+- Flappy Mini pipe-gap position variation.
+- Release preparation and package-validation workflows.
+
+### Fixed
+
+- Python 3.9 and Python 3.10 TOML compatibility using the conditional `tomli` fallback.
+- The Python 3.10 startup failure caused by direct `tomllib` imports.
+- Local-machine paths leaking into committed release evidence.
+
+### Validation
+
+- `0.1.1rc2` was validated through TestPyPI.
+- Python 3.10 and Python 3.11 installed-package checks passed.
+- All six templates passed manual runtime QA.
 
 ### Added
 

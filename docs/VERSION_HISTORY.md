@@ -1,3 +1,18 @@
+## 0.1.1 — Stable Release
+
+Status: Preparing for PyPI publication
+
+This release is based on the validated `0.1.1rc2` release candidate.
+
+Highlights:
+
+- Six complete built-in templates
+- Python 3.9–3.12 package compatibility
+- Complete manual runtime QA evidence
+- TestPyPI release-candidate validation
+- CLI and generated-project validation
+- Python 3.9 and 3.10 TOML compatibility
+
 # Version History
 
 This document explains the version history and development direction of HyperKit.

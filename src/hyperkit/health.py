@@ -271,6 +271,17 @@ REQUIRED_PATHS = {
     "Final QA certification tests": (
         "tests/test_final_qa_certification_phase65.py"
     ),
+    "Phase 68 stable readiness report": (
+        "docs/release-evidence/phase68/"
+        "STABLE_RELEASE_READINESS.md"
+    ),
+    "Phase 68 stable validation result": (
+        "docs/release-evidence/phase68/"
+        "stable-validation.json"
+    ),
+    "Phase 68 readiness tests": (
+        "tests/test_stable_release_readiness_phase68.py"
+    ),
 }
 
 
