@@ -1,0 +1,643 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.0, pluggy-1.6.0
+rootdir: <PROJECT_ROOT>
+configfile: pyproject.toml
+collected 10 items
+
+tests\test_simple_physics_polish_phase53.py ..........                   [100%]
+
+============================= 10 passed in 0.07s ==============================
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.0, pluggy-1.6.0
+rootdir: <PROJECT_ROOT>
+configfile: pyproject.toml
+testpaths: tests
+collected 452 items
+
+tests\test_android.py ..                                                 [  0%]
+tests\test_animation.py .......                                          [  1%]
+tests\test_assets.py .......                                             [  3%]
+tests\test_audio.py ........                                             [  5%]
+tests\test_bounds.py ............                                        [  7%]
+tests\test_camera.py .....                                               [  9%]
+tests\test_camera_follow.py ......                                       [ 10%]
+tests\test_changelog_phase36.py ......                                   [ 11%]
+tests\test_cli_error_messages_phase45.py ..........                      [ 13%]
+tests\test_cli_templates.py .............                                [ 16%]
+tests\test_collision.py ...                                              [ 17%]
+tests\test_examples_syntax.py .                                          [ 17%]
+tests\test_flappy_mini_polish_phase49.py ..........                      [ 19%]
+tests\test_flappy_mini_runtime_qa_phase60.py .........                   [ 21%]
+tests\test_game_object.py ....                                           [ 22%]
+tests\test_generated_project_smoke_phase37.py .......                    [ 24%]
+tests\test_generated_project_validation_phase55.py ............          [ 26%]
+tests\test_health_phase38.py ......                                      [ 28%]
+tests\test_input_actions.py .........                                    [ 30%]
+tests\test_layout.py ....                                                [ 31%]
+tests\test_level.py ......                                               [ 32%]
+tests\test_particle.py ....                                              [ 33%]
+tests\test_pre_release_audit_phase40.py F.F....                          [ 34%]
+tests\test_production_template_polish_phase47.py ..........              [ 37%]
+tests\test_progress.py ...........                                       [ 39%]
+tests\test_public_readme_phase42.py .........                            [ 41%]
+tests\test_puzzle_game_polish_phase51.py ..........                      [ 43%]
+tests\test_puzzle_game_runtime_qa_phase62.py ........                    [ 45%]
+tests\test_quick_start_tutorial_phase43.py ...........                   [ 48%]
+tests\test_quiz_game_polish_phase52.py ..........                        [ 50%]
+tests\test_quiz_game_runtime_qa_phase63.py ........                      [ 51%]
+tests\test_release_check_phase39.py ......                               [ 53%]
+tests\test_release_evidence_phase57.py ...............                   [ 56%]
+tests\test_release_readiness_phase35.py .........                        [ 58%]
+tests\test_runtime_qa_tracker_phase58.py ................                [ 62%]
+tests\test_score_save.py .......                                         [ 63%]
+tests\test_simple_physics_polish_phase53.py ..........                   [ 65%]
+tests\test_simple_physics_runtime_qa_phase64.py ......F.                 [ 67%]
+tests\test_sprite.py ..........                                          [ 69%]
+tests\test_state.py .....                                                [ 71%]
+tests\test_swipe_runner_polish_phase50.py ..........                     [ 73%]
+tests\test_swipe_runner_runtime_qa_phase61.py ........                   [ 75%]
+tests\test_tap_counter_polish_phase48.py ..........                      [ 77%]
+tests\test_tap_counter_runtime_qa_phase59.py ........                    [ 78%]
+tests\test_template_docs_phase33.py ...                                  [ 79%]
+tests\test_template_helper_upgrades_phase31.py ....                      [ 80%]
+tests\test_template_helper_upgrades_phase32.py ......                    [ 81%]
+tests\test_template_media_phase44.py .........                           [ 83%]
+tests\test_template_polish_summary_phase54.py ............               [ 86%]
+tests\test_template_quality_phase34.py .......                           [ 88%]
+tests\test_template_runtime_readiness_phase56.py .............           [ 90%]
+tests\test_template_upgrade.py ..                                        [ 91%]
+tests\test_template_validation_phase46.py ..........                     [ 93%]
+tests\test_templates_syntax.py ......                                    [ 94%]
+tests\test_timers.py .............                                       [ 97%]
+tests\test_touch.py ..                                                   [ 98%]
+tests\test_transition.py .....                                           [ 99%]
+tests\test_ui.py ...                                                     [100%]
+
+================================== FAILURES ===================================
+_______________ test_pre_release_audit_passes_for_project_root ________________
+
+    def test_pre_release_audit_passes_for_project_root():
+        report = generate_pre_release_audit_report(".")
+    
+        assert report.total > 0
+>       assert report.failed_count == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = PreReleaseAuditReport(root=WindowsPath('D:/AI/HyperKit/gameviz-hyperkit'), checks=[PreReleaseAuditCheck(name='Release ... PreReleaseAuditCheck(name='Final audit tests', passed=True, message='Found tests/test_pre_release_audit_phase40.py')]).failed_count
+
+tests\test_pre_release_audit_phase40.py:13: AssertionError
+_______________ test_pre_release_audit_format_contains_summary ________________
+
+    def test_pre_release_audit_format_contains_summary():
+        report = generate_pre_release_audit_report(".")
+        output = format_pre_release_audit_report(report)
+    
+        assert "HyperKit Final Pre-release Audit" in output
+        assert "Passed:" in output
+>       assert "Failed: 0" in output
+E       AssertionError: assert 'Failed: 0' in 'HyperKit Final Pre-release Audit\n===================================\nRoot: D:\\AI\\HyperKit\\gameviz-hyperkit\n\nPa...st_pre_release_audit_phase40.py\n\nFinal pre-release audit status: FAIL\nFix failed checks before preparing a release.'
+
+tests\test_pre_release_audit_phase40.py:34: AssertionError
+_______________ test_simple_physics_evidence_has_no_local_paths _______________
+
+    def test_simple_physics_evidence_has_no_local_paths():
+        files = [
+            MANUAL_RESULT,
+            VALIDATION_OUTPUT,
+            RUNTIME_NOTES,
+        ]
+    
+        forbidden_terms = [
+            "D:" + "\\AI\\HyperKit\\gameviz-hyperkit",
+            "gameviz-hyperkit" + "\\src",
+            "/" + "mnt/data",
+        ]
+    
+        for path in files:
+            content = read(path)
+    
+            for forbidden_term in forbidden_terms:
+>               assert forbidden_term not in content
+E               AssertionError: assert 'D:\\AI\\Hyp...viz-hyperkit' not in '===========...64.py ......'
+E                 
+E                 'D:\\AI\\HyperKit\\gameviz-hyperkit' is contained here:
+E                   
+E                   rootdir: <PROJECT_ROOT>
+E                   configfile: pyproject.toml
+E                   testpaths: tests
+E                   collected 452 items...
+E                 
+E                 ...Full output truncated (39 lines hidden), use '-vv' to show
+
+tests\test_simple_physics_runtime_qa_phase64.py:102: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_pre_release_audit_phase40.py::test_pre_release_audit_passes_for_project_root
+FAILED tests/test_pre_release_audit_phase40.py::test_pre_release_audit_format_contains_summary
+FAILED tests/test_simple_physics_runtime_qa_phase64.py::test_simple_physics_evidence_has_no_local_paths
+======================== 3 failed, 449 passed in 2.21s ========================
+HyperKit Template Validation Report
+====================================
+Root: <PROJECT_ROOT>
+
+Passed: 42/42
+Failed: 0
+
+[OK] tap_counter - Template folder exists - <PROJECT_ROOT>\src\hyperkit\templates\tap_counter
+[OK] tap_counter - main.py exists - <PROJECT_ROOT>\src\hyperkit\templates\tap_counter\main.py
+[OK] tap_counter - README.md exists - <PROJECT_ROOT>\src\hyperkit\templates\tap_counter\README.md
+[OK] tap_counter - main.py syntax is valid - Valid Python syntax
+[OK] tap_counter - main.py imports HyperKit - HyperKit import found
+[OK] tap_counter - main.py has game entry - Game entry found
+[OK] tap_counter - No forbidden local paths - No forbidden paths found
+[OK] flappy_mini - Template folder exists - <PROJECT_ROOT>\src\hyperkit\templates\flappy_mini
+[OK] flappy_mini - main.py exists - <PROJECT_ROOT>\src\hyperkit\templates\flappy_mini\main.py
+[OK] flappy_mini - README.md exists - <PROJECT_ROOT>\src\hyperkit\templates\flappy_mini\README.md
+[OK] flappy_mini - main.py syntax is valid - Valid Python syntax
+[OK] flappy_mini - main.py imports HyperKit - HyperKit import found
+[OK] flappy_mini - main.py has game entry - Game entry found
+[OK] flappy_mini - No forbidden local paths - No forbidden paths found
+[OK] swipe_runner - Template folder exists - <PROJECT_ROOT>\src\hyperkit\templates\swipe_runner
+[OK] swipe_runner - main.py exists - <PROJECT_ROOT>\src\hyperkit\templates\swipe_runner\main.py
+[OK] swipe_runner - README.md exists - <PROJECT_ROOT>\src\hyperkit\templates\swipe_runner\README.md
+[OK] swipe_runner - main.py syntax is valid - Valid Python syntax
+[OK] swipe_runner - main.py imports HyperKit - HyperKit import found
+[OK] swipe_runner - main.py has game entry - Game entry found
+[OK] swipe_runner - No forbidden local paths - No forbidden paths found
+[OK] puzzle_game - Template folder exists - <PROJECT_ROOT>\src\hyperkit\templates\puzzle_game
+[OK] puzzle_game - main.py exists - <PROJECT_ROOT>\src\hyperkit\templates\puzzle_game\main.py
+[OK] puzzle_game - README.md exists - <PROJECT_ROOT>\src\hyperkit\templates\puzzle_game\README.md
+[OK] puzzle_game - main.py syntax is valid - Valid Python syntax
+[OK] puzzle_game - main.py imports HyperKit - HyperKit import found
+[OK] puzzle_game - main.py has game entry - Game entry found
+[OK] puzzle_game - No forbidden local paths - No forbidden paths found
+[OK] quiz_game - Template folder exists - <PROJECT_ROOT>\src\hyperkit\templates\quiz_game
+[OK] quiz_game - main.py exists - <PROJECT_ROOT>\src\hyperkit\templates\quiz_game\main.py
+[OK] quiz_game - README.md exists - <PROJECT_ROOT>\src\hyperkit\templates\quiz_game\README.md
+[OK] quiz_game - main.py syntax is valid - Valid Python syntax
+[OK] quiz_game - main.py imports HyperKit - HyperKit import found
+[OK] quiz_game - main.py has game entry - Game entry found
+[OK] quiz_game - No forbidden local paths - No forbidden paths found
+[OK] simple_physics - Template folder exists - <PROJECT_ROOT>\src\hyperkit\templates\simple_physics
+[OK] simple_physics - main.py exists - <PROJECT_ROOT>\src\hyperkit\templates\simple_physics\main.py
+[OK] simple_physics - README.md exists - <PROJECT_ROOT>\src\hyperkit\templates\simple_physics\README.md
+[OK] simple_physics - main.py syntax is valid - Valid Python syntax
+[OK] simple_physics - main.py imports HyperKit - HyperKit import found
+[OK] simple_physics - main.py has game entry - Game entry found
+[OK] simple_physics - No forbidden local paths - No forbidden paths found
+
+Template validation status: PASS
+HyperKit Generated Project Validation
+=====================================
+Work root: C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o
+
+Passed: 60/60
+Failed: 0
+
+[OK] tap_counter - Project generation - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_tap_counter
+[OK] tap_counter - Project directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_tap_counter
+[OK] tap_counter - main.py exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_tap_counter\main.py
+[OK] tap_counter - hyperkit.toml exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_tap_counter\hyperkit.toml
+[OK] tap_counter - assets directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_tap_counter\assets
+[OK] tap_counter - main.py syntax is valid - Valid Python syntax
+[OK] tap_counter - main.py imports HyperKit - HyperKit import found
+[OK] tap_counter - main.py has game entry - Game entry found
+[OK] tap_counter - hyperkit.toml is valid - Valid TOML metadata
+[OK] tap_counter - No forbidden local paths - No forbidden paths found
+[OK] flappy_mini - Project generation - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_flappy_mini
+[OK] flappy_mini - Project directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_flappy_mini
+[OK] flappy_mini - main.py exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_flappy_mini\main.py
+[OK] flappy_mini - hyperkit.toml exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_flappy_mini\hyperkit.toml
+[OK] flappy_mini - assets directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_flappy_mini\assets
+[OK] flappy_mini - main.py syntax is valid - Valid Python syntax
+[OK] flappy_mini - main.py imports HyperKit - HyperKit import found
+[OK] flappy_mini - main.py has game entry - Game entry found
+[OK] flappy_mini - hyperkit.toml is valid - Valid TOML metadata
+[OK] flappy_mini - No forbidden local paths - No forbidden paths found
+[OK] swipe_runner - Project generation - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_swipe_runner
+[OK] swipe_runner - Project directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_swipe_runner
+[OK] swipe_runner - main.py exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_swipe_runner\main.py
+[OK] swipe_runner - hyperkit.toml exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_swipe_runner\hyperkit.toml
+[OK] swipe_runner - assets directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_swipe_runner\assets
+[OK] swipe_runner - main.py syntax is valid - Valid Python syntax
+[OK] swipe_runner - main.py imports HyperKit - HyperKit import found
+[OK] swipe_runner - main.py has game entry - Game entry found
+[OK] swipe_runner - hyperkit.toml is valid - Valid TOML metadata
+[OK] swipe_runner - No forbidden local paths - No forbidden paths found
+[OK] puzzle_game - Project generation - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_puzzle_game
+[OK] puzzle_game - Project directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_puzzle_game
+[OK] puzzle_game - main.py exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_puzzle_game\main.py
+[OK] puzzle_game - hyperkit.toml exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_puzzle_game\hyperkit.toml
+[OK] puzzle_game - assets directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_puzzle_game\assets
+[OK] puzzle_game - main.py syntax is valid - Valid Python syntax
+[OK] puzzle_game - main.py imports HyperKit - HyperKit import found
+[OK] puzzle_game - main.py has game entry - Game entry found
+[OK] puzzle_game - hyperkit.toml is valid - Valid TOML metadata
+[OK] puzzle_game - No forbidden local paths - No forbidden paths found
+[OK] quiz_game - Project generation - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_quiz_game
+[OK] quiz_game - Project directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_quiz_game
+[OK] quiz_game - main.py exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_quiz_game\main.py
+[OK] quiz_game - hyperkit.toml exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_quiz_game\hyperkit.toml
+[OK] quiz_game - assets directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_quiz_game\assets
+[OK] quiz_game - main.py syntax is valid - Valid Python syntax
+[OK] quiz_game - main.py imports HyperKit - HyperKit import found
+[OK] quiz_game - main.py has game entry - Game entry found
+[OK] quiz_game - hyperkit.toml is valid - Valid TOML metadata
+[OK] quiz_game - No forbidden local paths - No forbidden paths found
+[OK] simple_physics - Project generation - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_simple_physics
+[OK] simple_physics - Project directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_simple_physics
+[OK] simple_physics - main.py exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_simple_physics\main.py
+[OK] simple_physics - hyperkit.toml exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_simple_physics\hyperkit.toml
+[OK] simple_physics - assets directory exists - C:\Users\User\AppData\Local\Temp\hyperkit-generated-validation-ncw87_5o\phase55_simple_physics\assets
+[OK] simple_physics - main.py syntax is valid - Valid Python syntax
+[OK] simple_physics - main.py imports HyperKit - HyperKit import found
+[OK] simple_physics - main.py has game entry - Game entry found
+[OK] simple_physics - hyperkit.toml is valid - Valid TOML metadata
+[OK] simple_physics - No forbidden local paths - No forbidden paths found
+
+Generated project validation status: PASS
+HyperKit Release Evidence Validation
+====================================
+Root: <PROJECT_ROOT>
+
+Structure checks passed: 48/48
+Structure checks failed: 0
+
+Completed QA evidence: 6/6
+Pending or in progress: 0
+Failed QA results: 0
+
+[OK] Release evidence root exists - <PROJECT_ROOT>\docs\release-evidence
+[OK] QA tracker exists - <PROJECT_ROOT>\docs\release-evidence\qa-tracker.json
+[OK] QA tracker contains valid JSON - Valid JSON tracker
+[OK] QA tracker schema version - schema_version=1
+[OK] QA tracker templates section - Templates section found
+[OK] tap_counter - Tracker entry exists - Tracker entry found
+[OK] tap_counter - Tracker display name - display_name=Tap Counter
+[OK] tap_counter - Tracker status - status=pass
+[OK] tap_counter - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\tap_counter
+[OK] tap_counter - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\tap_counter\README.md
+[OK] tap_counter - Passing QA evidence is complete - All required passing evidence found
+[OK] tap_counter - Tracker result file is recorded - templates/tap_counter/manual-qa-result.md
+[OK] flappy_mini - Tracker entry exists - Tracker entry found
+[OK] flappy_mini - Tracker display name - display_name=Flappy Mini
+[OK] flappy_mini - Tracker status - status=pass
+[OK] flappy_mini - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\flappy_mini
+[OK] flappy_mini - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\flappy_mini\README.md
+[OK] flappy_mini - Passing QA evidence is complete - All required passing evidence found
+[OK] flappy_mini - Tracker result file is recorded - templates/flappy_mini/manual-qa-result.md
+[OK] swipe_runner - Tracker entry exists - Tracker entry found
+[OK] swipe_runner - Tracker display name - display_name=Swipe Runner
+[OK] swipe_runner - Tracker status - status=pass
+[OK] swipe_runner - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\swipe_runner
+[OK] swipe_runner - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\swipe_runner\README.md
+[OK] swipe_runner - Passing QA evidence is complete - All required passing evidence found
+[OK] swipe_runner - Tracker result file is recorded - templates/swipe_runner/manual-qa-result.md
+[OK] puzzle_game - Tracker entry exists - Tracker entry found
+[OK] puzzle_game - Tracker display name - display_name=Puzzle Game
+[OK] puzzle_game - Tracker status - status=pass
+[OK] puzzle_game - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\puzzle_game
+[OK] puzzle_game - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\puzzle_game\README.md
+[OK] puzzle_game - Passing QA evidence is complete - All required passing evidence found
+[OK] puzzle_game - Tracker result file is recorded - templates/puzzle_game/manual-qa-result.md
+[OK] quiz_game - Tracker entry exists - Tracker entry found
+[OK] quiz_game - Tracker display name - display_name=Quiz Game
+[OK] quiz_game - Tracker status - status=pass
+[OK] quiz_game - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\quiz_game
+[OK] quiz_game - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\quiz_game\README.md
+[OK] quiz_game - Passing QA evidence is complete - All required passing evidence found
+[OK] quiz_game - Tracker result file is recorded - templates/quiz_game/manual-qa-result.md
+[OK] simple_physics - Tracker entry exists - Tracker entry found
+[OK] simple_physics - Tracker display name - display_name=Simple Physics
+[OK] simple_physics - Tracker status - status=pass
+[OK] simple_physics - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\simple_physics
+[OK] simple_physics - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\simple_physics\README.md
+[OK] simple_physics - Passing QA evidence is complete - All required passing evidence found
+[OK] simple_physics - Tracker result file is recorded - templates/simple_physics/manual-qa-result.md
+[OK] QA tracker has no unexpected templates - No unexpected templates
+
+Evidence structure validation status: PASS
+Evidence completion status: COMPLETE
+HyperKit Release Evidence Validation
+====================================
+Root: <PROJECT_ROOT>
+
+Structure checks passed: 48/48
+Structure checks failed: 0
+
+Completed QA evidence: 6/6
+Pending or in progress: 0
+Failed QA results: 0
+
+[OK] Release evidence root exists - <PROJECT_ROOT>\docs\release-evidence
+[OK] QA tracker exists - <PROJECT_ROOT>\docs\release-evidence\qa-tracker.json
+[OK] QA tracker contains valid JSON - Valid JSON tracker
+[OK] QA tracker schema version - schema_version=1
+[OK] QA tracker templates section - Templates section found
+[OK] tap_counter - Tracker entry exists - Tracker entry found
+[OK] tap_counter - Tracker display name - display_name=Tap Counter
+[OK] tap_counter - Tracker status - status=pass
+[OK] tap_counter - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\tap_counter
+[OK] tap_counter - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\tap_counter\README.md
+[OK] tap_counter - Passing QA evidence is complete - All required passing evidence found
+[OK] tap_counter - Tracker result file is recorded - templates/tap_counter/manual-qa-result.md
+[OK] flappy_mini - Tracker entry exists - Tracker entry found
+[OK] flappy_mini - Tracker display name - display_name=Flappy Mini
+[OK] flappy_mini - Tracker status - status=pass
+[OK] flappy_mini - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\flappy_mini
+[OK] flappy_mini - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\flappy_mini\README.md
+[OK] flappy_mini - Passing QA evidence is complete - All required passing evidence found
+[OK] flappy_mini - Tracker result file is recorded - templates/flappy_mini/manual-qa-result.md
+[OK] swipe_runner - Tracker entry exists - Tracker entry found
+[OK] swipe_runner - Tracker display name - display_name=Swipe Runner
+[OK] swipe_runner - Tracker status - status=pass
+[OK] swipe_runner - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\swipe_runner
+[OK] swipe_runner - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\swipe_runner\README.md
+[OK] swipe_runner - Passing QA evidence is complete - All required passing evidence found
+[OK] swipe_runner - Tracker result file is recorded - templates/swipe_runner/manual-qa-result.md
+[OK] puzzle_game - Tracker entry exists - Tracker entry found
+[OK] puzzle_game - Tracker display name - display_name=Puzzle Game
+[OK] puzzle_game - Tracker status - status=pass
+[OK] puzzle_game - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\puzzle_game
+[OK] puzzle_game - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\puzzle_game\README.md
+[OK] puzzle_game - Passing QA evidence is complete - All required passing evidence found
+[OK] puzzle_game - Tracker result file is recorded - templates/puzzle_game/manual-qa-result.md
+[OK] quiz_game - Tracker entry exists - Tracker entry found
+[OK] quiz_game - Tracker display name - display_name=Quiz Game
+[OK] quiz_game - Tracker status - status=pass
+[OK] quiz_game - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\quiz_game
+[OK] quiz_game - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\quiz_game\README.md
+[OK] quiz_game - Passing QA evidence is complete - All required passing evidence found
+[OK] quiz_game - Tracker result file is recorded - templates/quiz_game/manual-qa-result.md
+[OK] simple_physics - Tracker entry exists - Tracker entry found
+[OK] simple_physics - Tracker display name - display_name=Simple Physics
+[OK] simple_physics - Tracker status - status=pass
+[OK] simple_physics - Evidence folder exists - <PROJECT_ROOT>\docs\release-evidence\templates\simple_physics
+[OK] simple_physics - Evidence folder README exists - <PROJECT_ROOT>\docs\release-evidence\templates\simple_physics\README.md
+[OK] simple_physics - Passing QA evidence is complete - All required passing evidence found
+[OK] simple_physics - Tracker result file is recorded - templates/simple_physics/manual-qa-result.md
+[OK] QA tracker has no unexpected templates - No unexpected templates
+
+Evidence structure validation status: PASS
+Evidence completion status: COMPLETE
+HyperKit Project Health Report
+================================
+Root: <PROJECT_ROOT>
+
+Passed: 120/120
+Failed: 0
+
+[OK] Package metadata - pyproject.toml
+[OK] Main README - README.md
+[OK] Changelog - CHANGELOG.md
+[OK] Templates documentation - docs/TEMPLATES.md
+[OK] Template helper guide - docs/TEMPLATE_HELPERS.md
+[OK] Template quality checklist - docs/TEMPLATE_QUALITY_CHECKLIST.md
+[OK] Release readiness checklist - docs/RELEASE_READINESS_CHECKLIST.md
+[OK] Version history - docs/VERSION_HISTORY.md
+[OK] Generated project smoke docs - docs/GENERATED_PROJECT_SMOKE_TESTS.md
+[OK] Package source - src/hyperkit/__init__.py
+[OK] CLI source - src/hyperkit/cli.py
+[OK] Templates folder - src/hyperkit/templates
+[OK] Examples folder - examples
+[OK] Tests folder - tests
+[OK] Template quality tests - tests/test_template_quality_phase34.py
+[OK] Release readiness tests - tests/test_release_readiness_phase35.py
+[OK] Changelog tests - tests/test_changelog_phase36.py
+[OK] Generated project smoke tests - tests/test_generated_project_smoke_phase37.py
+[OK] Project health docs - docs/PROJECT_HEALTH_REPORT.md
+[OK] Release build automation docs - docs/RELEASE_BUILD_AUTOMATION.md
+[OK] Release build automation tests - tests/test_release_check_phase39.py
+[OK] Final pre-release audit docs - docs/FINAL_PRE_RELEASE_AUDIT.md
+[OK] Final pre-release audit source - src/hyperkit/audit.py
+[OK] Final pre-release audit tests - tests/test_pre_release_audit_phase40.py
+[OK] Beginner quick-start tutorial - docs/QUICK_START_TUTORIAL.md
+[OK] Beginner quick-start tutorial tests - tests/test_quick_start_tutorial_phase43.py
+[OK] Public README tests - tests/test_public_readme_phase42.py
+[OK] Template media guide - docs/TEMPLATE_MEDIA_GUIDE.md
+[OK] Template screenshots documentation - docs/TEMPLATE_SCREENSHOTS.md
+[OK] Template media tests - tests/test_template_media_phase44.py
+[OK] Tap Counter media folder - docs/media/templates/tap_counter/README.md
+[OK] Flappy Mini media folder - docs/media/templates/flappy_mini/README.md
+[OK] Swipe Runner media folder - docs/media/templates/swipe_runner/README.md
+[OK] Puzzle Game media folder - docs/media/templates/puzzle_game/README.md
+[OK] Quiz Game media folder - docs/media/templates/quiz_game/README.md
+[OK] Simple Physics media folder - docs/media/templates/simple_physics/README.md
+[OK] CLI error message docs - docs/CLI_ERROR_MESSAGES.md
+[OK] CLI error message tests - tests/test_cli_error_messages_phase45.py
+[OK] Template validation source - src/hyperkit/template_validation.py
+[OK] Template validation docs - docs/TEMPLATE_VALIDATION.md
+[OK] Template validation tests - tests/test_template_validation_phase46.py
+[OK] Production template polish checklist - docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md
+[OK] Production template polish tests - tests/test_production_template_polish_phase47.py
+[OK] Tap Counter polish docs - docs/TAP_COUNTER_POLISH_PHASE48.md
+[OK] Tap Counter polish tests - tests/test_tap_counter_polish_phase48.py
+[OK] Flappy Mini polish docs - docs/FLAPPY_MINI_POLISH_PHASE49.md
+[OK] Flappy Mini polish tests - tests/test_flappy_mini_polish_phase49.py
+[OK] Swipe Runner polish docs - docs/SWIPE_RUNNER_POLISH_PHASE50.md
+[OK] Swipe Runner polish tests - tests/test_swipe_runner_polish_phase50.py
+[OK] Puzzle Game polish docs - docs/PUZZLE_GAME_POLISH_PHASE51.md
+[OK] Puzzle Game polish tests - tests/test_puzzle_game_polish_phase51.py
+[OK] Quiz Game polish docs - docs/QUIZ_GAME_POLISH_PHASE52.md
+[OK] Quiz Game polish tests - tests/test_quiz_game_polish_phase52.py
+[OK] Simple Physics polish docs - docs/SIMPLE_PHYSICS_POLISH_PHASE53.md
+[OK] Simple Physics polish tests - tests/test_simple_physics_polish_phase53.py
+[OK] Template polish summary docs - docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md
+[OK] Template stabilization checklist - docs/TEMPLATE_STABILIZATION_CHECKLIST.md
+[OK] Template polish summary tests - tests/test_template_polish_summary_phase54.py
+[OK] Generated project validation source - src/hyperkit/generated_project_validation.py
+[OK] Generated project validation docs - docs/GENERATED_PROJECT_VALIDATION_PHASE55.md
+[OK] Generated project validation tests - tests/test_generated_project_validation_phase55.py
+[OK] Template runtime readiness docs - docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md
+[OK] Template manual QA checklist - docs/TEMPLATE_MANUAL_QA_CHECKLIST.md
+[OK] Template runtime readiness tests - tests/test_template_runtime_readiness_phase56.py
+[OK] Manual QA result template - docs/MANUAL_QA_RESULT_TEMPLATE.md
+[OK] Release evidence structure docs - docs/RELEASE_EVIDENCE_STRUCTURE.md
+[OK] Release evidence workspace - docs/release-evidence/README.md
+[OK] Release evidence tests - tests/test_release_evidence_phase57.py
+[OK] Release evidence validation source - src/hyperkit/release_evidence.py
+[OK] Runtime QA tracker docs - docs/RUNTIME_QA_TRACKER_PHASE58.md
+[OK] Runtime QA tracker data - docs/release-evidence/qa-tracker.json
+[OK] Runtime QA tracker tests - tests/test_runtime_qa_tracker_phase58.py
+[OK] Tap Counter manual QA result - docs/release-evidence/templates/tap_counter/manual-qa-result.md
+[OK] Tap Counter validation evidence - docs/release-evidence/templates/tap_counter/validation-output.txt
+[OK] Tap Counter runtime notes - docs/release-evidence/templates/tap_counter/runtime-notes.md
+[OK] Tap Counter runtime screenshot - docs/release-evidence/templates/tap_counter/screenshot.png
+[OK] Tap Counter runtime QA tests - tests/test_tap_counter_runtime_qa_phase59.py
+[OK] Flappy Mini manual QA result - docs/release-evidence/templates/flappy_mini/manual-qa-result.md
+[OK] Flappy Mini validation evidence - docs/release-evidence/templates/flappy_mini/validation-output.txt
+[OK] Flappy Mini runtime notes - docs/release-evidence/templates/flappy_mini/runtime-notes.md
+[OK] Flappy Mini runtime screenshot - docs/release-evidence/templates/flappy_mini/screenshot.png
+[OK] Flappy Mini runtime QA tests - tests/test_flappy_mini_runtime_qa_phase60.py
+[OK] Swipe Runner manual QA result - docs/release-evidence/templates/swipe_runner/manual-qa-result.md
+[OK] Swipe Runner validation evidence - docs/release-evidence/templates/swipe_runner/validation-output.txt
+[OK] Swipe Runner runtime notes - docs/release-evidence/templates/swipe_runner/runtime-notes.md
+[OK] Swipe Runner runtime screenshot - docs/release-evidence/templates/swipe_runner/screenshot.png
+[OK] Swipe Runner runtime QA tests - tests/test_swipe_runner_runtime_qa_phase61.py
+[OK] Puzzle Game manual QA result - docs/release-evidence/templates/puzzle_game/manual-qa-result.md
+[OK] Puzzle Game validation evidence - docs/release-evidence/templates/puzzle_game/validation-output.txt
+[OK] Puzzle Game runtime notes - docs/release-evidence/templates/puzzle_game/runtime-notes.md
+[OK] Puzzle Game runtime screenshot - docs/release-evidence/templates/puzzle_game/screenshot.png
+[OK] Puzzle Game runtime QA tests - tests/test_puzzle_game_runtime_qa_phase62.py
+[OK] Quiz Game manual QA result - docs/release-evidence/templates/quiz_game/manual-qa-result.md
+[OK] Quiz Game validation evidence - docs/release-evidence/templates/quiz_game/validation-output.txt
+[OK] Quiz Game runtime notes - docs/release-evidence/templates/quiz_game/runtime-notes.md
+[OK] Quiz Game runtime screenshot - docs/release-evidence/templates/quiz_game/screenshot.png
+[OK] Quiz Game runtime QA tests - tests/test_quiz_game_runtime_qa_phase63.py
+[OK] Simple Physics manual QA result - docs/release-evidence/templates/simple_physics/manual-qa-result.md
+[OK] Simple Physics validation evidence - docs/release-evidence/templates/simple_physics/validation-output.txt
+[OK] Simple Physics runtime notes - docs/release-evidence/templates/simple_physics/runtime-notes.md
+[OK] Simple Physics runtime screenshot - docs/release-evidence/templates/simple_physics/screenshot.png
+[OK] Simple Physics runtime QA tests - tests/test_simple_physics_runtime_qa_phase64.py
+[OK] Template folder: tap_counter - src/hyperkit/templates/tap_counter
+[OK] Template main.py: tap_counter - src/hyperkit/templates/tap_counter/main.py
+[OK] Template README: tap_counter - src/hyperkit/templates/tap_counter/README.md
+[OK] Template folder: flappy_mini - src/hyperkit/templates/flappy_mini
+[OK] Template main.py: flappy_mini - src/hyperkit/templates/flappy_mini/main.py
+[OK] Template README: flappy_mini - src/hyperkit/templates/flappy_mini/README.md
+[OK] Template folder: swipe_runner - src/hyperkit/templates/swipe_runner
+[OK] Template main.py: swipe_runner - src/hyperkit/templates/swipe_runner/main.py
+[OK] Template README: swipe_runner - src/hyperkit/templates/swipe_runner/README.md
+[OK] Template folder: puzzle_game - src/hyperkit/templates/puzzle_game
+[OK] Template main.py: puzzle_game - src/hyperkit/templates/puzzle_game/main.py
+[OK] Template README: puzzle_game - src/hyperkit/templates/puzzle_game/README.md
+[OK] Template folder: quiz_game - src/hyperkit/templates/quiz_game
+[OK] Template main.py: quiz_game - src/hyperkit/templates/quiz_game/main.py
+[OK] Template README: quiz_game - src/hyperkit/templates/quiz_game/README.md
+[OK] Template folder: simple_physics - src/hyperkit/templates/simple_physics
+[OK] Template main.py: simple_physics - src/hyperkit/templates/simple_physics/main.py
+[OK] Template README: simple_physics - src/hyperkit/templates/simple_physics/README.md
+
+Project health status: PASS
+HyperKit Release Readiness Report
+=====================================
+Root: <PROJECT_ROOT>
+
+Passed: 101/101
+Failed: 0
+
+[OK] Project health report - 120/120 health checks passed
+[OK] Required release file: README.md - Found
+[OK] Required release file: CHANGELOG.md - Found
+[OK] Required release file: pyproject.toml - Found
+[OK] Required release file: docs/TEMPLATES.md - Found
+[OK] Required release file: docs/TEMPLATE_HELPERS.md - Found
+[OK] Required release file: docs/TEMPLATE_QUALITY_CHECKLIST.md - Found
+[OK] Required release file: docs/RELEASE_READINESS_CHECKLIST.md - Found
+[OK] Required release file: docs/VERSION_HISTORY.md - Found
+[OK] Required release file: docs/GENERATED_PROJECT_SMOKE_TESTS.md - Found
+[OK] Required release file: docs/PROJECT_HEALTH_REPORT.md - Found
+[OK] Required release file: docs/RELEASE_BUILD_AUTOMATION.md - Found
+[OK] Required release file: docs/FINAL_PRE_RELEASE_AUDIT.md - Found
+[OK] Required release file: docs/QUICK_START_TUTORIAL.md - Found
+[OK] Required release file: docs/TEMPLATE_MEDIA_GUIDE.md - Found
+[OK] Required release file: docs/TEMPLATE_SCREENSHOTS.md - Found
+[OK] Required release file: docs/CLI_ERROR_MESSAGES.md - Found
+[OK] Required release file: docs/TEMPLATE_VALIDATION.md - Found
+[OK] Required release file: docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md - Found
+[OK] Required release file: docs/TAP_COUNTER_POLISH_PHASE48.md - Found
+[OK] Required release file: docs/FLAPPY_MINI_POLISH_PHASE49.md - Found
+[OK] Required release file: docs/SWIPE_RUNNER_POLISH_PHASE50.md - Found
+[OK] Required release file: docs/PUZZLE_GAME_POLISH_PHASE51.md - Found
+[OK] Required release file: docs/QUIZ_GAME_POLISH_PHASE52.md - Found
+[OK] Required release file: docs/SIMPLE_PHYSICS_POLISH_PHASE53.md - Found
+[OK] Required release file: docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md - Found
+[OK] Required release file: docs/TEMPLATE_STABILIZATION_CHECKLIST.md - Found
+[OK] Required release file: src/hyperkit/generated_project_validation.py - Found
+[OK] Required release file: docs/GENERATED_PROJECT_VALIDATION_PHASE55.md - Found
+[OK] Required release file: docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md - Found
+[OK] Required release file: docs/TEMPLATE_MANUAL_QA_CHECKLIST.md - Found
+[OK] Required release file: docs/MANUAL_QA_RESULT_TEMPLATE.md - Found
+[OK] Required release file: docs/RELEASE_EVIDENCE_STRUCTURE.md - Found
+[OK] Required release file: docs/release-evidence/README.md - Found
+[OK] Required release file: docs/release-evidence/templates/tap_counter/README.md - Found
+[OK] Required release file: docs/release-evidence/templates/flappy_mini/README.md - Found
+[OK] Required release file: docs/release-evidence/templates/swipe_runner/README.md - Found
+[OK] Required release file: docs/release-evidence/templates/puzzle_game/README.md - Found
+[OK] Required release file: docs/release-evidence/templates/quiz_game/README.md - Found
+[OK] Required release file: docs/release-evidence/templates/simple_physics/README.md - Found
+[OK] Required release file: src/hyperkit/release_evidence.py - Found
+[OK] Required release file: docs/RUNTIME_QA_TRACKER_PHASE58.md - Found
+[OK] Required release file: docs/release-evidence/qa-tracker.json - Found
+[OK] Required release file: docs/release-evidence/templates/tap_counter/manual-qa-result.md - Found
+[OK] Required release file: docs/release-evidence/templates/tap_counter/validation-output.txt - Found
+[OK] Required release file: docs/release-evidence/templates/tap_counter/runtime-notes.md - Found
+[OK] Required release file: docs/release-evidence/templates/tap_counter/screenshot.png - Found
+[OK] Required release file: docs/release-evidence/templates/flappy_mini/manual-qa-result.md - Found
+[OK] Required release file: docs/release-evidence/templates/flappy_mini/validation-output.txt - Found
+[OK] Required release file: docs/release-evidence/templates/flappy_mini/runtime-notes.md - Found
+[OK] Required release file: docs/release-evidence/templates/flappy_mini/screenshot.png - Found
+[OK] Required release file: docs/release-evidence/templates/swipe_runner/manual-qa-result.md - Found
+[OK] Required release file: docs/release-evidence/templates/swipe_runner/validation-output.txt - Found
+[OK] Required release file: docs/release-evidence/templates/swipe_runner/runtime-notes.md - Found
+[OK] Required release file: docs/release-evidence/templates/swipe_runner/screenshot.png - Found
+[OK] Required release file: docs/release-evidence/templates/puzzle_game/manual-qa-result.md - Found
+[OK] Required release file: docs/release-evidence/templates/puzzle_game/validation-output.txt - Found
+[OK] Required release file: docs/release-evidence/templates/puzzle_game/runtime-notes.md - Found
+[OK] Required release file: docs/release-evidence/templates/puzzle_game/screenshot.png - Found
+[OK] Required release file: docs/release-evidence/templates/quiz_game/manual-qa-result.md - Found
+[OK] Required release file: docs/release-evidence/templates/quiz_game/validation-output.txt - Found
+[OK] Required release file: docs/release-evidence/templates/quiz_game/runtime-notes.md - Found
+[OK] Required release file: docs/release-evidence/templates/quiz_game/screenshot.png - Found
+[OK] Required release file: docs/release-evidence/templates/simple_physics/manual-qa-result.md - Found
+[OK] Required release file: docs/release-evidence/templates/simple_physics/validation-output.txt - Found
+[OK] Required release file: docs/release-evidence/templates/simple_physics/runtime-notes.md - Found
+[OK] Required release file: docs/release-evidence/templates/simple_physics/screenshot.png - Found
+[OK] Required release test: tests/test_template_quality_phase34.py - Found
+[OK] Required release test: tests/test_release_readiness_phase35.py - Found
+[OK] Required release test: tests/test_changelog_phase36.py - Found
+[OK] Required release test: tests/test_generated_project_smoke_phase37.py - Found
+[OK] Required release test: tests/test_health_phase38.py - Found
+[OK] Required release test: tests/test_pre_release_audit_phase40.py - Found
+[OK] Required release test: tests/test_public_readme_phase42.py - Found
+[OK] Required release test: tests/test_quick_start_tutorial_phase43.py - Found
+[OK] Required release test: tests/test_template_media_phase44.py - Found
+[OK] Required release test: tests/test_cli_error_messages_phase45.py - Found
+[OK] Required release test: tests/test_template_validation_phase46.py - Found
+[OK] Required release test: tests/test_production_template_polish_phase47.py - Found
+[OK] Required release test: tests/test_tap_counter_polish_phase48.py - Found
+[OK] Required release test: tests/test_flappy_mini_polish_phase49.py - Found
+[OK] Required release test: tests/test_swipe_runner_polish_phase50.py - Found
+[OK] Required release test: tests/test_puzzle_game_polish_phase51.py - Found
+[OK] Required release test: tests/test_quiz_game_polish_phase52.py - Found
+[OK] Required release test: tests/test_simple_physics_polish_phase53.py - Found
+[OK] Required release test: tests/test_template_polish_summary_phase54.py - Found
+[OK] Required release test: tests/test_generated_project_validation_phase55.py - Found
+[OK] Required release test: tests/test_template_runtime_readiness_phase56.py - Found
+[OK] Required release test: tests/test_release_evidence_phase57.py - Found
+[OK] Required release test: tests/test_runtime_qa_tracker_phase58.py - Found
+[OK] Required release test: tests/test_tap_counter_runtime_qa_phase59.py - Found
+[OK] Required release test: tests/test_flappy_mini_runtime_qa_phase60.py - Found
+[OK] Required release test: tests/test_swipe_runner_runtime_qa_phase61.py - Found
+[OK] Required release test: tests/test_puzzle_game_runtime_qa_phase62.py - Found
+[OK] Required release test: tests/test_quiz_game_runtime_qa_phase63.py - Found
+[OK] Required release test: tests/test_simple_physics_runtime_qa_phase64.py - Found
+[OK] pyproject release metadata - Required package metadata found
+[OK] README package identity - README mentions package identity
+[OK] CHANGELOG version notes - CHANGELOG contains version sections
+[OK] Build command available - Run manually: python -m build
+[OK] Twine check command available - Run manually after build: twine check dist/*
+
+Release readiness status: PASS
+Next manual commands:
+  pytest
+  python -m build
+  twine check dist/*
+HyperKit Final Pre-release Audit
+===================================
+Root: <PROJECT_ROOT>
+
+Passed: 9/10
+Failed: 1
+
+[OK] Release readiness report - 101/101 release checks passed
+[OK] Project root has pyproject.toml - Found pyproject.toml
+[OK] Project root has README.md - Found README.md
+[OK] No temporary cleanup scripts - No temporary scripts found
+[FAIL] No local machine paths leaked - docs/release-evidence/templates/simple_physics/validation-output.txt: <PROJECT_ROOT>; docs/release-evidence/templates/simple_physics/validation-output.txt: <PACKAGE_SOURCE>
+[OK] Markdown code fences are balanced - All markdown fences balanced
+[OK] README has no escaped newline artifacts - README has no literal escaped newline artifacts
+[OK] README links important docs - All required docs linked
+[OK] Final audit documentation - Found docs/FINAL_PRE_RELEASE_AUDIT.md
+[OK] Final audit tests - Found tests/test_pre_release_audit_phase40.py
+
+Final pre-release audit status: FAIL
+Fix failed checks before preparing a release.

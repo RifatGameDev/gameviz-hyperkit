@@ -240,6 +240,26 @@ REQUIRED_PATHS = {
     "Quiz Game runtime QA tests": (
         "tests/test_quiz_game_runtime_qa_phase63.py"
     ),
+
+    "Simple Physics manual QA result": (
+        "docs/release-evidence/templates/"
+        "simple_physics/manual-qa-result.md"
+    ),
+    "Simple Physics validation evidence": (
+        "docs/release-evidence/templates/"
+        "simple_physics/validation-output.txt"
+    ),
+    "Simple Physics runtime notes": (
+        "docs/release-evidence/templates/"
+        "simple_physics/runtime-notes.md"
+    ),
+    "Simple Physics runtime screenshot": (
+        "docs/release-evidence/templates/"
+        "simple_physics/screenshot.png"
+    ),
+    "Simple Physics runtime QA tests": (
+        "tests/test_simple_physics_runtime_qa_phase64.py"
+    ),
 }
 
 

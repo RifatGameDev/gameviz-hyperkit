@@ -107,6 +107,10 @@ REQUIRED_RELEASE_FILES = [
     "docs/release-evidence/templates/quiz_game/validation-output.txt",
     "docs/release-evidence/templates/quiz_game/runtime-notes.md",
     "docs/release-evidence/templates/quiz_game/screenshot.png",
+    "docs/release-evidence/templates/simple_physics/manual-qa-result.md",
+    "docs/release-evidence/templates/simple_physics/validation-output.txt",
+    "docs/release-evidence/templates/simple_physics/runtime-notes.md",
+    "docs/release-evidence/templates/simple_physics/screenshot.png",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -138,6 +142,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_swipe_runner_runtime_qa_phase61.py",
     "tests/test_puzzle_game_runtime_qa_phase62.py",
     "tests/test_quiz_game_runtime_qa_phase63.py",
+    "tests/test_simple_physics_runtime_qa_phase64.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
