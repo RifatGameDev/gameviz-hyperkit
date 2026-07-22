@@ -12,7 +12,7 @@
             "display_name": "Flappy Mini",
             "status": "pass",
             "result_file": "templates/flappy_mini/manual-qa-result.md",
-            "notes": "Manual runtime QA passed on Windows with Python 3.11."
+            "notes": "Manual runtime QA passed after randomized pipe-gap stabilization."
         },
         "swipe_runner": {
             "display_name": "Swipe Runner",

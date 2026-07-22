@@ -18,6 +18,7 @@ The player taps to keep the bird in the air and pass moving pipes.
 - particle feedback
 - clean mobile-style layout
 - helper-based starter structure
+- randomized vertical pipe-gap positions
 
 ---
 
@@ -44,6 +45,7 @@ Each tap:
 - gives light camera feedback
 
 The player scores when the pipe moves off screen.
+The pipe gap changes vertical position after each completed pipe cycle.
 
 The game ends if the bird:
 
@@ -135,6 +137,8 @@ Try changing:
 - score goal
 - camera shake intensity
 - particle count
+- pipe gap size
+- minimum and maximum gap positions
 
 ---
 
@@ -149,6 +153,12 @@ Inside `main.py`, you can change:
 `self.pipe_speed`
 
 `self.score_goal`
+
+`self.pipe_gap`
+
+`self.pipe_min_gap_center`
+
+`self.pipe_max_gap_center`
 
 You can also customize the bird:
 

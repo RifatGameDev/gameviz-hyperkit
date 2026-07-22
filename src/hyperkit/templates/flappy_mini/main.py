@@ -1,4 +1,5 @@
 from __future__ import annotations
+import random
 
 from hyperkit import (
     AssetManager,
@@ -22,6 +23,9 @@ class FlappyMiniScene(Scene):
         self.jump_force = 520
         self.bird_velocity = 0
         self.pipe_speed = 260
+        self.pipe_gap = 320
+        self.pipe_min_gap_center = 390
+        self.pipe_max_gap_center = 760
         self.score_goal = 10
         self.game_over = False
 
@@ -151,6 +155,8 @@ class FlappyMiniScene(Scene):
             )
         )
 
+        self._randomize_pipe_gap()
+
         self.status_label = self.add(
             TextLabel(
                 x=45,
@@ -199,9 +205,30 @@ class FlappyMiniScene(Scene):
         self.pipe_bottom.x -= self.pipe_speed * dt
 
         if self.pipe_top.x < -130:
-            self.pipe_top.x = 760
-            self.pipe_bottom.x = 760
+            self._reset_pipes()
             self._add_score()
+
+    def _reset_pipes(self):
+        self.pipe_top.x = 760
+        self.pipe_bottom.x = 760
+        self._randomize_pipe_gap()
+
+    def _randomize_pipe_gap(self):
+        gap_center = random.randint(
+            self.pipe_min_gap_center,
+            self.pipe_max_gap_center,
+        )
+
+        half_gap = self.pipe_gap / 2
+
+        bottom_height = gap_center - half_gap
+        top_y = gap_center + half_gap
+
+        self.pipe_bottom.y = 0
+        self.pipe_bottom.height = bottom_height
+
+        self.pipe_top.y = top_y
+        self.pipe_top.height = 1280 - top_y
 
     def _add_score(self):
         self.score.add(1)
@@ -254,8 +281,7 @@ class FlappyMiniScene(Scene):
         self.bird_velocity = 0
         self.bird.color = (1.0, 0.82, 0.22, 1)
 
-        self.pipe_top.x = 760
-        self.pipe_bottom.x = 760
+        self._reset_pipes()
 
         self.score.reset()
         self.score_label.set_text("Score: 0")

@@ -3,6 +3,9 @@ from pathlib import Path
 
 from hyperkit import generate_release_evidence_report
 
+TEMPLATE_MAIN = Path(
+    "src/hyperkit/templates/flappy_mini/main.py"
+)
 
 EVIDENCE_ROOT = Path(
     "docs/release-evidence/templates/flappy_mini"
@@ -108,3 +111,15 @@ def test_release_evidence_report_marks_flappy_mini_complete():
     assert "flappy_mini" in report.complete_templates
     assert report.complete_count >= 2
     assert report.failed_count == 0
+
+
+def test_flappy_mini_randomizes_pipe_gap_position():
+    content = read(TEMPLATE_MAIN)
+
+    assert "import random" in content
+    assert "self.pipe_gap" in content
+    assert "self.pipe_min_gap_center" in content
+    assert "self.pipe_max_gap_center" in content
+    assert "def _randomize_pipe_gap(self):" in content
+    assert "random.randint(" in content
+    assert "self._randomize_pipe_gap()" in content

@@ -35,6 +35,13 @@
 - ProgressBar updated correctly: Yes
 - High score updated correctly: Yes
 
+## Pipe Variation
+
+- Pipe gap position changed after each cycle: Yes
+- Pipe gap remained playable: Yes
+- Top and bottom pipe alignment remained correct: Yes
+- Restart generated a valid pipe gap: Yes
+
 ## Collision Testing
 
 - Ground collision triggered game over: Yes
