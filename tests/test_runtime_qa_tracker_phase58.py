@@ -58,11 +58,15 @@ def test_runtime_qa_tracker_uses_allowed_statuses():
         assert template_entry["status"] in ALLOWED_QA_STATUSES
 
 
-def test_initial_runtime_qa_statuses_are_pending():
+def test_runtime_qa_tracker_supports_incremental_progress():
     tracker = json.loads(read(TRACKER_PATH))
+    statuses = {
+        template_entry["status"]
+        for template_entry in tracker["templates"].values()
+    }
 
-    for template_entry in tracker["templates"].values():
-        assert template_entry["status"] == "pending"
+    assert statuses
+    assert statuses.issubset(ALLOWED_QA_STATUSES)
 
 
 def test_release_evidence_structure_validation_passes():
@@ -73,12 +77,16 @@ def test_release_evidence_structure_validation_passes():
     assert report.passed
 
 
-def test_release_evidence_is_not_complete_initially():
+def test_release_evidence_progress_counts_are_consistent():
     report = generate_release_evidence_report(".")
 
-    assert report.complete_count == 0
-    assert report.pending_count == len(EXPECTED_TEMPLATES)
-    assert not report.all_complete
+    tracked_total = (
+        report.complete_count
+        + report.pending_count
+        + report.qa_failed_count
+    )
+
+    assert tracked_total == len(EXPECTED_TEMPLATES)
 
 
 def test_release_evidence_report_contains_progress_summary():
@@ -87,9 +95,10 @@ def test_release_evidence_report_contains_progress_summary():
 
     assert "HyperKit Release Evidence Validation" in output
     assert "Structure checks failed: 0" in output
-    assert "Completed QA evidence: 0/6" in output
+    assert "Completed QA evidence:" in output
+    assert f"/{len(EXPECTED_TEMPLATES)}" in output
     assert "Evidence structure validation status: PASS" in output
-    assert "Evidence completion status: IN PROGRESS" in output
+    assert "Evidence completion status:" in output
 
 
 def test_development_evidence_validation_returns_success():
@@ -101,13 +110,17 @@ def test_development_evidence_validation_returns_success():
     assert result == 0
 
 
-def test_strict_evidence_validation_returns_failure_while_pending():
+def test_strict_evidence_validation_matches_completion_state():
+    report = generate_release_evidence_report(".")
+
     result = run_release_evidence_validation(
         ".",
         require_complete=True,
     )
 
-    assert result == 1
+    expected_result = 0 if report.all_complete else 1
+
+    assert result == expected_result
 
 
 def test_runtime_qa_tracker_doc_exists():

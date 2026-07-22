@@ -87,6 +87,10 @@ REQUIRED_RELEASE_FILES = [
     "src/hyperkit/release_evidence.py",
     "docs/RUNTIME_QA_TRACKER_PHASE58.md",
     "docs/release-evidence/qa-tracker.json",
+    "docs/release-evidence/templates/tap_counter/manual-qa-result.md",
+    "docs/release-evidence/templates/tap_counter/validation-output.txt",
+    "docs/release-evidence/templates/tap_counter/runtime-notes.md",
+    "docs/release-evidence/templates/tap_counter/screenshot.png",
 ]
 
 REQUIRED_RELEASE_TESTS = [
@@ -113,6 +117,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_template_runtime_readiness_phase56.py",
     "tests/test_release_evidence_phase57.py",
     "tests/test_runtime_qa_tracker_phase58.py",
+    "tests/test_tap_counter_runtime_qa_phase59.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [

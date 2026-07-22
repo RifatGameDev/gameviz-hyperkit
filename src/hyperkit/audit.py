@@ -70,6 +70,7 @@ FORBIDDEN_SCAN_IGNORE_FILES = {
     "tests/test_quiz_game_polish_phase52.py",
     "tests/test_simple_physics_polish_phase53.py",
     "tests/test_template_polish_summary_phase54.py",
+    "tests/test_tap_counter_runtime_qa_phase59.py",
 }
 
 REQUIRED_README_LINKS = [

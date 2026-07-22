@@ -144,6 +144,25 @@ REQUIRED_PATHS = {
     "Runtime QA tracker tests": (
         "tests/test_runtime_qa_tracker_phase58.py"
     ),
+    "Tap Counter manual QA result": (
+        "docs/release-evidence/templates/"
+        "tap_counter/manual-qa-result.md"
+    ),
+    "Tap Counter validation evidence": (
+        "docs/release-evidence/templates/"
+        "tap_counter/validation-output.txt"
+    ),
+    "Tap Counter runtime notes": (
+        "docs/release-evidence/templates/"
+        "tap_counter/runtime-notes.md"
+    ),
+    "Tap Counter runtime screenshot": (
+        "docs/release-evidence/templates/"
+        "tap_counter/screenshot.png"
+    ),
+    "Tap Counter runtime QA tests": (
+        "tests/test_tap_counter_runtime_qa_phase59.py"
+    ),
 }
 
 
