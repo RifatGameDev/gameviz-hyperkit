@@ -260,6 +260,17 @@ REQUIRED_PATHS = {
     "Simple Physics runtime QA tests": (
         "tests/test_simple_physics_runtime_qa_phase64.py"
     ),
+    "Final QA certification": (
+        "docs/release-evidence/"
+        "FINAL_QA_CERTIFICATION_PHASE65.md"
+    ),
+    "Final certification output": (
+        "docs/release-evidence/"
+        "final-certification-output.txt"
+    ),
+    "Final QA certification tests": (
+        "tests/test_final_qa_certification_phase65.py"
+    ),
 }
 
 
