@@ -1,142 +1,237 @@
 # Changelog
 
-All notable changes to HyperKit will be documented in this file.
+All notable changes to GameViz HyperKit are documented in this file.
 
-HyperKit follows a simple version history format for now:
+HyperKit currently uses the following change categories:
 
 - Added
 - Changed
 - Fixed
 - Documentation
 - Internal
+- Validation
 
 ---
 
 ## Unreleased
 
+No unreleased changes are currently documented.
+
+---
+
+## 0.1.2 - 2026-07-23
+
+### Changed
+
+- Updated the public README for the current PyPI release workflow.
+- Improved PyPI installation instructions.
+- Improved the quick-start workflow.
+- Standardized template names using dash-style CLI examples.
+- Added Python version support information.
+- Corrected the public GitHub repository links.
+- Improved package identity and project-link documentation.
+- Simplified the public development and build instructions.
+
+### Fixed
+
+- Removed outdated TestPyPI-only release-status information.
+- Corrected README command formatting around `cd my-game`.
+- Restored the conditional `tomli` dependency for Python versions below 3.11.
+- Corrected repository URLs from the old `gameviz-rifat` path to `RifatGameDev`.
+- Corrected the release branch documentation state.
+
+### Documentation
+
+- Added clearer PyPI installation verification commands.
+- Added a public project-links section.
+- Improved CLI command documentation.
+- Improved template aliases documentation.
+- Improved the limitations and roadmap sections.
+- Added a contributing section.
+
+### Validation
+
+- Package version synchronized between `pyproject.toml` and `hyperkit.__version__`.
+- Public README tests updated for version `0.1.2`.
+- Full automated test suite required before publication.
+- Wheel and source distribution validation required before publication.
+
+---
+
 ## 0.1.1 - 2026-07-22
 
 ### Added
 
-- Six polished starter templates for common 2D hypercasual game concepts.
+- Six polished built-in starter templates:
+  - Tap Counter
+  - Flappy Mini
+  - Swipe Runner
+  - Puzzle Game
+  - Quiz Game
+  - Simple Physics
 - Complete manual runtime QA evidence for every built-in template.
-- Generated-project validation and strict release-evidence certification.
-- Installed-package validation through TestPyPI.
-- Release health, readiness, and pre-release audit commands.
-
-### Improved
-
-- Template documentation, gameplay feedback, restart flows, and persistence.
-- CLI project generation and error handling.
-- Runtime stability across all supported templates.
-- Flappy Mini pipe-gap position variation.
-- Release preparation and package-validation workflows.
-
-### Fixed
-
-- Python 3.9 and Python 3.10 TOML compatibility using the conditional `tomli` fallback.
-- The Python 3.10 startup failure caused by direct `tomllib` imports.
-- Local-machine paths leaking into committed release evidence.
-
-### Validation
-
-- `0.1.1rc2` was validated through TestPyPI.
-- Python 3.10 and Python 3.11 installed-package checks passed.
-- All six templates passed manual runtime QA.
-
-### Added
-
-- Helper-based starter template upgrades.
-- Template quality checklist tests.
-- Release readiness checklist and package metadata validation.
-- Template helper usage documentation.
-- Screen bounds and world bounds helpers.
-- Progress bar helper.
-- UI progress bar helper.
-- Camera follow helper.
-- Level data loading helper.
-- Input action mapping helper.
-- Timer and cooldown helpers.
-- Scene transition helper.
-- Camera shake helper.
-- Particle helper.
-- Sprite animation helper.
-- Animation helper.
-- Audio playback helper.
-- Image rendering support.
-- Asset loading helper.
+- Generated-project validation.
+- Strict release-evidence validation.
+- Installed-package validation.
+- Project health report command.
+- Release readiness command.
+- Final pre-release audit command.
+- Runtime evidence tracker.
+- Template-specific QA result tests.
 
 ### Changed
 
-- Upgraded `tap_counter` template with helper-based visual feedback.
-- Upgraded `flappy_mini` template with helper-based gameplay feedback.
-- Upgraded `swipe_runner` template with helper-based gameplay feedback.
-- Upgraded `puzzle_game` template with helper-based puzzle feedback.
-- Upgraded `quiz_game` template with helper-based quiz feedback.
-- Upgraded `simple_physics` template with helper-based physics feedback.
-- Improved template README files with gameplay and helper usage sections.
-- Improved documentation structure for templates and helper systems.
+- Improved template gameplay feedback.
+- Improved restart behavior across templates.
+- Improved score and high-score persistence.
+- Improved CLI project generation.
+- Improved CLI error handling.
+- Improved generated-project documentation.
+- Improved runtime stability across all six templates.
+- Added vertical pipe-gap variation to Flappy Mini.
+- Improved release preparation and package validation workflows.
 
 ### Fixed
 
-- Added Python 3.9 and Python 3.10 compatibility for TOML parsing.
-- Added `tomli` as a conditional dependency for Python versions below 3.11.
-- Added a `tomllib` compatibility fallback in production modules.
-- Fixed the startup failure caused by `ModuleNotFoundError: No module named 'tomllib'`.
+- Added Python 3.9 and Python 3.10 TOML compatibility.
+- Added a conditional `tomli` dependency for Python versions below 3.11.
+- Fixed the Python 3.10 startup failure caused by direct `tomllib` imports.
+- Fixed local-machine paths appearing in committed QA evidence.
+- Fixed template documentation consistency issues.
+- Fixed release-readiness validation coverage.
 
-### Documentation
+### Validation
 
-- Added `docs/TEMPLATE_HELPERS.md`.
-- Added `docs/TEMPLATE_QUALITY_CHECKLIST.md`.
-- Added `docs/RELEASE_READINESS_CHECKLIST.md`.
-- Added `docs/VERSION_HISTORY.md`.
-- Added this `CHANGELOG.md`.
+- Validated through TestPyPI using release candidate `0.1.1rc2`.
+- Verified using clean installed-package environments.
+- Verified on Python 3.10 and Python 3.11.
+- All six templates passed manual runtime QA.
+- Published publicly on PyPI as `0.1.1`.
 
 ---
 
-### Added
+## 0.1.1rc2 - TestPyPI Release Candidate
 
-- Complete manual runtime QA evidence for all six templates.
-- Strict release-evidence validation.
-- Final QA certification and release-candidate readiness checks.
-- Generated-project validation across all built-in templates.
+### Fixed
 
-### Improved
+- Added `tomli` as a conditional dependency for Python versions below 3.11.
+- Added a compatibility fallback from `tomllib` to `tomli`.
+- Fixed `ModuleNotFoundError` on Python 3.9 and Python 3.10.
+- Corrected Python compatibility metadata.
 
-- Flappy Mini now varies its vertical pipe-gap position.
-- Template documentation, runtime notes, screenshots, and validation evidence.
-- Release health checks and pre-release auditing.
-- Runtime reliability for Tap Counter, Flappy Mini, Swipe Runner, Puzzle Game, Quiz Game, and Simple Physics.
+### Validation
+
+- Tested with Python 3.10.
+- Tested with Python 3.11.
+- Verified CLI startup.
+- Verified template listing.
+- Verified generated-project creation.
+- Verified installed-package isolation from local source code.
 
 ### Notes
 
-- This release candidate supersedes `0.1.1rc1`.
-- Python 3.10 and Python 3.11 validation must pass before uploading RC2 to TestPyPI.
-- Stable PyPI publication is not yet approved.
+- This release candidate superseded `0.1.1rc1`.
+- It became the validated source for stable release `0.1.1`.
 
-<!-- ## 0.1.0
+---
+
+## 0.1.1rc1 - TestPyPI Release Candidate
+
+### Added
+
+- First complete release-candidate build.
+- Six-template installed-package validation.
+- Runtime QA certification.
+- Clean TestPyPI installation validation.
+- Release-candidate readiness evidence.
+
+### Validation
+
+- Wheel build passed.
+- Source distribution build passed.
+- Twine validation passed.
+- TestPyPI upload passed.
+- Clean Python 3.11 installation passed.
+
+### Notes
+
+- A Python 3.10 compatibility issue was discovered.
+- The compatibility issue was corrected in `0.1.1rc2`.
+
+---
+
+## 0.1.1.dev1 - TestPyPI Validation Build
+
+### Added
+
+- Initial TestPyPI upload validation.
+- Clean package-installation validation.
+- Final pre-release audit command.
+- Release readiness command.
+- Project health report command.
+- Template generation validation.
+
+### Notes
+
+- This version was used only for TestPyPI workflow validation.
+- It was not intended for real PyPI publication.
+
+---
+
+## 0.1.0
 
 ### Added
 
 - Initial HyperKit package structure.
-- `hyperkit` import package.
-- `hyperkit` CLI command.
+- `hyperkit` Python import package.
+- `hyperkit` command-line interface.
 - Project generation with `hyperkit new`.
 - Template listing with `hyperkit list-templates`.
 - Project validation with `hyperkit validate`.
 - Package information with `hyperkit info`.
-- Doctor command with `hyperkit doctor`.
-- Core `Game`, `Scene`, and `GameObject` structure.
-- State management helper.
-- Score and high-score helper.
-- UI helpers including buttons and text labels.
+- Environment checks with `hyperkit doctor`.
+- Core `Game` system.
+- Core `Scene` system.
+- Core `GameObject` system.
+- State-management helpers.
+- Score and high-score helpers.
+- Save and persistence helpers.
+- Tap and click input.
+- Swipe input.
+- Collision helpers.
+- Basic physics helpers.
+- Text and UI helpers.
 - Responsive virtual canvas scaling.
-- Starter templates:
-  - `tap_counter`
-  - `flappy_mini`
-  - `swipe_runner`
-  - `puzzle_game`
-  - `quiz_game`
-  - `simple_physics`
-- Example demos.
-- TestPyPI package publishing test. -->
+- Asset-loading helpers.
+- Image-rendering support.
+- Audio helpers.
+- Animation helpers.
+- Particle helpers.
+- Camera helpers.
+- Timer helpers.
+- Screen-bound helpers.
+- Progress-bar helpers.
+
+### Core Helpers
+
+- Particle helper
+- Camera shake helper
+- Progress bar helper
+- Input action mapping helper
+- Level data loading helper
+
+### Templates
+
+- `tap_counter`
+- `flappy_mini`
+- `swipe_runner`
+- `puzzle_game`
+- `quiz_game`
+- `simple_physics`
+
+### Internal
+
+- Initial automated test suite.
+- Example demonstration projects.
+- Initial packaging configuration.
+- Initial TestPyPI package workflow.

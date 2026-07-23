@@ -1,25 +1,31 @@
 # GameViz HyperKit
 
-**GameViz HyperKit** is a lightweight Python SDK for creating **2D hypercasual and hybrid casual game prototypes** quickly.
+[![PyPI Version](https://img.shields.io/pypi/v/gameviz-hyperkit)](https://pypi.org/project/gameviz-hyperkit/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/gameviz-hyperkit)](https://pypi.org/project/gameviz-hyperkit/)
+[![License](https://img.shields.io/pypi/l/gameviz-hyperkit)](LICENSE)
 
-It is designed for beginners, students, game jam developers, indie developers, and small teams who want to test simple mobile-style game ideas using Python.
+**GameViz HyperKit** is a lightweight Python SDK for creating **2D hypercasual and hybrid-casual game prototypes** quickly.
 
-> HyperKit is not a full game engine like Unity, Unreal, or Godot.  
+It is designed for beginners, students, game-jam developers, indie developers, and small teams who want to test simple mobile-style game ideas using Python.
+
+> HyperKit is not a full game engine like Unity, Unreal Engine, or Godot.  
 > It is a prototype-focused SDK with reusable systems, helper modules, and ready-made templates.
 
 ---
 
 ## Current Release Status
 
-HyperKit is currently in active development.
+HyperKit is publicly available on PyPI and remains in active alpha development.
 
-Current package validation status:
+Current package status:
 
-- TestPyPI validation build: `0.1.1.dev1`
-- Real PyPI release: not published yet
-- Stable public release target: future `1.0.0`
+- Current package version: `0.1.2`
+- Installation command: `pip install gameviz-hyperkit`
+- Package maturity: Alpha / early SDK preview
+- API stability target: future `1.0.0`
+- Supported Python versions: Python 3.9–3.12
 
-For now, HyperKit should be considered an early SDK preview.
+HyperKit is suitable for learning, prototyping, game jams, and early 2D mobile game experiments. It is not yet intended to replace a full production game engine.
 
 ---
 
@@ -28,6 +34,17 @@ For now, HyperKit should be considered an early SDK preview.
 - Package name: `gameviz-hyperkit`
 - Import name: `hyperkit`
 - CLI command: `hyperkit`
+- License: MIT
+
+---
+
+## Project Links
+
+- [PyPI Package](https://pypi.org/project/gameviz-hyperkit/)
+- [GitHub Repository](https://github.com/RifatGameDev/gameviz-hyperkit)
+- [Issue Tracker](https://github.com/RifatGameDev/gameviz-hyperkit/issues)
+- [Changelog](CHANGELOG.md)
+- [Version History](docs/VERSION_HISTORY.md)
 
 ---
 
@@ -35,11 +52,12 @@ For now, HyperKit should be considered an early SDK preview.
 
 HyperKit is useful for:
 
-- learning 2D game development with Python
-- building quick hypercasual game prototypes
-- creating tap, swipe, runner, puzzle, quiz, and physics-style demos
-- testing simple game ideas before moving to a larger engine
-- students and indie developers who want a small code-first game toolkit
+- Learning 2D game development with Python
+- Building quick hypercasual game prototypes
+- Creating tap, swipe, runner, puzzle, quiz, and physics-style demos
+- Testing simple game concepts before moving to a larger engine
+- Building game-jam and educational projects
+- Students and indie developers who want a small code-first game toolkit
 
 ---
 
@@ -48,70 +66,96 @@ HyperKit is useful for:
 - 2D game project structure
 - Scene system
 - GameObject system
-- Tap/click input
+- Tap and click input
 - Swipe input
+- Input action mapping
 - Score and high-score system
-- Save system
+- Save and persistence system
 - Collision helpers
 - Simple physics helpers
-- Text label and basic UI helpers
+- Text labels and basic UI helpers
 - Responsive virtual canvas scaling
 - Asset loading helpers
 - Image rendering support
 - Audio playback helpers
-- Animation helpers
+- Tween and animation helpers
 - Sprite animation helper
 - Particle helper
 - Camera shake helper
 - Scene transition helper
 - Timer and cooldown helpers
-- Input action mapping helper
 - Level data loading helper
 - Camera follow helper
-- Screen bounds and world bounds helpers
+- Screen and world-bound helpers
 - UI progress bar helper
 - CLI project generator
 - Ready-made starter templates
+- Generated-project validation
 - Project health and release validation commands
+- Experimental Android build configuration
 
 ---
 
 ## Installation
 
-For local development from the repository:
+### Install from PyPI
 
 ```bash
-pip install -e .
+pip install gameviz-hyperkit
 ```
 
-Check that HyperKit is working:
+Verify the installation:
 
 ```bash
 hyperkit doctor
+hyperkit list-templates
 ```
 
-Install the current TestPyPI validation build:
+### Install for Local Development
+
+Clone the repository:
 
 ```bash
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ gameviz-hyperkit==0.1.1.dev1
+git clone https://github.com/RifatGameDev/gameviz-hyperkit.git
+cd gameviz-hyperkit
+```
+
+Install HyperKit in editable development mode:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run the tests:
+
+```bash
+pytest
 ```
 
 ---
 
 ## Quick Start
 
-Create a new game project:
-
-```bash
-hyperkit new my-game --template tap_counter
-cd my-game
-python main.py
-```
-
-You can also use dash-style template names:
+Create a Tap Counter project:
 
 ```bash
 hyperkit new my-game --template tap-counter
+cd my-game
+hyperkit run
+```
+
+You may also launch the generated project directly:
+
+```bash
+python main.py
+```
+
+The name `my-game` is only an example. You can choose another project name:
+
+```bash
+hyperkit new flappy-project --template flappy-mini
+cd flappy-project
+hyperkit run
 ```
 
 Generated projects include:
@@ -133,22 +177,31 @@ my-game/
 
 ## Available Templates
 
-Check all templates:
+List all templates:
 
 ```bash
 hyperkit list-templates
 ```
 
-Current templates:
-
 | Template | Command Name | Description |
 | --- | --- | --- |
-| Tap Counter | `tap_counter` / `tap-counter` | Tap/click scoring prototype |
-| Flappy Mini | `flappy_mini` / `flappy-mini` | Flappy-style tap-to-jump prototype |
-| Swipe Runner | `swipe_runner` / `swipe-runner` | 3-lane swipe runner prototype |
-| Puzzle Game | `puzzle_game` / `puzzle-game` | Color matching puzzle prototype |
-| Quiz Game | `quiz_game` / `quiz-game` | Educational quiz game prototype |
-| Simple Physics | `simple_physics` / `simple-physics` | Gravity, bounce, and coin collection prototype |
+| Tap Counter | `tap-counter` | Tap or click scoring prototype |
+| Flappy Mini | `flappy-mini` | Flappy-style tap-to-jump prototype |
+| Swipe Runner | `swipe-runner` | Three-lane swipe runner prototype |
+| Puzzle Game | `puzzle-game` | Color-matching puzzle prototype |
+| Quiz Game | `quiz-game` | Educational quiz prototype |
+| Simple Physics | `simple-physics` | Gravity, bounce, and coin-collection prototype |
+
+Underscore-style aliases are also accepted:
+
+```text
+tap_counter
+flappy_mini
+swipe_runner
+puzzle_game
+quiz_game
+simple_physics
+```
 
 ---
 
@@ -160,7 +213,9 @@ from hyperkit import Game, GameObject, Scene, ScoreManager, TextLabel
 
 class MyScene(Scene):
     def start(self):
-        self.score = ScoreManager(high_score_key="my_game_high_score")
+        self.score = ScoreManager(
+            high_score_key="my_game_high_score"
+        )
 
         self.player = self.add(
             GameObject(
@@ -188,18 +243,28 @@ class MyScene(Scene):
     def on_tap(self, x, y):
         self.player.x = x - self.player.width / 2
         self.player.y = y - self.player.height / 2
+
         self.score.add(1)
-        self.score_label.set_text(f"Score: {self.score.value}")
+        self.score_label.set_text(
+            f"Score: {self.score.value}"
+        )
 
 
-Game(title="My HyperKit Game", width=720, height=1280).set_scene(MyScene()).run()
+game = Game(
+    title="My HyperKit Game",
+    width=720,
+    height=1280,
+)
+
+game.set_scene(MyScene())
+game.run()
 ```
 
 ---
 
 ## Asset Folders
 
-HyperKit projects use a simple asset structure:
+Generated HyperKit projects use this asset structure:
 
 ```text
 assets/
@@ -209,8 +274,6 @@ assets/
 └── data/
 ```
 
-Supported asset types:
-
 | Folder | Supported Types |
 | --- | --- |
 | `assets/images` | `.png`, `.jpg`, `.jpeg`, `.webp` |
@@ -218,122 +281,138 @@ Supported asset types:
 | `assets/fonts` | `.ttf`, `.otf` |
 | `assets/data` | `.json`, `.csv`, `.txt` |
 
-> FBX is not directly supported in HyperKit.  
-> For 2D games, export FBX source assets as PNG images, animation frames, or sprite sheets.
+> FBX files are not directly supported.  
+> For 2D projects, export source assets as PNG images, animation frames, or sprite sheets.
 
 ---
 
 ## CLI Commands
 
-Check environment:
+### Check the environment
 
 ```bash
 hyperkit doctor
 ```
 
-Show templates:
+### List templates
 
 ```bash
 hyperkit list-templates
 ```
 
-Create a new project:
+### Create a project
 
 ```bash
-hyperkit new my-game --template tap_counter
+hyperkit new my-game --template tap-counter
 ```
 
-Run a project:
+### Enter the generated project
+
+```bash
+cd my-game
+```
+
+### Run the project
 
 ```bash
 hyperkit run
 ```
 
-Show project metadata:
+### Show project metadata
 
 ```bash
 hyperkit info
 ```
 
-Validate a generated project:
+### Validate the current project
 
 ```bash
 hyperkit validate
 ```
 
-Show package health report:
+### Show the package health report
 
 ```bash
 hyperkit health
 ```
 
-Show release readiness report:
+### Show release readiness
 
 ```bash
 hyperkit release-check
 ```
 
-Show final pre-release audit report:
+### Run the final pre-release audit
 
 ```bash
 hyperkit pre-release-audit
 ```
 
-Create experimental Android build configuration:
-
-```bash
-hyperkit init-android
-```
-
-Run experimental Android build:
-
-```bash
-hyperkit build android
-```
-
-Validate built-in templates:
+### Validate built-in templates
 
 ```bash
 hyperkit validate-templates
 ```
 
-Validate generated projects for all polished templates:
+### Validate generated projects
 
 ```bash
 hyperkit validate-generated-projects
 ```
 
-Validate the runtime QA tracker and evidence structure:
+### Validate manual QA evidence
 
 ```bash
 hyperkit validate-release-evidence
 ```
 
+### Require complete QA evidence
+
+```bash
+hyperkit validate-release-evidence --require-complete
+```
+
+### Create experimental Android configuration
+
+```bash
+hyperkit init-android
+```
+
+### Run the experimental Android build workflow
+
+```bash
+hyperkit build android
+```
+
+---
+
 ## Development Commands
 
-Run tests:
+Install development dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run the complete test suite:
 
 ```bash
 pytest
 ```
 
-Build package:
+Build the wheel and source distribution:
 
 ```bash
 python -m build
 ```
 
-Check package:
+Validate the distribution files:
 
 ```bash
-twine check dist/*
+python -m twine check dist/*
 ```
 
-Upload to TestPyPI:
-
-```bash
-python -m twine upload --repository testpypi dist/*
-```
+Package publication is handled through the project's controlled release workflow.
 
 ---
 
@@ -341,8 +420,8 @@ python -m twine upload --repository testpypi dist/*
 
 - [Version History](docs/VERSION_HISTORY.md)
 - [Changelog](CHANGELOG.md)
-- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)
 - [Templates Guide](docs/TEMPLATES.md)
+- [Template Helper Usage Guide](docs/TEMPLATE_HELPERS.md)
 - [Template Quality Checklist](docs/TEMPLATE_QUALITY_CHECKLIST.md)
 - [Release Readiness Checklist](docs/RELEASE_READINESS_CHECKLIST.md)
 - [Generated Project Smoke Tests](docs/GENERATED_PROJECT_SMOKE_TESTS.md)
@@ -355,6 +434,14 @@ python -m twine upload --repository testpypi dist/*
 - [CLI Error Messages](docs/CLI_ERROR_MESSAGES.md)
 - [Template Validation](docs/TEMPLATE_VALIDATION.md)
 - [Production Template Polish Checklist](docs/PRODUCTION_TEMPLATE_POLISH_CHECKLIST.md)
+- [Template Stabilization Checklist](docs/TEMPLATE_STABILIZATION_CHECKLIST.md)
+- [Template Manual QA Checklist](docs/TEMPLATE_MANUAL_QA_CHECKLIST.md)
+- [Manual QA Result Template](docs/MANUAL_QA_RESULT_TEMPLATE.md)
+- [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
+- [Release Evidence Workspace](docs/release-evidence/README.md)
+
+### Template Polish and Runtime Documentation
+
 - [Tap Counter Polish - Phase 48](docs/TAP_COUNTER_POLISH_PHASE48.md)
 - [Flappy Mini Polish - Phase 49](docs/FLAPPY_MINI_POLISH_PHASE49.md)
 - [Swipe Runner Polish - Phase 50](docs/SWIPE_RUNNER_POLISH_PHASE50.md)
@@ -362,51 +449,69 @@ python -m twine upload --repository testpypi dist/*
 - [Quiz Game Polish - Phase 52](docs/QUIZ_GAME_POLISH_PHASE52.md)
 - [Simple Physics Polish - Phase 53](docs/SIMPLE_PHYSICS_POLISH_PHASE53.md)
 - [Template Polish Summary - Phase 54](docs/TEMPLATE_POLISH_SUMMARY_PHASE54.md)
-- [Template Stabilization Checklist](docs/TEMPLATE_STABILIZATION_CHECKLIST.md)
 - [Generated Project Validation - Phase 55](docs/GENERATED_PROJECT_VALIDATION_PHASE55.md)
 - [Template Runtime Readiness - Phase 56](docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md)
-- [Template Manual QA Checklist](docs/TEMPLATE_MANUAL_QA_CHECKLIST.md)
-- [Manual QA Result Template](docs/MANUAL_QA_RESULT_TEMPLATE.md)
-- [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
-- [Release Evidence Workspace](docs/release-evidence/README.md)
 - [Runtime QA Tracker - Phase 58](docs/RUNTIME_QA_TRACKER_PHASE58.md)
 
+---
 ---
 
 ## Current Limitations
 
-- HyperKit is not a full game engine.
+- HyperKit is not a complete general-purpose game engine.
 - Advanced 3D rendering is not supported.
-- Android APK build support is still experimental.
-- AdMob and analytics helpers are not implemented yet.
-- The current focus is 2D hypercasual and hybrid casual prototypes.
-- Templates are designed for learning and prototyping, not final commercial production yet.
+- Android APK build support remains experimental.
+- AdMob and analytics helper systems are not implemented yet.
+- The current focus is 2D hypercasual and hybrid-casual prototypes.
+- Templates are intended for learning and prototyping rather than finished commercial production.
+- The public API may change before version `1.0.0`.
 
 ---
 
 ## Roadmap
 
-Planned improvements:
+Planned improvements include:
 
-- better beginner documentation
-- more polished starter templates
-- template screenshots and GIFs
-- improved CLI error messages
-- stronger asset and audio workflow
-- mobile-friendly project structure
+- Better beginner documentation
+- More polished starter templates
+- Template screenshots and animated demonstrations
+- Stronger asset and audio workflows
+- Improved mobile project structure
 - Android build workflow improvements
-- AdMob and analytics helper layer
-- more complete example games
-- future stable `1.0.0` release
+- AdMob integration helpers
+- Analytics integration helpers
+- Additional complete example games
+- More automated package compatibility testing
+- Stable API milestone for version `1.0.0`
+
+---
+
+## Contributing
+
+Contributions, issue reports, and improvement suggestions are welcome.
+
+Before submitting changes:
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
+Use the issue tracker to report bugs or request features.
 
 ---
 
 ## License
 
-MIT License.
+GameViz HyperKit is distributed under the MIT License.
+
+See [LICENSE](LICENSE) for details.
 
 ---
 
 ## Author
 
 Developed by **Md. Rifat Hossain Chowdhury** / **GameViz**.
+
+- GitHub: [RifatGameDev](https://github.com/RifatGameDev)
+- PyPI package: [gameviz-hyperkit](https://pypi.org/project/gameviz-hyperkit/)
