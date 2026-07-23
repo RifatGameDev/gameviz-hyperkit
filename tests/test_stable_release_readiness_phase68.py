@@ -19,7 +19,7 @@ def test_stable_project_metadata():
     with PYPROJECT.open("rb") as file:
         project = tomllib.load(file)["project"]
 
-    assert project["version"] == "0.1.1"
+    assert project["version"] == "0.1.2"
     assert project["requires-python"] == ">=3.9"
 
     urls = project["urls"]

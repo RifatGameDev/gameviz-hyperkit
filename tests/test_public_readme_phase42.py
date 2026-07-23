@@ -23,17 +23,24 @@ def test_public_readme_has_package_identity():
 def test_public_readme_explains_current_status():
     content = readme_content()
 
-    assert "TestPyPI validation build" in content
-    assert "0.1.1.dev1" in content
-    assert "Real PyPI release: not published yet" in content
-    assert "early SDK preview" in content
+    assert "Current package version: `0.1.2`" in content
+    assert (
+        "Installation command: "
+        "`pip install gameviz-hyperkit`"
+        in content
+    )
+    assert "Package maturity: Alpha / early SDK preview" in content
+    assert "API stability target: future `1.0.0`" in content
+    assert "Supported Python versions: Python 3.9–3.12" in content
 
 
 def test_public_readme_has_quick_start():
     content = readme_content()
 
     assert "## Quick Start" in content
-    assert "hyperkit new my-game --template tap_counter" in content
+    assert "hyperkit new my-game --template tap-counter" in content
+    assert "cd my-game" in content
+    assert "hyperkit run" in content
     assert "python main.py" in content
 
 
@@ -52,9 +59,10 @@ def test_public_readme_mentions_limitations_and_roadmap():
     content = readme_content()
 
     assert "## Current Limitations" in content
-    assert "Android APK build support is still experimental" in content
+    assert "Android APK build support remains experimental" in content
+    assert "AdMob and analytics helper systems are not implemented yet" in content
     assert "## Roadmap" in content
-    assert "future stable `1.0.0` release" in content
+    assert "Stable API milestone for version `1.0.0`" in content
 
 
 def test_public_readme_links_core_docs():
