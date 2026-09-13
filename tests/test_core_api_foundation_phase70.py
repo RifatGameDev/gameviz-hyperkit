@@ -1,7 +1,11 @@
-import tomllib
 from pathlib import Path
 
 import pytest
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 
 import hyperkit
 from hyperkit import (
@@ -21,19 +25,34 @@ from hyperkit import (
 PYPROJECT = Path("pyproject.toml")
 
 
-def test_phase70_development_version_is_synchronized():
+def test_phase70_version_is_synchronized():
     with PYPROJECT.open("rb") as file:
         project = tomllib.load(file)["project"]
 
-    assert project["version"] == "0.2.0.dev0"
-    assert hyperkit.__version__ == "0.2.0.dev0"
+    assert project["version"] == hyperkit.__version__
+    assert project["version"].startswith("0.2.")
 
 
 def test_core_error_types_inherit_from_hyperkit_error():
-    assert issubclass(HyperKitConfigurationError, HyperKitError)
-    assert issubclass(HyperKitCompatibilityError, HyperKitError)
-    assert issubclass(HyperKitRuntimeError, HyperKitError)
-    assert issubclass(HyperKitValidationError, HyperKitError)
+    assert issubclass(
+        HyperKitConfigurationError,
+        HyperKitError,
+    )
+
+    assert issubclass(
+        HyperKitCompatibilityError,
+        HyperKitError,
+    )
+
+    assert issubclass(
+        HyperKitRuntimeError,
+        HyperKitError,
+    )
+
+    assert issubclass(
+        HyperKitValidationError,
+        HyperKitError,
+    )
 
 
 def test_sdk_config_defaults_are_stable():
@@ -51,14 +70,20 @@ def test_sdk_config_defaults_are_stable():
 
 
 def test_sdk_config_normalizes_log_level():
-    config = SDKConfig(log_level="debug")
+    config = SDKConfig(
+        log_level="debug"
+    )
 
     assert config.log_level == "DEBUG"
 
 
 def test_sdk_config_rejects_invalid_log_level():
-    with pytest.raises(HyperKitConfigurationError):
-        SDKConfig(log_level="trace")
+    with pytest.raises(
+        HyperKitConfigurationError
+    ):
+        SDKConfig(
+            log_level="trace"
+        )
 
 
 def test_current_api_version_is_exposed():
@@ -69,7 +94,6 @@ def test_current_api_version_is_exposed():
 def test_api_compatibility_rules():
     assert is_api_compatible("0.1") is True
     assert is_api_compatible("0.2") is True
-
     assert is_api_compatible("0.3") is False
     assert is_api_compatible("1.0") is False
 
@@ -77,5 +101,7 @@ def test_api_compatibility_rules():
 def test_require_api_version_rejects_incompatible_api():
     require_api_version("0.2")
 
-    with pytest.raises(HyperKitCompatibilityError):
+    with pytest.raises(
+        HyperKitCompatibilityError
+    ):
         require_api_version("0.3")

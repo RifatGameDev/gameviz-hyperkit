@@ -15,7 +15,11 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: `0.2.0.dev0`
+No unreleased changes are currently documented.
+
+---
+
+## 0.2.0 - 2026-09-13
 
 ### Added
 
@@ -25,30 +29,46 @@ Current development version: `0.2.0.dev0`
 - Public API compatibility versioning.
 - `API_VERSION`, `get_api_version`, `is_api_compatible`, and `require_api_version`.
 - Regression tests for the new core API foundation.
-
 - Phase 71 runtime lifecycle and SDK context foundation.
 - `RuntimeState` lifecycle model.
 - `SDKContext` for configuration, services, and runtime metadata.
 - Runtime service registry.
 - Default SDK context management.
 - Runtime lifecycle regression tests.
-
 - Phase 72 core runtime hardening.
 - Structured HyperKit logging.
 - Runtime platform and environment detection.
 - Versioned `hyperkit.toml` project configuration loading.
 - HyperKit deprecation framework.
 - Runtime lifecycle integration for games.
-- Stable `0.2` public API contract and regression validation.
+- Stable `0.2` public API contract.
+- Public API regression validation.
+- Runtime environment metadata support.
+- Project configuration schema versioning.
+- Game runtime start and stop helpers.
 
 ### Changed
 
-- Development package version advanced from `0.1.2` to `0.2.0.dev0`.
-- Phase 68 release-readiness tests now preserve the historical `0.1.1` release evidence without hard-coding the current development version.
+- Package version advanced from `0.1.2` to `0.2.0`.
+- Core SDK architecture prepared for the HyperKit `0.2.0` release.
+- Runtime services now share a common SDK context and lifecycle foundation.
+- Phase 68 release-readiness tests preserve the historical `0.1.1` release evidence without hard-coding the active package version.
+- Public release documentation updated for HyperKit `0.2.0`.
+- Public API compatibility checks expanded for the `0.2` SDK contract.
 
 ### Internal
 
-- Started the HyperKit `0.2.0` development cycle.
+- Completed the HyperKit `0.2.0` core SDK development cycle.
+- Added runtime, logging, environment, lifecycle, project configuration, deprecation, and API-contract modules.
+- Added Phase 70, Phase 71, and Phase 72 regression coverage.
+
+### Validation
+
+- Public API contract validation passed.
+- Phase 72 completion tests passed.
+- Full automated regression suite reached 529 passing tests before release preparation.
+- Package supports Python 3.9 through Python 3.12.
+- Wheel and source distribution validation is required before publication.
 
 ---
 
@@ -64,8 +84,6 @@ Current development version: `0.2.0.dev0`
 - Corrected the public GitHub repository links.
 - Improved package identity and project-link documentation.
 - Simplified the public development and build instructions.
-- Core SDK architecture prepared for the HyperKit `0.2.0` release.
-- Runtime services now share a common SDK context and lifecycle foundation.
 
 ### Fixed
 
