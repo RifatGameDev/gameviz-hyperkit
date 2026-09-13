@@ -23,15 +23,27 @@ def test_public_readme_has_package_identity():
 def test_public_readme_explains_current_status():
     content = readme_content()
 
-    assert "Current package version: `0.1.2`" in content
+    assert "Current package version: `0.2.0`" in content
     assert (
         "Installation command: "
         "`pip install gameviz-hyperkit`"
         in content
     )
-    assert "Package maturity: Alpha / early SDK preview" in content
-    assert "API stability target: future `1.0.0`" in content
-    assert "Supported Python versions: Python 3.9–3.12" in content
+    assert (
+        "Package maturity: "
+        "Alpha / early SDK preview"
+        in content
+    )
+    assert (
+        "API stability target: "
+        "future `1.0.0`"
+        in content
+    )
+    assert (
+        "Supported Python versions: "
+        "Python 3.9–3.12"
+        in content
+    )
 
 
 def test_public_readme_has_quick_start():
