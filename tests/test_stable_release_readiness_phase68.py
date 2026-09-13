@@ -15,11 +15,11 @@ def read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_stable_project_metadata():
+def test_project_metadata_preserves_release_requirements():
     with PYPROJECT.open("rb") as file:
         project = tomllib.load(file)["project"]
 
-    assert project["version"] == "0.1.2"
+    assert project["name"] == "gameviz-hyperkit"
     assert project["requires-python"] == ">=3.9"
 
     urls = project["urls"]

@@ -23,7 +23,8 @@ def test_public_readme_has_package_identity():
 def test_public_readme_explains_current_status():
     content = readme_content()
 
-    assert "Current package version: `0.1.2`" in content
+    assert "Latest public PyPI release: `0.1.2`" in content
+    assert "Current development version: `0.2.0.dev0`" in content
     assert (
         "Installation command: "
         "`pip install gameviz-hyperkit`"

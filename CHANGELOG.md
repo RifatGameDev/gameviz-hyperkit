@@ -15,7 +15,25 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-No unreleased changes are currently documented.
+Current development version: `0.2.0.dev0`
+
+### Added
+
+- Phase 70 core API foundation.
+- Base `HyperKitError` exception hierarchy.
+- SDK configuration foundation with `SDKConfig`.
+- Public API compatibility versioning.
+- `API_VERSION`, `get_api_version`, `is_api_compatible`, and `require_api_version`.
+- Regression tests for the new core API foundation.
+
+### Changed
+
+- Development package version advanced from `0.1.2` to `0.2.0.dev0`.
+- Phase 68 release-readiness tests now preserve the historical `0.1.1` release evidence without hard-coding the current development version.
+
+### Internal
+
+- Started the HyperKit `0.2.0` development cycle.
 
 ---
 

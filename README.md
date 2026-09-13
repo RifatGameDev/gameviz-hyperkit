@@ -19,11 +19,14 @@ HyperKit is publicly available on PyPI and remains in active alpha development.
 
 Current package status:
 
-- Current package version: `0.1.2`
+- Latest public PyPI release: `0.1.2`
+- Current development version: `0.2.0.dev0`
 - Installation command: `pip install gameviz-hyperkit`
 - Package maturity: Alpha / early SDK preview
 - API stability target: future `1.0.0`
 - Supported Python versions: Python 3.9–3.12
+
+The public PyPI release remains `0.1.2`, while active development toward HyperKit `0.2.0` continues on the development branches.
 
 HyperKit is suitable for learning, prototyping, game jams, and early 2D mobile game experiments. It is not yet intended to replace a full production game engine.
 
@@ -453,7 +456,6 @@ Package publication is handled through the project's controlled release workflow
 - [Template Runtime Readiness - Phase 56](docs/TEMPLATE_RUNTIME_READINESS_PHASE56.md)
 - [Runtime QA Tracker - Phase 58](docs/RUNTIME_QA_TRACKER_PHASE58.md)
 
----
 ---
 
 ## Current Limitations
