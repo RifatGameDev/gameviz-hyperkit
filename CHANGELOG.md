@@ -33,6 +33,14 @@ Current development version: `0.2.0.dev0`
 - Default SDK context management.
 - Runtime lifecycle regression tests.
 
+- Phase 72 core runtime hardening.
+- Structured HyperKit logging.
+- Runtime platform and environment detection.
+- Versioned `hyperkit.toml` project configuration loading.
+- HyperKit deprecation framework.
+- Runtime lifecycle integration for games.
+- Stable `0.2` public API contract and regression validation.
+
 ### Changed
 
 - Development package version advanced from `0.1.2` to `0.2.0.dev0`.
@@ -56,6 +64,8 @@ Current development version: `0.2.0.dev0`
 - Corrected the public GitHub repository links.
 - Improved package identity and project-link documentation.
 - Simplified the public development and build instructions.
+- Core SDK architecture prepared for the HyperKit `0.2.0` release.
+- Runtime services now share a common SDK context and lifecycle foundation.
 
 ### Fixed
 

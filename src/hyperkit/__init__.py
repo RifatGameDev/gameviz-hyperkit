@@ -179,6 +179,46 @@ from .release_evidence import (
     run_release_evidence_validation,
 )
 
+from .project_config import (
+    PROJECT_CONFIG_FILENAME,
+    PROJECT_CONFIG_SCHEMA_VERSION,
+    ProjectConfig,
+    find_project_config,
+    load_project_config,
+)
+
+from .deprecation import (
+    HyperKitDeprecationWarning,
+    build_deprecation_message,
+    deprecated,
+    warn_deprecated,
+)
+
+from .environment import (
+    PlatformKind,
+    RuntimeEnvironment,
+    detect_platform,
+    detect_runtime_environment,
+)
+
+from .logging import (
+    configure_logging,
+    get_logger,
+    log_event,
+)
+
+from .lifecycle import (
+    run_game,
+    start_runtime,
+    stop_runtime,
+)
+
+from .api_contract import (
+    REQUIRED_PUBLIC_API,
+    get_missing_public_api,
+    validate_public_api,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -305,6 +345,28 @@ __all__ = [
     "format_release_evidence_report",
     "generate_release_evidence_report",
     "run_release_evidence_validation",
+    "PROJECT_CONFIG_FILENAME",
+    "PROJECT_CONFIG_SCHEMA_VERSION",
+    "ProjectConfig",
+    "find_project_config",
+    "load_project_config",
+    "HyperKitDeprecationWarning",
+    "build_deprecation_message",
+    "deprecated",
+    "warn_deprecated",
+    "PlatformKind",
+    "RuntimeEnvironment",
+    "detect_platform",
+    "detect_runtime_environment",
+    "configure_logging",
+    "get_logger",
+    "log_event",
+    "start_runtime",
+    "stop_runtime",
+    "run_game",
+    "REQUIRED_PUBLIC_API",
+    "get_missing_public_api",
+    "validate_public_api",
 ]
 
 
