@@ -60,6 +60,7 @@ Issues = "https://github.com/RifatGameDev/gameviz-hyperkit/issues"
 
 [project.scripts]
 hyperkit = "hyperkit.cli:main"
+hyperkit-android = "hyperkit.android_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
