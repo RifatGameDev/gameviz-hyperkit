@@ -20,6 +20,15 @@ from .compatibility import (
 
 from .config import SDKConfig
 
+from .runtime import (
+    RuntimeState,
+    SDKContext,
+    create_context,
+    get_default_context,
+    reset_default_context,
+    set_default_context,
+)
+
 from .collision import (
     circle_intersects_circle,
     rect_intersects_circle,
@@ -180,6 +189,12 @@ except Exception:  # pragma: no cover
 __all__ = [
     "API_VERSION",
     "SDKConfig",
+    "RuntimeState",
+    "SDKContext",
+    "create_context",
+    "get_default_context",
+    "set_default_context",
+    "reset_default_context",
     "HyperKitError",
     "HyperKitConfigurationError",
     "HyperKitCompatibilityError",

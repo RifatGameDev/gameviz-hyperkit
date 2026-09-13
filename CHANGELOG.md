@@ -26,6 +26,13 @@ Current development version: `0.2.0.dev0`
 - `API_VERSION`, `get_api_version`, `is_api_compatible`, and `require_api_version`.
 - Regression tests for the new core API foundation.
 
+- Phase 71 runtime lifecycle and SDK context foundation.
+- `RuntimeState` lifecycle model.
+- `SDKContext` for configuration, services, and runtime metadata.
+- Runtime service registry.
+- Default SDK context management.
+- Runtime lifecycle regression tests.
+
 ### Changed
 
 - Development package version advanced from `0.1.2` to `0.2.0.dev0`.
