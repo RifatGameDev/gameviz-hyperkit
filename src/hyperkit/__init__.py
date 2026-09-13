@@ -370,4 +370,21 @@ __all__ = [
 ]
 
 
-__version__ = "0.2.0"
+__version__ = "0.3.0.dev0"
+
+# Phase 73 mobile public API
+from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
+from .lifecycle import pause_runtime, background_runtime, resume_runtime
+from .environment import detect_wsl
+
+__all__.extend([
+    "DisplayOrientation",
+    "MobileDisplayProfile",
+    "MobileViewport",
+    "SafeAreaInsets",
+    "normalize_orientation",
+    "pause_runtime",
+    "background_runtime",
+    "resume_runtime",
+    "detect_wsl",
+])

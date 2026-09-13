@@ -1,11 +1,7 @@
 """Runtime lifecycle and SDK context for GameViz HyperKit.
 
-The runtime context provides a small, stable foundation for systems that
-need to share configuration, services, and runtime metadata.
-
-Future HyperKit systems such as Android integration, advertising,
-analytics, plugins, platform services, and developer tooling can build
-on this context without relying on unrelated module-level globals.
+The runtime context provides a stable foundation for systems that need
+to share configuration, services, lifecycle state, and runtime metadata.
 """
 
 from __future__ import annotations
@@ -23,98 +19,197 @@ class RuntimeState(str, Enum):
 
     CREATED = "created"
     RUNNING = "running"
+    PAUSED = "paused"
+    BACKGROUND = "background"
     STOPPED = "stopped"
 
 
 @dataclass
 class SDKContext:
-    """Shared runtime context for HyperKit systems.
+    """Shared runtime context for HyperKit systems."""
 
-    A context owns:
-
-    - SDK configuration
-    - runtime lifecycle state
-    - registered runtime services
-    - lightweight runtime metadata
-
-    Contexts are intentionally independent so tests, tools, generated
-    projects, and future plugin systems can create isolated runtimes.
-    """
-
-    config: SDKConfig = field(default_factory=SDKConfig)
+    config: SDKConfig = field(
+        default_factory=SDKConfig
+    )
 
     state: RuntimeState = field(
         default=RuntimeState.CREATED,
         init=False,
     )
 
-    services: Dict[str, object] = field(
+    services: Dict[
+        str,
+        object,
+    ] = field(
         default_factory=dict,
         init=False,
         repr=False,
     )
 
-    metadata: Dict[str, object] = field(
+    metadata: Dict[
+        str,
+        object,
+    ] = field(
         default_factory=dict,
         init=False,
         repr=False,
     )
 
     @property
-    def is_running(self) -> bool:
-        """Return whether the runtime is currently running."""
-
-        return self.state == RuntimeState.RUNNING
+    def is_running(
+        self,
+    ) -> bool:
+        return (
+            self.state
+            == RuntimeState.RUNNING
+        )
 
     @property
-    def is_stopped(self) -> bool:
-        """Return whether the runtime has been stopped."""
+    def is_paused(
+        self,
+    ) -> bool:
+        return (
+            self.state
+            == RuntimeState.PAUSED
+        )
 
-        return self.state == RuntimeState.STOPPED
+    @property
+    def is_background(
+        self,
+    ) -> bool:
+        return (
+            self.state
+            == RuntimeState.BACKGROUND
+        )
 
-    def start(self) -> "SDKContext":
-        """Start or restart the runtime.
+    @property
+    def is_stopped(
+        self,
+    ) -> bool:
+        return (
+            self.state
+            == RuntimeState.STOPPED
+        )
 
-        Calling start repeatedly is safe and idempotent.
-        """
+    @property
+    def is_suspended(
+        self,
+    ) -> bool:
+        return self.state in {
+            RuntimeState.PAUSED,
+            RuntimeState.BACKGROUND,
+        }
 
-        self.state = RuntimeState.RUNNING
+    def start(
+        self,
+    ) -> "SDKContext":
+        self.state = (
+            RuntimeState.RUNNING
+        )
+
         return self
 
-    def stop(self) -> "SDKContext":
-        """Stop the runtime.
+    def pause(
+        self,
+    ) -> "SDKContext":
+        if (
+            self.state
+            == RuntimeState.PAUSED
+        ):
+            return self
 
-        Calling stop repeatedly is safe and idempotent.
-        """
+        if (
+            self.state
+            != RuntimeState.RUNNING
+        ):
+            raise HyperKitRuntimeError(
+                "HyperKit runtime can only "
+                "be paused while running."
+            )
 
-        self.state = RuntimeState.STOPPED
+        self.state = (
+            RuntimeState.PAUSED
+        )
+
         return self
 
-    def reset(self) -> "SDKContext":
-        """Reset the context to its initial runtime state.
+    def background(
+        self,
+    ) -> "SDKContext":
+        if (
+            self.state
+            == RuntimeState.BACKGROUND
+        ):
+            return self
 
-        Configuration is preserved while runtime services and metadata
-        are cleared.
-        """
+        if self.state not in {
+            RuntimeState.RUNNING,
+            RuntimeState.PAUSED,
+        }:
+            raise HyperKitRuntimeError(
+                "HyperKit runtime can only enter "
+                "the background after it has started."
+            )
 
-        self.state = RuntimeState.CREATED
+        self.state = (
+            RuntimeState.BACKGROUND
+        )
+
+        return self
+
+    def resume(
+        self,
+    ) -> "SDKContext":
+        if (
+            self.state
+            == RuntimeState.RUNNING
+        ):
+            return self
+
+        if self.state not in {
+            RuntimeState.PAUSED,
+            RuntimeState.BACKGROUND,
+        }:
+            raise HyperKitRuntimeError(
+                "HyperKit runtime can only resume "
+                "from paused or background state."
+            )
+
+        self.state = (
+            RuntimeState.RUNNING
+        )
+
+        return self
+
+    def stop(
+        self,
+    ) -> "SDKContext":
+        self.state = (
+            RuntimeState.STOPPED
+        )
+
+        return self
+
+    def reset(
+        self,
+    ) -> "SDKContext":
+        self.state = (
+            RuntimeState.CREATED
+        )
+
         self.services.clear()
         self.metadata.clear()
 
         return self
 
-    def require_running(self) -> None:
-        """Require this context to be running.
-
-        Raises:
-            HyperKitRuntimeError:
-                If the runtime has not been started or has been stopped.
-        """
-
+    def require_running(
+        self,
+    ) -> None:
         if not self.is_running:
             raise HyperKitRuntimeError(
                 "HyperKit runtime is not running. "
-                "Call context.start() before using this operation."
+                "Call context.start() before "
+                "using this operation."
             )
 
     def register_service(
@@ -124,66 +219,71 @@ class SDKContext:
         *,
         replace: bool = False,
     ) -> object:
-        """Register a runtime service.
+        normalized_name = (
+            self._normalize_name(
+                name
+            )
+        )
 
-        Args:
-            name:
-                Unique service name.
-
-            service:
-                Service instance.
-
-            replace:
-                Allow replacement of an existing service.
-
-        Returns:
-            The registered service.
-
-        Raises:
-            HyperKitRuntimeError:
-                If the name is invalid or already registered.
-        """
-
-        normalized_name = self._normalize_name(name)
-
-        if normalized_name in self.services and not replace:
+        if (
+            normalized_name
+            in self.services
+            and not replace
+        ):
             raise HyperKitRuntimeError(
-                f"HyperKit service '{normalized_name}' "
+                f"HyperKit service "
+                f"'{normalized_name}' "
                 "is already registered."
             )
 
-        self.services[normalized_name] = service
+        self.services[
+            normalized_name
+        ] = service
 
         return service
 
     def get_service(
         self,
         name: str,
-        default: Optional[object] = None,
+        default: Optional[
+            object
+        ] = None,
     ) -> Optional[object]:
-        """Return a registered runtime service."""
-
-        normalized_name = self._normalize_name(name)
+        normalized_name = (
+            self._normalize_name(
+                name
+            )
+        )
 
         return self.services.get(
             normalized_name,
             default,
         )
 
-    def has_service(self, name: str) -> bool:
-        """Return whether a runtime service is registered."""
+    def has_service(
+        self,
+        name: str,
+    ) -> bool:
+        normalized_name = (
+            self._normalize_name(
+                name
+            )
+        )
 
-        normalized_name = self._normalize_name(name)
-
-        return normalized_name in self.services
+        return (
+            normalized_name
+            in self.services
+        )
 
     def unregister_service(
         self,
         name: str,
     ) -> Optional[object]:
-        """Remove and return a registered service."""
-
-        normalized_name = self._normalize_name(name)
+        normalized_name = (
+            self._normalize_name(
+                name
+            )
+        )
 
         return self.services.pop(
             normalized_name,
@@ -195,22 +295,30 @@ class SDKContext:
         key: str,
         value: object,
     ) -> object:
-        """Set a runtime metadata value."""
+        normalized_key = (
+            self._normalize_name(
+                key
+            )
+        )
 
-        normalized_key = self._normalize_name(key)
-
-        self.metadata[normalized_key] = value
+        self.metadata[
+            normalized_key
+        ] = value
 
         return value
 
     def get_metadata(
         self,
         key: str,
-        default: Optional[object] = None,
+        default: Optional[
+            object
+        ] = None,
     ) -> Optional[object]:
-        """Return a runtime metadata value."""
-
-        normalized_key = self._normalize_name(key)
+        normalized_key = (
+            self._normalize_name(
+                key
+            )
+        )
 
         return self.metadata.get(
             normalized_key,
@@ -221,9 +329,11 @@ class SDKContext:
         self,
         key: str,
     ) -> Optional[object]:
-        """Remove and return a metadata value."""
-
-        normalized_key = self._normalize_name(key)
+        normalized_key = (
+            self._normalize_name(
+                key
+            )
+        )
 
         return self.metadata.pop(
             normalized_key,
@@ -231,15 +341,20 @@ class SDKContext:
         )
 
     @staticmethod
-    def _normalize_name(name: str) -> str:
-        """Validate and normalize service or metadata names."""
-
-        if not isinstance(name, str):
+    def _normalize_name(
+        name: str,
+    ) -> str:
+        if not isinstance(
+            name,
+            str,
+        ):
             raise HyperKitRuntimeError(
                 "Runtime names must be strings."
             )
 
-        normalized = name.strip()
+        normalized = (
+            name.strip()
+        )
 
         if not normalized:
             raise HyperKitRuntimeError(
@@ -249,35 +364,41 @@ class SDKContext:
         return normalized
 
 
-_default_context: Optional[SDKContext] = None
+_default_context: Optional[
+    SDKContext
+] = None
 
 
 def create_context(
-    config: Optional[SDKConfig] = None,
+    config: Optional[
+        SDKConfig
+    ] = None,
 ) -> SDKContext:
-    """Create an independent HyperKit SDK context."""
-
     if config is None:
         config = SDKConfig()
 
-    if not isinstance(config, SDKConfig):
+    if not isinstance(
+        config,
+        SDKConfig,
+    ):
         raise HyperKitRuntimeError(
-            "config must be an SDKConfig instance."
+            "config must be an "
+            "SDKConfig instance."
         )
 
-    return SDKContext(config=config)
+    return SDKContext(
+        config=config
+    )
 
 
-def get_default_context() -> SDKContext:
-    """Return the process-wide default HyperKit context.
-
-    The context is created lazily on first access.
-    """
-
+def get_default_context(
+) -> SDKContext:
     global _default_context
 
     if _default_context is None:
-        _default_context = create_context()
+        _default_context = (
+            create_context()
+        )
 
     return _default_context
 
@@ -285,13 +406,15 @@ def get_default_context() -> SDKContext:
 def set_default_context(
     context: SDKContext,
 ) -> SDKContext:
-    """Replace the process-wide default context."""
-
     global _default_context
 
-    if not isinstance(context, SDKContext):
+    if not isinstance(
+        context,
+        SDKContext,
+    ):
         raise HyperKitRuntimeError(
-            "Default context must be an SDKContext instance."
+            "Default context must be "
+            "an SDKContext instance."
         )
 
     _default_context = context
@@ -299,9 +422,8 @@ def set_default_context(
     return context
 
 
-def reset_default_context() -> None:
-    """Discard the current process-wide default context."""
-
+def reset_default_context(
+) -> None:
     global _default_context
 
     _default_context = None
