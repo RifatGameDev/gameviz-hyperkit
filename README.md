@@ -442,6 +442,7 @@ Package publication is handled through the project's controlled release workflow
 - [Manual QA Result Template](docs/MANUAL_QA_RESULT_TEMPLATE.md)
 - [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
 - [Release Evidence Workspace](docs/release-evidence/README.md)
+- [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
 
