@@ -3,6 +3,10 @@ name: Phase 73 Android Smoke APK
 on:
   workflow_dispatch:
 
+  push:
+    branches:
+      - feature/phase73-android-mobile
+
 permissions:
   contents: read
 

@@ -158,3 +158,17 @@ def test_android_cloud_uploads_apk():
         "hyperkit-phase73-android-smoke-apk"
         in text
     )
+
+
+def test_android_cloud_runs_on_phase73_branch():
+    text = read_workflow()
+
+    assert (
+        "push:"
+        in text
+    )
+
+    assert (
+        "feature/phase73-android-mobile"
+        in text
+    )
