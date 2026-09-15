@@ -38,6 +38,20 @@ def test_android_cloud_workflow_is_manual():
     )
 
 
+def test_android_cloud_runs_on_phase73_branch():
+    text = read_workflow()
+
+    assert (
+        "push:"
+        in text
+    )
+
+    assert (
+        "feature/phase73-android-mobile"
+        in text
+    )
+
+
 def test_android_cloud_uses_ubuntu_2404():
     text = read_workflow()
 
@@ -132,6 +146,15 @@ def test_android_cloud_bundles_current_sdk():
     )
 
 
+def test_android_cloud_accepts_sdk_license():
+    text = read_workflow()
+
+    assert (
+        "android.accept_sdk_license = True"
+        in text
+    )
+
+
 def test_android_cloud_builds_debug_apk():
     text = read_workflow()
 
@@ -156,19 +179,5 @@ def test_android_cloud_uploads_apk():
 
     assert (
         "hyperkit-phase73-android-smoke-apk"
-        in text
-    )
-
-
-def test_android_cloud_runs_on_phase73_branch():
-    text = read_workflow()
-
-    assert (
-        "push:"
-        in text
-    )
-
-    assert (
-        "feature/phase73-android-mobile"
         in text
     )

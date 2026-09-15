@@ -120,7 +120,10 @@ jobs:
               stripped = line.strip()
 
               if stripped.startswith("requirements ="):
-                  prefix, values = line.split("=", 1)
+                  prefix, values = line.split(
+                      "=",
+                      1,
+                  )
 
                   requirements = [
                       item.strip()
@@ -139,19 +142,63 @@ jobs:
 
                   line = (
                       f"{prefix}= "
-                      + ",".join(requirements)
+                      + ",".join(
+                          requirements
+                      )
                   )
 
-              updated_lines.append(line)
+              updated_lines.append(
+                  line
+              )
+
+          final_lines = []
+          license_added = False
+
+          for line in updated_lines:
+              if (
+                  line.strip()
+                  == "[buildozer]"
+                  and not license_added
+              ):
+                  final_lines.append(
+                      "android.accept_sdk_license = True"
+                  )
+
+                  final_lines.append(
+                      ""
+                  )
+
+                  license_added = True
+
+              final_lines.append(
+                  line
+              )
+
+          if not license_added:
+              final_lines.append(
+                  ""
+              )
+
+              final_lines.append(
+                  "android.accept_sdk_license = True"
+              )
 
           spec_path.write_text(
-              "\n".join(updated_lines) + "\n",
+              "\n".join(
+                  final_lines
+              )
+              + "\n",
               encoding="utf-8",
           )
 
           print(
               "Bundled current HyperKit source "
               "into Android smoke project."
+          )
+
+          print(
+              "Android SDK licenses will be "
+              "accepted automatically in CI."
           )
 
           print(
@@ -177,6 +224,10 @@ jobs:
 
           grep \
             "android.archs = arm64-v8a" \
+            phase73-android-smoke/buildozer.spec
+
+          grep \
+            "android.accept_sdk_license = True" \
             phase73-android-smoke/buildozer.spec
 
       - name: Build Android debug APK
