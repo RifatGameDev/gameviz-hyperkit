@@ -93,6 +93,71 @@ def test_android_cloud_installs_buildozer():
     )
 
 
+def test_android_cloud_installs_p4a_prerequisites():
+    text = read_workflow()
+
+    required_packages = (
+        "ant",
+        "autoconf",
+        "automake",
+        "autopoint",
+        "ccache",
+        "cmake",
+        "g++",
+        "gcc",
+        "git",
+        "lbzip2",
+        "libffi-dev",
+        "libltdl-dev",
+        "libtool",
+        "libssl-dev",
+        "make",
+        "openjdk-17-jdk",
+        "patch",
+        "pkg-config",
+        "python3-dev",
+        "python3-venv",
+        "unzip",
+        "wget",
+        "zip",
+    )
+
+    for package in required_packages:
+        assert package in text
+
+
+def test_android_cloud_installs_libltdl_dev():
+    text = read_workflow()
+
+    assert (
+        "libltdl-dev"
+        in text
+    )
+
+
+def test_android_cloud_checks_libtool_macro():
+    text = read_workflow()
+
+    assert (
+        "LT_SYS_SYMBOL_USCORE"
+        in text
+    )
+
+    assert (
+        "/usr/share/aclocal"
+        in text
+    )
+
+
+def test_android_cloud_disables_interactive_p4a_setup():
+    text = read_workflow()
+
+    assert (
+        "PYTHONFORANDROID_PREREQUISITES_INSTALL_INTERACTIVE"
+        in text
+    )
+
+
 def test_android_cloud_generates_hyperkit_project():
     text = read_workflow()
 
@@ -160,6 +225,15 @@ def test_android_cloud_builds_debug_apk():
 
     assert (
         "buildozer -v android debug"
+        in text
+    )
+
+
+def test_android_cloud_searches_for_apk():
+    text = read_workflow()
+
+    assert (
+        '-name "*.apk"'
         in text
     )
 
