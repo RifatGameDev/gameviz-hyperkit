@@ -196,6 +196,15 @@ def test_android_cloud_builds_single_arm64_target():
     )
 
 
+def test_android_cloud_uses_minimum_api_24():
+    text = read_workflow()
+
+    assert (
+        "android.minapi = 24"
+        in text
+    )
+
+
 def test_android_cloud_bundles_current_sdk():
     text = read_workflow()
 

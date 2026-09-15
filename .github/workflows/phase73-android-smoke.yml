@@ -203,12 +203,18 @@ jobs:
                       )
                   )
 
+              elif stripped.startswith(
+                  "android.minapi ="
+              ):
+                  line = (
+                      "android.minapi = 24"
+                  )
+
               updated_lines.append(
                   line
               )
 
           final_lines = []
-
           license_added = False
 
           for line in updated_lines:
@@ -259,6 +265,12 @@ jobs:
           )
 
           print(
+              "Android minimum API forced to 24 "
+              "for current Python-for-Android / "
+              "Python 3.14 compatibility."
+          )
+
+          print(
               spec_path.read_text(
                   encoding="utf-8"
               )
@@ -288,6 +300,10 @@ jobs:
             phase73-android-smoke/buildozer.spec
 
           grep \
+            "android.minapi = 24" \
+            phase73-android-smoke/buildozer.spec
+
+          grep \
             "android.accept_sdk_license = True" \
             phase73-android-smoke/buildozer.spec
 
@@ -295,6 +311,7 @@ jobs:
         working-directory: phase73-android-smoke
         run: |
           echo "Starting HyperKit Android build..."
+          echo "Minimum Android API: 24"
 
           buildozer -v android debug
 
