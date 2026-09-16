@@ -70,6 +70,28 @@ def test_android_cloud_uses_python_311():
     )
 
 
+def test_android_cloud_pins_android_python_311():
+    text = read_workflow()
+
+    assert (
+        "python3==3.11.9"
+        in text
+    )
+
+    assert (
+        "hostpython3==3.11.9"
+        in text
+    )
+
+    assert (
+        "requirements = "
+        "python3==3.11.9,"
+        "hostpython3==3.11.9,"
+        "kivy"
+        in text
+    )
+
+
 def test_android_cloud_installs_java_17():
     text = read_workflow()
 
@@ -123,7 +145,10 @@ def test_android_cloud_installs_p4a_prerequisites():
     )
 
     for package in required_packages:
-        assert package in text
+        assert (
+            package
+            in text
+        )
 
 
 def test_android_cloud_installs_libltdl_dev():
@@ -214,8 +239,18 @@ def test_android_cloud_bundles_current_sdk():
         in text
     )
 
+
+def test_android_cloud_does_not_use_public_hyperkit_requirement():
+    text = read_workflow()
+
     assert (
-        '"gameviz-hyperkit"'
+        "^requirements =.*gameviz-hyperkit"
+        in text
+    )
+
+    assert (
+        "Android build is still depending "
+        "on public gameviz-hyperkit."
         in text
     )
 
