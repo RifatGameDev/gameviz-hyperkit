@@ -4,9 +4,20 @@ from pathlib import Path
 
 import pytest
 
+import hyperkit.android as android_module
+
 from hyperkit.android import (
+    DEFAULT_ACCEPT_SDK_LICENSE,
+    DEFAULT_ANDROID_API,
+    DEFAULT_ANDROID_ARCHS,
+    DEFAULT_ANDROID_HOST_PYTHON_VERSION,
+    DEFAULT_ANDROID_MIN_API,
+    DEFAULT_ANDROID_PYTHON_VERSION,
+    DEFAULT_REQUIREMENTS,
+    MIN_SUPPORTED_ANDROID_API,
     AndroidBuildConfig,
     create_buildozer_spec,
+    detect_android_build_environment,
     format_android_readiness_report,
     generate_android_readiness_report,
     normalize_archs,
@@ -46,6 +57,64 @@ def make_project(
     )
 
     return root
+
+
+def test_phase73_android_defaults_match_validated_runtime():
+    assert DEFAULT_ANDROID_API == 35
+
+    assert DEFAULT_ANDROID_MIN_API == 24
+
+    assert MIN_SUPPORTED_ANDROID_API == 24
+
+    assert (
+        DEFAULT_ANDROID_PYTHON_VERSION
+        == "3.11.9"
+    )
+
+    assert (
+        DEFAULT_ANDROID_HOST_PYTHON_VERSION
+        == "3.11.9"
+    )
+
+    assert DEFAULT_ANDROID_ARCHS == (
+        "arm64-v8a",
+    )
+
+    assert (
+        DEFAULT_ACCEPT_SDK_LICENSE
+        is True
+    )
+
+    assert DEFAULT_REQUIREMENTS == (
+        "python3==3.11.9",
+        "hostpython3==3.11.9",
+        "kivy",
+        "gameviz-hyperkit",
+    )
+
+
+def test_default_android_build_config_uses_validated_settings():
+    config = AndroidBuildConfig()
+
+    assert config.android_api == 35
+
+    assert config.min_api == 24
+
+    assert config.archs == (
+        "arm64-v8a",
+    )
+
+    assert config.requirements == (
+        "python3==3.11.9",
+        "hostpython3==3.11.9",
+        "kivy",
+        "gameviz-hyperkit",
+    )
+
+    assert (
+        config.accept_sdk_license
+        is True
+    )
 
 
 def test_normalized_package_name():
@@ -138,6 +207,19 @@ def test_android_build_config_validates_orientation():
         )
 
 
+def test_android_build_config_rejects_api_below_supported_minimum():
+    with pytest.raises(
+        ValueError,
+        match=(
+            "min_api must be at least 24"
+        ),
+    ):
+        AndroidBuildConfig(
+            android_api=35,
+            min_api=23,
+        )
+
+
 def test_android_build_config_rejects_invalid_api_range():
     with pytest.raises(
         ValueError,
@@ -147,8 +229,8 @@ def test_android_build_config_rejects_invalid_api_range():
         ),
     ):
         AndroidBuildConfig(
-            android_api=23,
-            min_api=24,
+            android_api=24,
+            min_api=25,
         )
 
 
@@ -164,7 +246,7 @@ def test_render_buildozer_spec_contains_mobile_settings():
             "VIBRATE",
         ),
         android_api=35,
-        min_api=23,
+        min_api=24,
         archs=(
             "arm64-v8a",
         ),
@@ -196,7 +278,10 @@ def test_render_buildozer_spec_contains_mobile_settings():
 
     assert (
         "requirements = "
-        "python3,kivy,gameviz-hyperkit"
+        "python3==3.11.9,"
+        "hostpython3==3.11.9,"
+        "kivy,"
+        "gameviz-hyperkit"
         in content
     )
 
@@ -222,7 +307,12 @@ def test_render_buildozer_spec_contains_mobile_settings():
     )
 
     assert (
-        "android.minapi = 23"
+        "android.minapi = 24"
+        in content
+    )
+
+    assert (
+        "android.accept_sdk_license = True"
         in content
     )
 
@@ -263,7 +353,10 @@ def test_create_buildozer_spec(
 
     assert (
         "requirements = "
-        "python3,kivy,gameviz-hyperkit"
+        "python3==3.11.9,"
+        "hostpython3==3.11.9,"
+        "kivy,"
+        "gameviz-hyperkit"
         in content
     )
 
@@ -279,6 +372,26 @@ def test_create_buildozer_spec(
 
     assert (
         "android.permissions = VIBRATE"
+        in content
+    )
+
+    assert (
+        "android.api = 35"
+        in content
+    )
+
+    assert (
+        "android.minapi = 24"
+        in content
+    )
+
+    assert (
+        "android.accept_sdk_license = True"
+        in content
+    )
+
+    assert (
+        "android.archs = arm64-v8a"
         in content
     )
 
@@ -303,7 +416,9 @@ def test_create_buildozer_spec_supports_custom_mobile_config(
         ndk="25b",
         archs=(
             "arm64-v8a",
+            "armeabi-v7a",
         ),
+        accept_sdk_license=False,
     )
 
     content = path.read_text(
@@ -342,7 +457,17 @@ def test_create_buildozer_spec_supports_custom_mobile_config(
     )
 
     assert (
+        "android.api = 35"
+        in content
+    )
+
+    assert (
         "android.minapi = 24"
+        in content
+    )
+
+    assert (
+        "android.accept_sdk_license = False"
         in content
     )
 
@@ -352,8 +477,40 @@ def test_create_buildozer_spec_supports_custom_mobile_config(
     )
 
     assert (
-        "android.archs = arm64-v8a"
+        "android.archs = "
+        "arm64-v8a, armeabi-v7a"
         in content
+    )
+
+
+def test_create_buildozer_spec_supports_custom_requirements(
+    tmp_path,
+):
+    path = create_buildozer_spec(
+        tmp_path,
+        title="Custom Runtime",
+        requirements=(
+            "python3==3.11.9",
+            "hostpython3==3.11.9",
+            "kivy",
+        ),
+    )
+
+    content = path.read_text(
+        encoding="utf-8"
+    )
+
+    assert (
+        "requirements = "
+        "python3==3.11.9,"
+        "hostpython3==3.11.9,"
+        "kivy"
+        in content
+    )
+
+    assert (
+        "gameviz-hyperkit"
+        not in content
     )
 
 
@@ -416,6 +573,73 @@ def test_create_buildozer_spec_can_overwrite(
     assert (
         content
         != "original\n"
+    )
+
+
+def test_windows_guidance_uses_cloud_build_workflow(
+    monkeypatch,
+):
+    def fake_which(
+        command: str,
+    ):
+        if command == "adb":
+            return (
+                r"C:\Android\platform-tools"
+                r"\adb.exe"
+            )
+
+        return None
+
+    monkeypatch.setattr(
+        android_module.platform,
+        "system",
+        lambda: "Windows",
+    )
+
+    monkeypatch.setattr(
+        android_module.shutil,
+        "which",
+        fake_which,
+    )
+
+    environment = (
+        detect_android_build_environment()
+    )
+
+    assert (
+        environment.host_platform
+        == "Windows"
+    )
+
+    assert (
+        environment
+        .direct_android_build_supported
+        is False
+    )
+
+    assert (
+        environment.can_run_android_build
+        is False
+    )
+
+    assert (
+        environment.adb_path
+        is not None
+    )
+
+    assert (
+        "GitHub Actions"
+        in environment.guidance
+    )
+
+    assert (
+        "ADB"
+        in environment.guidance
+    )
+
+    assert (
+        "local Linux or WSL is not required"
+        in environment.guidance
     )
 
 

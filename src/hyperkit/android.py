@@ -12,19 +12,29 @@ DEFAULT_APP_VERSION = "0.1.0"
 DEFAULT_ORIENTATION = "portrait"
 
 DEFAULT_ANDROID_API = 35
-DEFAULT_ANDROID_MIN_API = 23
+DEFAULT_ANDROID_MIN_API = 24
+MIN_SUPPORTED_ANDROID_API = 24
+
+DEFAULT_ANDROID_PYTHON_VERSION = "3.11.9"
+DEFAULT_ANDROID_HOST_PYTHON_VERSION = "3.11.9"
+
+DEFAULT_ACCEPT_SDK_LICENSE = True
 
 DEFAULT_ANDROID_PERMISSIONS = (
     "VIBRATE",
 )
 
+# Phase 73 real-device validation was completed on ARM64.
+#
+# Additional architectures can still be supplied explicitly when
+# generating a buildozer.spec, but ARM64 is the validated default.
 DEFAULT_ANDROID_ARCHS = (
     "arm64-v8a",
-    "armeabi-v7a",
 )
 
 DEFAULT_REQUIREMENTS = (
-    "python3",
+    f"python3=={DEFAULT_ANDROID_PYTHON_VERSION}",
+    f"hostpython3=={DEFAULT_ANDROID_HOST_PYTHON_VERSION}",
     "kivy",
     "gameviz-hyperkit",
 )
@@ -172,6 +182,19 @@ class AndroidBuildConfig:
     """
     Android application/build configuration used when generating
     buildozer.spec.
+
+    The defaults represent the Android configuration validated during
+    HyperKit Phase 73:
+
+    - Android target API 35
+    - Android minimum API 24
+    - Python 3.11.9
+    - hostpython 3.11.9
+    - ARM64
+    - automatic Android SDK license acceptance
+
+    Individual projects may still override supported settings where
+    appropriate.
     """
 
     title: str = "HyperKit Game"
@@ -197,6 +220,8 @@ class AndroidBuildConfig:
     ndk: Optional[str] = None
 
     archs: Tuple[str, ...] = DEFAULT_ANDROID_ARCHS
+
+    accept_sdk_license: bool = DEFAULT_ACCEPT_SDK_LICENSE
 
     source_include_exts: Tuple[str, ...] = (
         DEFAULT_SOURCE_INCLUDE_EXTS
@@ -248,6 +273,13 @@ class AndroidBuildConfig:
         if self.min_api <= 0:
             raise ValueError(
                 "min_api must be greater than zero."
+            )
+
+        if self.min_api < MIN_SUPPORTED_ANDROID_API:
+            raise ValueError(
+                "min_api must be at least "
+                f"{MIN_SUPPORTED_ANDROID_API} "
+                "for HyperKit Android builds."
             )
 
         if self.min_api > self.android_api:
@@ -425,9 +457,21 @@ def detect_android_build_environment(
     """
     Detect Android-related development tools and host support.
 
-    HyperKit allows Android configuration generation everywhere,
-    but Buildozer compilation is expected to run from Linux/macOS.
-    Windows users are directed to WSL.
+    HyperKit can generate Android configuration on every supported
+    desktop platform.
+
+    Native Buildozer compilation is expected to run on Linux/macOS.
+
+    Windows development is supported through the HyperKit
+    Windows-first workflow:
+
+    - develop locally on Windows
+    - generate Android configuration locally
+    - compile the APK in GitHub Actions/Linux
+    - download the APK to Windows
+    - deploy to a physical Android device through ADB
+
+    Local Linux or WSL is not required for that cloud-build workflow.
     """
 
     host_platform = (
@@ -451,6 +495,9 @@ def detect_android_build_environment(
         "adb"
     )
 
+    # Keep WSL detection for backwards compatibility with the existing
+    # environment-report structure, but HyperKit no longer recommends
+    # WSL as the default Windows Android workflow.
     wsl_path = (
         shutil.which("wsl")
         or shutil.which("wsl.exe")
@@ -470,24 +517,13 @@ def detect_android_build_environment(
     )
 
     if normalized_host == "windows":
-        if wsl_path:
-            guidance = (
-                "Windows detected. Build Android packages "
-                "from WSL 2/Linux. WSL is available on "
-                "this machine. Open your Linux shell, "
-                "install the Android build dependencies "
-                "there, and run 'hyperkit build android' "
-                "from that environment."
-            )
-
-        else:
-            guidance = (
-                "Windows detected. Direct Buildozer "
-                "Android compilation is not supported by "
-                "HyperKit on native Windows. Install WSL 2 "
-                "with a Linux distribution, then run the "
-                "Android build inside WSL."
-            )
+        guidance = (
+            "Windows detected. HyperKit can generate Android "
+            "configuration and deploy APKs through ADB on "
+            "native Windows. Compile Android APKs with the "
+            "HyperKit GitHub Actions/Linux cloud-build "
+            "workflow; local Linux or WSL is not required."
+        )
 
     elif (
         direct_supported
@@ -600,6 +636,10 @@ def render_buildozer_spec(
                 "android.minapi = "
                 f"{config.min_api}"
             ),
+            (
+                "android.accept_sdk_license = "
+                f"{config.accept_sdk_license}"
+            ),
         ]
     )
 
@@ -649,11 +689,17 @@ def create_buildozer_spec(
     requirements: Optional[
         Sequence[str]
     ] = None,
+    accept_sdk_license: bool = (
+        DEFAULT_ACCEPT_SDK_LICENSE
+    ),
 ) -> Path:
     """
     Create buildozer.spec for a HyperKit project.
 
     Existing files are preserved unless overwrite=True.
+
+    Defaults match the Android configuration validated during
+    HyperKit Phase 73 real-device testing.
     """
 
     root = Path(path).resolve()
@@ -701,6 +747,9 @@ def create_buildozer_spec(
         archs=tuple(
             archs
             or DEFAULT_ANDROID_ARCHS
+        ),
+        accept_sdk_license=(
+            accept_sdk_license
         ),
     )
 
