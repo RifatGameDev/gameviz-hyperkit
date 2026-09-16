@@ -78,7 +78,7 @@ jobs:
 
           python --version
           buildozer --version
-          hyperkit --version
+          python -c "from importlib.metadata import version; print('HyperKit', version('gameviz-hyperkit'))"
 
       - name: Generate HyperKit Android smoke project
         run: |

@@ -299,3 +299,22 @@ def test_android_cloud_uploads_apk():
         "hyperkit-phase73-android-smoke-apk"
         in text
     )
+
+
+def test_android_cloud_checks_installed_hyperkit_version_safely():
+    text = read_workflow()
+
+    assert (
+        "hyperkit --version"
+        not in text
+    )
+
+    assert (
+        "from importlib.metadata import version"
+        in text
+    )
+
+    assert (
+        "version('gameviz-hyperkit')"
+        in text
+    )
