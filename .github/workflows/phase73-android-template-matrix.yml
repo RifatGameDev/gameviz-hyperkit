@@ -3,6 +3,12 @@ name: Phase 73 Android Template Matrix
 on:
   workflow_dispatch:
 
+  push:
+    branches:
+      - feature/phase73-android-mobile
+    paths:
+      - ".github/workflows/phase73-android-template-matrix.yml"
+
 jobs:
   build-android-template:
     name: Build ${{ matrix.template }}
