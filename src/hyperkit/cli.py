@@ -26,6 +26,11 @@ from .android import (
     generate_android_readiness_report,
 )
 
+from .ads.admob import (
+    ADMOB_SAMPLE_APP_ID,
+    configure_admob_android_project,
+)
+
 from .audit import (
     format_pre_release_audit_report,
     generate_pre_release_audit_report,
@@ -1092,6 +1097,51 @@ def cmd_init_android(
     return 0
 
 
+def cmd_init_admob(
+    args: argparse.Namespace,
+) -> int:
+    spec_path, java_path = (
+        configure_admob_android_project(
+            args.path,
+            app_id=args.app_id,
+        )
+    )
+
+    print(
+        "HyperKit AdMob Configuration"
+    )
+
+    print(
+        "----------------------------"
+    )
+
+    print(
+        f"Spec: {spec_path}"
+    )
+
+    print(
+        f"Java bridge: {java_path}"
+    )
+
+    print(
+        "Mode: "
+        f"{'Google demo/test' if args.app_id == ADMOB_SAMPLE_APP_ID else 'custom app ID'}"
+    )
+
+    print("")
+
+    print(
+        "Next:"
+    )
+
+    print(
+        "  build your Android APK "
+        "with the HyperKit cloud workflow"
+    )
+
+    return 0
+
+
 def cmd_android_doctor(
     args: argparse.Namespace,
 ) -> int:
@@ -1588,6 +1638,36 @@ def build_parser(
 
     p_init_android.set_defaults(
         func=cmd_init_android
+    )
+
+    p_init_admob = (
+        sub.add_parser(
+            "init-admob",
+            help=(
+                "Add Google AdMob "
+                "configuration to an "
+                "Android project"
+            ),
+        )
+    )
+
+    p_init_admob.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_init_admob.add_argument(
+        "--app-id",
+        default=ADMOB_SAMPLE_APP_ID,
+        help=(
+            "AdMob application ID. "
+            "Defaults to Google's "
+            "sample/test app ID."
+        ),
+    )
+
+    p_init_admob.set_defaults(
+        func=cmd_init_admob
     )
 
     p_android_doctor = (
