@@ -3,6 +3,12 @@ name: Phase 74 Firebase Analytics Smoke APK
 on:
   workflow_dispatch:
 
+  push:
+    branches:
+      - feature/phase74-ads-analytics-game-systems
+    paths:
+      - ".github/workflows/phase74-firebase-analytics-smoke.yml"
+
 jobs:
   build-firebase-analytics-smoke:
     name: Build Firebase Analytics Smoke APK
