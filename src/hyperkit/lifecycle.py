@@ -46,6 +46,27 @@ def _record_lifecycle_state(
     )
 
 
+def _notify_game_systems(
+    context: SDKContext,
+    method_name: str,
+) -> None:
+    service = context.get_service(
+        "game_systems"
+    )
+
+    if service is None:
+        return
+
+    callback = getattr(
+        service,
+        method_name,
+        None,
+    )
+
+    if callable(callback):
+        callback()
+
+
 def start_runtime(
     context: Optional[
         SDKContext
@@ -84,6 +105,11 @@ def start_runtime(
         runtime
     )
 
+    _notify_game_systems(
+        runtime,
+        "on_runtime_start",
+    )
+
     return runtime
 
 
@@ -100,6 +126,11 @@ def pause_runtime(
 
     _record_lifecycle_state(
         runtime
+    )
+
+    _notify_game_systems(
+        runtime,
+        "on_runtime_pause",
     )
 
     return runtime
@@ -120,6 +151,11 @@ def background_runtime(
         runtime
     )
 
+    _notify_game_systems(
+        runtime,
+        "on_runtime_background",
+    )
+
     return runtime
 
 
@@ -138,6 +174,11 @@ def resume_runtime(
         runtime
     )
 
+    _notify_game_systems(
+        runtime,
+        "on_runtime_resume",
+    )
+
     return runtime
 
 
@@ -154,6 +195,11 @@ def stop_runtime(
 
     _record_lifecycle_state(
         runtime
+    )
+
+    _notify_game_systems(
+        runtime,
+        "on_runtime_stop",
     )
 
     return runtime
