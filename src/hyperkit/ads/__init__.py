@@ -297,6 +297,13 @@ class MockAdProvider(AdProvider):
 
 
 from .service import AdsService
+from .android import (
+    AndroidAdBridge,
+    AndroidAdBuildRequirements,
+    AndroidAdProvider,
+    DEFAULT_ANDROID_AD_PERMISSIONS,
+    MockAndroidAdBridge,
+)
 
 
 __all__ = [
@@ -306,6 +313,11 @@ __all__ = [
     "AdStatus",
     "AdType",
     "AdsService",
+    "AndroidAdBridge",
+    "AndroidAdBuildRequirements",
+    "AndroidAdProvider",
+    "DEFAULT_ANDROID_AD_PERMISSIONS",
+    "MockAndroidAdBridge",
     "MockAdProvider",
     "NoOpAdProvider",
 ]
