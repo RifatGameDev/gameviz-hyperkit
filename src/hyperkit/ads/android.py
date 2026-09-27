@@ -35,6 +35,14 @@ class AndroidAdBuildRequirements:
     )
     python_requirements: tuple[str, ...] = ()
     gradle_dependencies: tuple[str, ...] = ()
+    meta_data: Mapping[
+        str,
+        str,
+    ] = field(
+        default_factory=dict
+    )
+    java_source_dirs: tuple[str, ...] = ()
+    enable_androidx: bool = False
     manifest_placeholders: Mapping[
         str,
         str,
