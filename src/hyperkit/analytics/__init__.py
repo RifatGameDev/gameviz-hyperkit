@@ -126,6 +126,21 @@ class MockAnalyticsProvider(AnalyticsProvider):
 
 
 from .service import AnalyticsService
+from .android import (
+    AndroidAnalyticsBridge,
+    AndroidAnalyticsBuildRequirements,
+    AndroidAnalyticsProvider,
+    DEFAULT_ANDROID_ANALYTICS_PERMISSIONS,
+    MockAndroidAnalyticsBridge,
+)
+from .firebase import (
+    FIREBASE_ANALYTICS_DEPENDENCY,
+    FIREBASE_ANALYTICS_JAVA_SOURCE,
+    FirebaseAnalyticsAndroidBridge,
+    FirebaseAnalyticsAndroidProvider,
+    FirebaseAnalyticsConfig,
+    configure_firebase_analytics_android_project,
+)
 
 
 __all__ = [
@@ -133,6 +148,17 @@ __all__ = [
     "AnalyticsProvider",
     "AnalyticsResult",
     "AnalyticsService",
+    "AndroidAnalyticsBridge",
+    "AndroidAnalyticsBuildRequirements",
+    "AndroidAnalyticsProvider",
+    "DEFAULT_ANDROID_ANALYTICS_PERMISSIONS",
+    "MockAndroidAnalyticsBridge",
+    "FIREBASE_ANALYTICS_DEPENDENCY",
+    "FIREBASE_ANALYTICS_JAVA_SOURCE",
+    "FirebaseAnalyticsAndroidBridge",
+    "FirebaseAnalyticsAndroidProvider",
+    "FirebaseAnalyticsConfig",
+    "configure_firebase_analytics_android_project",
     "MockAnalyticsProvider",
     "NoOpAnalyticsProvider",
 ]
