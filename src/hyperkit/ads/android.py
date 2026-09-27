@@ -94,8 +94,14 @@ class AndroidAdBridge(ABC):
     def show_rewarded(
         self,
         placement_id: str | None,
+        *,
+        on_reward=None,
     ) -> AdResult:
-        """Show a rewarded ad through the native bridge."""
+        """Show a rewarded ad through the native bridge.
+
+        Concrete bridges may invoke on_reward asynchronously when the
+        native advertising SDK confirms that the reward was earned.
+        """
 
 
 class AndroidAdProvider(AdProvider):
@@ -291,21 +297,13 @@ class AndroidAdProvider(AdProvider):
                 resolved,
             )
 
-        result = (
+        return (
             self.bridge
             .show_rewarded(
-                resolved
+                resolved,
+                on_reward=on_reward,
             )
         )
-
-        if (
-            result.success
-            and result.reward_granted
-            and on_reward is not None
-        ):
-            on_reward()
-
-        return result
 
 
 class MockAndroidAdBridge(
@@ -474,8 +472,10 @@ class MockAndroidAdBridge(
     def show_rewarded(
         self,
         placement_id: str | None,
+        *,
+        on_reward=None,
     ) -> AdResult:
-        return self._show(
+        result = self._show(
             "show_rewarded",
             AdType.REWARDED,
             placement_id,
@@ -483,6 +483,15 @@ class MockAndroidAdBridge(
                 self.grant_reward
             ),
         )
+
+        if (
+            result.success
+            and result.reward_granted
+            and on_reward is not None
+        ):
+            on_reward()
+
+        return result
 
 
 __all__ = [
