@@ -433,6 +433,7 @@ from .analytics import (
     FirebaseAnalyticsAndroidProvider,
     FirebaseAnalyticsConfig,
     configure_firebase_analytics_android_project,
+    load_firebase_analytics_config,
     MockAnalyticsProvider,
     NoOpAnalyticsProvider,
 )
@@ -484,6 +485,7 @@ __all__.extend([
     "FirebaseAnalyticsAndroidProvider",
     "FirebaseAnalyticsConfig",
     "configure_firebase_analytics_android_project",
+    "load_firebase_analytics_config",
     "MockAnalyticsProvider",
     "NoOpAnalyticsProvider",
     "GameSession",
