@@ -296,12 +296,16 @@ class MockAdProvider(AdProvider):
         return result
 
 
+from .service import AdsService
+
+
 __all__ = [
     "AdConfig",
     "AdProvider",
     "AdResult",
     "AdStatus",
     "AdType",
+    "AdsService",
     "MockAdProvider",
     "NoOpAdProvider",
 ]
