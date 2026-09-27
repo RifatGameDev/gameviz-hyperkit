@@ -370,7 +370,7 @@ __all__ = [
 ]
 
 
-__version__ = "0.3.0.dev0"
+__version__ = "0.4.0.dev0"
 
 # Phase 73 mobile public API
 from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
@@ -387,4 +387,50 @@ __all__.extend([
     "background_runtime",
     "resume_runtime",
     "detect_wsl",
+])
+
+
+# Phase 74 ads, analytics, and game systems public API
+from .ads import (
+    AdConfig,
+    AdProvider,
+    AdResult,
+    AdStatus,
+    AdType,
+    MockAdProvider,
+    NoOpAdProvider,
+)
+from .analytics import (
+    AnalyticsEvent,
+    AnalyticsProvider,
+    AnalyticsResult,
+    MockAnalyticsProvider,
+    NoOpAnalyticsProvider,
+)
+from .game_systems import (
+    GameSession,
+    GameSystems,
+    ProgressionTracker,
+    SessionState,
+    SessionTracker,
+)
+
+__all__.extend([
+    "AdConfig",
+    "AdProvider",
+    "AdResult",
+    "AdStatus",
+    "AdType",
+    "MockAdProvider",
+    "NoOpAdProvider",
+    "AnalyticsEvent",
+    "AnalyticsProvider",
+    "AnalyticsResult",
+    "MockAnalyticsProvider",
+    "NoOpAnalyticsProvider",
+    "GameSession",
+    "GameSystems",
+    "ProgressionTracker",
+    "SessionState",
+    "SessionTracker",
 ])
