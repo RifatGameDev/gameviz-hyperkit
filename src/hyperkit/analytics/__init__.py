@@ -140,6 +140,7 @@ from .firebase import (
     FirebaseAnalyticsAndroidProvider,
     FirebaseAnalyticsConfig,
     configure_firebase_analytics_android_project,
+    load_firebase_analytics_config,
 )
 
 
@@ -159,6 +160,7 @@ __all__ = [
     "FirebaseAnalyticsAndroidProvider",
     "FirebaseAnalyticsConfig",
     "configure_firebase_analytics_android_project",
+    "load_firebase_analytics_config",
     "MockAnalyticsProvider",
     "NoOpAnalyticsProvider",
 ]
