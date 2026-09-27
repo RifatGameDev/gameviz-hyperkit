@@ -125,10 +125,14 @@ class MockAnalyticsProvider(AnalyticsProvider):
         return AnalyticsResult(success=True)
 
 
+from .service import AnalyticsService
+
+
 __all__ = [
     "AnalyticsEvent",
     "AnalyticsProvider",
     "AnalyticsResult",
+    "AnalyticsService",
     "MockAnalyticsProvider",
     "NoOpAnalyticsProvider",
 ]
