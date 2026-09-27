@@ -147,7 +147,12 @@ class SessionTracker:
 
     @property
     def duration(self) -> float:
-        session = self._require_active()
+        if self.current is None:
+            raise HyperKitRuntimeError(
+                "No game session has been started."
+            )
+
+        session = self.current
 
         end = (
             session.ended_at
