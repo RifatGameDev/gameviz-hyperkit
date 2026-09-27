@@ -1,4 +1,4 @@
-"""Reusable game-session and progression systems for GameViz HyperKit."""
+"""Reusable game-session, progression, ads, and analytics systems."""
 
 from __future__ import annotations
 
@@ -9,10 +9,15 @@ from time import monotonic
 from typing import Any
 from uuid import uuid4
 
+from .ads import (
+    AdProvider,
+    AdResult,
+    AdType,
+    AdsService,
+)
 from .analytics import (
-    AnalyticsEvent,
     AnalyticsProvider,
-    NoOpAnalyticsProvider,
+    AnalyticsService,
 )
 from .errors import HyperKitRuntimeError
 from .runtime import SDKContext
@@ -76,8 +81,7 @@ class SessionTracker:
     def _require_active(self) -> GameSession:
         if self.current is None or self.current.ended:
             raise HyperKitRuntimeError(
-                "No active game session. "
-                "Start a session first."
+                "No active game session. Start a session first."
             )
 
         return self.current
@@ -228,31 +232,58 @@ class ProgressionTracker:
 
 
 class GameSystems:
-    """Coordinates session, progression, and analytics hooks."""
+    """Coordinates session, progression, ads, and analytics."""
 
     SERVICE_NAME = "game_systems"
 
     def __init__(
         self,
         *,
-        analytics: AnalyticsProvider | None = None,
+        analytics: AnalyticsService | AnalyticsProvider | None = None,
+        ads: AdsService | AdProvider | None = None,
         session: SessionTracker | None = None,
         progression: ProgressionTracker | None = None,
     ) -> None:
-        self.analytics = (
-            analytics
-            if analytics is not None
-            else NoOpAnalyticsProvider()
+        if isinstance(
+            analytics,
+            AnalyticsService,
+        ):
+            self.analytics = analytics
+        else:
+            self.analytics = AnalyticsService(
+                analytics
+            )
+
+        if isinstance(
+            ads,
+            AdsService,
+        ):
+            self.ads = ads
+        else:
+            self.ads = AdsService(
+                ads
+            )
+
+        self.session = (
+            session
+            or SessionTracker()
         )
-        self.session = session or SessionTracker()
-        self.progression = progression or ProgressionTracker()
+
+        self.progression = (
+            progression
+            or ProgressionTracker()
+        )
+
         self._initialized = False
 
     def initialize(self) -> "GameSystems":
-        if not self._initialized:
-            self.analytics.initialize()
-            self._initialized = True
+        if self._initialized:
+            return self
 
+        self.analytics.initialize()
+        self.ads.initialize()
+
+        self._initialized = True
         return self
 
     def attach(
@@ -261,7 +292,10 @@ class GameSystems:
         *,
         replace: bool = False,
     ) -> "GameSystems":
-        if not isinstance(context, SDKContext):
+        if not isinstance(
+            context,
+            SDKContext,
+        ):
             raise HyperKitRuntimeError(
                 "context must be an SDKContext instance."
             )
@@ -272,26 +306,26 @@ class GameSystems:
             replace=replace,
         )
 
-        return self
-
-    def _track(
-        self,
-        name: str,
-        **properties: Any,
-    ) -> None:
-        self.initialize()
-
-        self.analytics.track_event(
-            AnalyticsEvent(
-                name=name,
-                properties=properties,
-            )
+        context.register_service(
+            AnalyticsService.SERVICE_NAME,
+            self.analytics,
+            replace=replace,
         )
 
+        context.register_service(
+            AdsService.SERVICE_NAME,
+            self.ads,
+            replace=replace,
+        )
+
+        return self
+
     def on_runtime_start(self) -> None:
+        self.initialize()
+
         session = self.session.start()
 
-        self._track(
+        self.analytics.track(
             "session_start",
             session_id=session.session_id,
         )
@@ -301,21 +335,27 @@ class GameSystems:
             return
 
         self.session.pause()
-        self._track("session_pause")
+        self.analytics.track(
+            "session_pause"
+        )
 
     def on_runtime_background(self) -> None:
         if self.session.current is None:
             return
 
         self.session.background()
-        self._track("session_background")
+        self.analytics.track(
+            "session_background"
+        )
 
     def on_runtime_resume(self) -> None:
         if self.session.current is None:
             return
 
         self.session.resume()
-        self._track("session_resume")
+        self.analytics.track(
+            "session_resume"
+        )
 
     def on_runtime_stop(self) -> None:
         if (
@@ -326,7 +366,7 @@ class GameSystems:
 
         session = self.session.end()
 
-        self._track(
+        self.analytics.track(
             "session_end",
             session_id=session.session_id,
             duration=self.session.duration,
@@ -334,28 +374,176 @@ class GameSystems:
 
         self.analytics.flush()
 
+    def game_start(
+        self,
+        **properties: Any,
+    ) -> None:
+        self.analytics.game_start(
+            **properties
+        )
+
+    def game_over(
+        self,
+        *,
+        score: int | None = None,
+        high_score: int | None = None,
+        reason: str | None = None,
+        **properties: Any,
+    ) -> None:
+        self.analytics.game_over(
+            score=score,
+            high_score=high_score,
+            reason=reason,
+            **properties,
+        )
+
+    def level_start(
+        self,
+        level: int | None = None,
+        **properties: Any,
+    ) -> None:
+        resolved_level = (
+            self.progression.level
+            if level is None
+            else int(level)
+        )
+
+        self.analytics.level_start(
+            resolved_level,
+            **properties,
+        )
+
+    def level_complete(
+        self,
+        level: int | None = None,
+        *,
+        score: int | None = None,
+        duration: float | None = None,
+        **properties: Any,
+    ) -> None:
+        resolved_level = (
+            self.progression.level
+            if level is None
+            else int(level)
+        )
+
+        self.analytics.level_complete(
+            resolved_level,
+            score=score,
+            duration=duration,
+            **properties,
+        )
+
     def record_score(
         self,
         score: int,
         *,
         high_score: int | None = None,
+        **properties: Any,
     ) -> None:
-        properties: dict[str, int] = {
-            "score": int(score),
-        }
-
-        if high_score is not None:
-            properties["high_score"] = int(high_score)
-
-        self._track(
-            "score_recorded",
+        self.analytics.score(
+            score,
+            high_score=high_score,
             **properties,
         )
 
-    def record_progression(self) -> None:
-        self._track(
-            "progression_updated",
+    def record_progression(
+        self,
+        **properties: Any,
+    ) -> None:
+        self.analytics.progression(
             **self.progression.as_dict(),
+            **properties,
+        )
+
+    def add_coins(
+        self,
+        amount: int,
+        *,
+        track: bool = True,
+    ) -> int:
+        value = self.progression.add_coins(
+            amount
+        )
+
+        if track:
+            self.record_progression()
+
+        return value
+
+    def add_xp(
+        self,
+        amount: int,
+        *,
+        track: bool = True,
+    ) -> int:
+        value = self.progression.add_xp(
+            amount
+        )
+
+        if track:
+            self.record_progression()
+
+        return value
+
+    def advance_level(
+        self,
+        amount: int = 1,
+        *,
+        track: bool = True,
+    ) -> int:
+        value = self.progression.advance_level(
+            amount
+        )
+
+        if track:
+            self.record_progression()
+
+        return value
+
+    def ads_available(
+        self,
+        ad_type: AdType | str,
+        placement: str | None = None,
+    ) -> bool:
+        return self.ads.is_available(
+            ad_type,
+            placement,
+        )
+
+    def show_banner(
+        self,
+        placement: str | None = None,
+    ) -> AdResult:
+        return self.ads.show_banner(
+            placement
+        )
+
+    def hide_banner(
+        self,
+        placement: str | None = None,
+    ) -> AdResult:
+        return self.ads.hide_banner(
+            placement
+        )
+
+    def show_interstitial(
+        self,
+        placement: str | None = None,
+    ) -> AdResult:
+        return self.ads.show_interstitial(
+            placement
+        )
+
+    def show_rewarded(
+        self,
+        placement: str | None = None,
+        *,
+        on_reward: Callable[[], None] | None = None,
+    ) -> AdResult:
+        return self.ads.show_rewarded(
+            placement,
+            on_reward=on_reward,
         )
 
 
