@@ -31,6 +31,10 @@ from .ads.admob import (
     configure_admob_android_project,
 )
 
+from .analytics.firebase import (
+    configure_firebase_analytics_android_project,
+)
+
 from .audit import (
     format_pre_release_audit_report,
     generate_pre_release_audit_report,
@@ -1142,6 +1146,42 @@ def cmd_init_admob(
     return 0
 
 
+def cmd_init_firebase_analytics(
+    args: argparse.Namespace,
+) -> int:
+    spec_path, java_path = (
+        configure_firebase_analytics_android_project(
+            args.path
+        )
+    )
+
+    print(
+        "HyperKit Firebase Analytics Configuration"
+    )
+
+    print(
+        "----------------------------------------"
+    )
+
+    print(
+        f"Spec: {spec_path}"
+    )
+
+    print(
+        f"Java bridge: {java_path}"
+    )
+
+    print("")
+
+    print(
+        "Runtime credentials are supplied "
+        "to FirebaseAnalyticsAndroidProvider "
+        "from your game code."
+    )
+
+    return 0
+
+
 def cmd_android_doctor(
     args: argparse.Namespace,
 ) -> int:
@@ -1668,6 +1708,25 @@ def build_parser(
 
     p_init_admob.set_defaults(
         func=cmd_init_admob
+    )
+
+    p_init_firebase_analytics = (
+        sub.add_parser(
+            "init-firebase-analytics",
+            help=(
+                "Add Firebase Analytics "
+                "Android build configuration"
+            ),
+        )
+    )
+
+    p_init_firebase_analytics.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_init_firebase_analytics.set_defaults(
+        func=cmd_init_firebase_analytics
     )
 
     p_android_doctor = (
