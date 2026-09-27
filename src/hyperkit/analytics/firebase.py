@@ -109,6 +109,146 @@ def _serialize_event_properties(
     )
 
 
+def load_firebase_analytics_config(
+    path: str | Path,
+    *,
+    package_name: str | None = None,
+) -> FirebaseAnalyticsConfig:
+    """Load Firebase Android settings from google-services.json."""
+
+    config_path = Path(
+        path
+    ).expanduser().resolve()
+
+    if not config_path.is_file():
+        raise FileNotFoundError(
+            f"Firebase config file not found: {config_path}"
+        )
+
+    try:
+        data = json.loads(
+            config_path.read_text(
+                encoding="utf-8",
+            )
+        )
+
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            "Invalid google-services.json."
+        ) from exc
+
+    project_info = data.get(
+        "project_info",
+        {},
+    )
+
+    project_id = str(
+        project_info.get(
+            "project_id",
+            "",
+        )
+    ).strip()
+
+    clients = data.get(
+        "client",
+        [],
+    )
+
+    if not isinstance(
+        clients,
+        list,
+    ) or not clients:
+        raise ValueError(
+            "google-services.json does not "
+            "contain any Android clients."
+        )
+
+    selected = None
+
+    if package_name is not None:
+        expected = str(
+            package_name
+        ).strip()
+
+        for client in clients:
+            actual = str(
+                client.get(
+                    "client_info",
+                    {},
+                )
+                .get(
+                    "android_client_info",
+                    {},
+                )
+                .get(
+                    "package_name",
+                    "",
+                )
+            ).strip()
+
+            if actual == expected:
+                selected = client
+                break
+
+        if selected is None:
+            raise ValueError(
+                "google-services.json does not "
+                f"contain package '{expected}'."
+            )
+
+    elif len(
+        clients
+    ) == 1:
+        selected = clients[0]
+
+    else:
+        raise ValueError(
+            "google-services.json contains "
+            "multiple clients. Pass package_name."
+        )
+
+    client_info = selected.get(
+        "client_info",
+        {},
+    )
+
+    application_id = str(
+        client_info.get(
+            "mobilesdk_app_id",
+            "",
+        )
+    ).strip()
+
+    api_keys = selected.get(
+        "api_key",
+        [],
+    )
+
+    api_key = ""
+
+    if (
+        isinstance(
+            api_keys,
+            list,
+        )
+        and api_keys
+    ):
+        api_key = str(
+            api_keys[0].get(
+                "current_key",
+                "",
+            )
+        ).strip()
+
+    return FirebaseAnalyticsConfig(
+        application_id=(
+            application_id
+        ),
+        api_key=api_key,
+        project_id=project_id,
+    )
+
+
 class FirebaseAnalyticsAndroidBridge(
     AndroidAnalyticsBridge
 ):
@@ -314,6 +454,26 @@ class FirebaseAnalyticsAndroidProvider(
     """Convenience provider configured for Firebase Analytics."""
 
     provider_name = "firebase-analytics"
+
+    @classmethod
+    def from_google_services_json(
+        cls,
+        path: str | Path,
+        *,
+        package_name: str | None = None,
+    ) -> "FirebaseAnalyticsAndroidProvider":
+        config = load_firebase_analytics_config(
+            path,
+            package_name=package_name,
+        )
+
+        return cls(
+            application_id=(
+                config.application_id
+            ),
+            api_key=config.api_key,
+            project_id=config.project_id,
+        )
 
     def __init__(
         self,
@@ -731,4 +891,5 @@ __all__ = [
     "FirebaseAnalyticsAndroidProvider",
     "FirebaseAnalyticsConfig",
     "configure_firebase_analytics_android_project",
+    "load_firebase_analytics_config",
 ]
