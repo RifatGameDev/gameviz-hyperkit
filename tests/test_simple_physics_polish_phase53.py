@@ -53,11 +53,13 @@ def test_simple_physics_main_has_physics_gameplay_logic():
 
     assert "self.gravity" in content
     assert "self.jump_force" in content
-    assert "self.ball_velocity_y" in content
     assert "self.bounce_strength" in content
-    assert "_check_floor_bounce" in content
-    assert "_check_wall_bounce" in content
-    assert "_check_target_hit" in content
+    assert "PhysicsWorld" in content
+    assert "PhysicsMaterial" in content
+    assert "BodyType" in content
+    assert "self.physics.step(dt)" in content
+    assert "_on_ball_collision" in content
+    assert "_on_ball_trigger" in content
     assert "_restart" in content
 
 
