@@ -12,6 +12,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+from xml.sax.saxutils import escape as xml_escape
 
 from . import (
     AnalyticsEvent,
@@ -784,8 +785,62 @@ public final class HyperKitFirebaseAnalytics {
 """
 
 
+def _write_firebase_analytics_android_resources(
+    root: Path,
+    config: FirebaseAnalyticsConfig,
+) -> Path:
+    """Write Android string resources required by Firebase Analytics."""
+
+    values_dir = (
+        root
+        / "android_resources"
+        / "values"
+    )
+
+    values_dir.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    resource_path = (
+        values_dir
+        / "firebase_analytics.xml"
+    )
+
+    content = (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        "<resources>\n"
+        "    <string name=\"google_app_id\" translatable=\"false\">"
+        + xml_escape(
+            config.application_id
+        )
+        + "</string>\n"
+        "    <string name=\"google_api_key\" translatable=\"false\">"
+        + xml_escape(
+            config.api_key
+        )
+        + "</string>\n"
+        "    <string name=\"project_id\" translatable=\"false\">"
+        + xml_escape(
+            config.project_id
+        )
+        + "</string>\n"
+        "</resources>\n"
+    )
+
+    resource_path.write_text(
+        content,
+        encoding="utf-8",
+    )
+
+    return resource_path
+
+
 def configure_firebase_analytics_android_project(
     path: str | Path = ".",
+    *,
+    google_services_path: str | Path | None = None,
+    package_name: str | None = None,
 ) -> tuple[
     Path,
     Path,
@@ -845,6 +900,25 @@ def configure_firebase_analytics_android_project(
         "android.add_src",
         requirements.java_source_dirs,
     )
+
+    if google_services_path is not None:
+        config = load_firebase_analytics_config(
+            google_services_path,
+            package_name=package_name,
+        )
+
+        _write_firebase_analytics_android_resources(
+            root,
+            config,
+        )
+
+        text = _merge_csv_setting(
+            text,
+            "android.add_resources",
+            (
+                "android_resources",
+            ),
+        )
 
     if requirements.enable_androidx:
         text = _upsert_scalar_setting(
