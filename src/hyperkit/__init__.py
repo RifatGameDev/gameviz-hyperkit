@@ -30,7 +30,16 @@ from .runtime import (
 )
 
 from .collision import (
+    CollisionManifold,
+    circle_collision,
     circle_intersects_circle,
+    circle_intersects_rect,
+    circle_rect_collision,
+    collision_manifold,
+    intersects,
+    point_in_circle,
+    rect_circle_collision,
+    rect_collision,
     rect_intersects_circle,
     rect_intersects_rect,
 )
@@ -38,7 +47,18 @@ from .collision import (
 from .geometry import Circle, Rect, Vector2
 from .input import TouchEvent, TouchGesture, TouchTracker
 from .object import GameObject
-from .physics import apply_gravity, clamp, move_towards
+from .physics import (
+    BodyType,
+    PhysicsBody,
+    PhysicsCollision,
+    PhysicsMaterial,
+    PhysicsWorld,
+    apply_drag,
+    apply_gravity,
+    clamp,
+    move_towards,
+    reflect_velocity,
+)
 from .save import SaveManager
 from .scene import Scene
 from .score import ScoreManager
@@ -256,12 +276,28 @@ __all__ = [
     "TouchGesture",
     "TouchTracker",
     "Vector2",
+    "BodyType",
+    "CollisionManifold",
+    "PhysicsBody",
+    "PhysicsCollision",
+    "PhysicsMaterial",
+    "PhysicsWorld",
+    "apply_drag",
     "apply_gravity",
+    "circle_collision",
     "circle_intersects_circle",
+    "circle_intersects_rect",
+    "circle_rect_collision",
     "clamp",
+    "collision_manifold",
+    "intersects",
     "move_towards",
+    "point_in_circle",
+    "rect_circle_collision",
+    "rect_collision",
     "rect_intersects_circle",
     "rect_intersects_rect",
+    "reflect_velocity",
     "GameState",
     "StateMachine",
     "CanvasScaler",

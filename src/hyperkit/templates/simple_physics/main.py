@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from hyperkit import (
     AssetManager,
+    BodyType,
     BoundsManager,
     CameraShake,
     Cooldown,
@@ -9,6 +10,8 @@ from hyperkit import (
     GameObject,
     InputActionMap,
     ParticleEmitter,
+    PhysicsMaterial,
+    PhysicsWorld,
     ProgressBar,
     Scene,
     ScoreManager,
@@ -17,12 +20,15 @@ from hyperkit import (
 )
 
 
+PLAYER_LAYER = 1
+WORLD_LAYER = 2
+TARGET_LAYER = 4
+
+
 class SimplePhysicsScene(Scene):
     def start(self):
         self.gravity = -1400
         self.jump_force = 720
-        self.ball_velocity_y = 0
-        self.ball_velocity_x = 180
         self.bounce_strength = 0.72
         self.floor_y = 190
         self.score_goal = 10
@@ -121,6 +127,25 @@ class SimplePhysicsScene(Scene):
             )
         )
 
+        self.left_wall = self.add(
+            GameObject(
+                x=25,
+                y=0,
+                width=20,
+                height=1280,
+                visible=False,
+            )
+        )
+        self.right_wall = self.add(
+            GameObject(
+                x=675,
+                y=0,
+                width=20,
+                height=1280,
+                visible=False,
+            )
+        )
+
         self.ball = self.add(
             GameObject(
                 x=300,
@@ -176,26 +201,77 @@ class SimplePhysicsScene(Scene):
             )
         )
 
+        self.physics = PhysicsWorld(
+            gravity_y=self.gravity,
+        )
+        bounce_material = PhysicsMaterial(
+            restitution=self.bounce_strength,
+            friction=0.0,
+        )
+
+        self.ball_body = self.physics.add_body(
+            self.ball,
+            body_type=BodyType.DYNAMIC,
+            material=bounce_material,
+            layer=PLAYER_LAYER,
+            mask=WORLD_LAYER | TARGET_LAYER,
+            on_collision=self._on_ball_collision,
+            on_trigger=self._on_ball_trigger,
+        )
+        self.ball_body.set_velocity(180, 0)
+
+        self.floor_body = self.physics.add_body(
+            self.floor,
+            body_type=BodyType.STATIC,
+            material=bounce_material,
+            layer=WORLD_LAYER,
+            mask=PLAYER_LAYER,
+        )
+        self.left_wall_body = self.physics.add_body(
+            self.left_wall,
+            body_type=BodyType.STATIC,
+            material=bounce_material,
+            layer=WORLD_LAYER,
+            mask=PLAYER_LAYER,
+        )
+        self.right_wall_body = self.physics.add_body(
+            self.right_wall,
+            body_type=BodyType.STATIC,
+            material=bounce_material,
+            layer=WORLD_LAYER,
+            mask=PLAYER_LAYER,
+        )
+        self.target_body = self.physics.add_body(
+            self.target,
+            body_type=BodyType.STATIC,
+            is_trigger=True,
+            layer=TARGET_LAYER,
+            mask=PLAYER_LAYER,
+        )
+
         self.start_game()
 
     def update(self, dt):
+        if not self.is_playing():
+            return
+
         if not self.game_over:
-            self._update_ball(dt)
-            self._check_floor_bounce()
-            self._check_wall_bounce()
-            self._check_target_hit()
+            self.physics.step(dt)
+            self._sync_ball_label()
             self._check_out_of_bounds()
 
         self.camera_shake.update(dt)
         self.particles.update(dt)
-        super().update(dt)
 
     def on_tap(self, x, y):
         if self.game_over:
             self._restart()
             return
 
-        self.ball_velocity_y = self.jump_force
+        self.ball_body.set_velocity(
+            self.ball.vx,
+            self.jump_force,
+        )
         self.status_label.set_text("Force applied!")
         self.camera_shake.shake(intensity=4, duration=0.08)
 
@@ -205,77 +281,85 @@ class SimplePhysicsScene(Scene):
             count=8,
         )
 
-    def _update_ball(self, dt):
-        self.ball_velocity_y += self.gravity * dt
-        self.ball.x += self.ball_velocity_x * dt
-        self.ball.y += self.ball_velocity_y * dt
+    def _on_ball_collision(self, other, _manifold):
+        if other is self.floor_body:
+            self._add_score()
+            self.camera_shake.shake(
+                intensity=7,
+                duration=0.1,
+            )
 
+    def _on_ball_trigger(self, other, _manifold):
+        if other is not self.target_body:
+            return
+
+        self._move_target()
+        self._add_score()
+        self.status_label.set_text(
+            "Target hit! HyperKit physics handled the trigger."
+        )
+
+    def _sync_ball_label(self):
         self.ball_label.x = self.ball.x + 28
         self.ball_label.y = self.ball.y + 30
 
-    def _check_floor_bounce(self):
-        if self.ball.y <= self.floor_y:
-            self.ball.y = self.floor_y
-            self.ball_velocity_y = abs(
-                self.ball_velocity_y) * self.bounce_strength
-            self._add_score()
-            self.camera_shake.shake(intensity=7, duration=0.1)
-
-    def _check_wall_bounce(self):
-        if self.ball.x <= 45:
-            self.ball.x = 45
-            self.ball_velocity_x = abs(self.ball_velocity_x)
-
-        if self.ball.x + self.ball.width >= 675:
-            self.ball.x = 675 - self.ball.width
-            self.ball_velocity_x = -abs(self.ball_velocity_x)
-
-    def _check_target_hit(self):
-        overlaps_x = (
-            self.ball.x < self.target.x + self.target.width
-            and self.ball.x + self.ball.width > self.target.x
-        )
-
-        overlaps_y = (
-            self.ball.y < self.target.y + self.target.height
-            and self.ball.y + self.ball.height > self.target.y
-        )
-
-        if overlaps_x and overlaps_y:
-            self._move_target()
-            self._add_score()
-            self.status_label.set_text("Target hit! Nice physics control.")
-
     def _check_out_of_bounds(self):
         if self.ball.y > 1300:
-            self._set_game_over("Ball escaped upward. Tap to restart.")
+            self._set_game_over(
+                "Ball escaped upward. Tap to restart."
+            )
 
     def _add_score(self):
         self.score.add(1)
 
         current_score = self.score.value
-        progress_value = min(current_score, self.score_goal)
+        progress_value = min(
+            current_score,
+            self.score_goal,
+        )
 
-        self.score_label.set_text(f"Score: {current_score}")
-        self.high_score_label.set_text(f"High Score: {self.score.high_score}")
+        self.score_label.set_text(
+            f"Score: {current_score}"
+        )
+        self.high_score_label.set_text(
+            f"High Score: {self.score.high_score}"
+        )
         self.progress_label.set_text(
             f"Goal Progress: {progress_value} / {self.score_goal}"
         )
-        self.progress_bar.set_value(progress_value)
+        self.progress_bar.set_value(
+            progress_value
+        )
 
         if current_score >= self.score_goal:
             self.status_label.set_text(
-                "Goal reached! Keep bouncing for a new high score.")
-            self.ball.color = (0.25, 1.0, 0.48, 1)
+                "Goal reached! Keep bouncing for a new high score."
+            )
+            self.ball.color = (
+                0.25,
+                1.0,
+                0.48,
+                1,
+            )
 
     def _move_target(self):
-        next_x = 120 + (self.score.value * 85) % 460
-        next_y = 450 + (self.score.value * 65) % 360
+        next_x = (
+            120
+            + (self.score.value * 85) % 460
+        )
+        next_y = (
+            450
+            + (self.score.value * 65) % 360
+        )
 
         self.target.x = next_x
         self.target.y = next_y
-        self.target_label.x = self.target.x + 24
-        self.target_label.y = self.target.y + 28
+        self.target_label.x = (
+            self.target.x + 24
+        )
+        self.target_label.y = (
+            self.target.y + 28
+        )
 
         self.particles.burst(
             x=self.target.x + self.target.width / 2,
@@ -285,30 +369,57 @@ class SimplePhysicsScene(Scene):
 
     def _set_game_over(self, message: str):
         self.game_over = True
-        self.ball.color = (1, 0.25, 0.25, 1)
+        self.ball.color = (
+            1,
+            0.25,
+            0.25,
+            1,
+        )
         self.status_label.set_text(message)
-        self.camera_shake.shake(intensity=16, duration=0.35)
+        self.camera_shake.shake(
+            intensity=16,
+            duration=0.35,
+        )
 
     def _restart(self):
         self.game_over = False
         self.ball.x = 300
         self.ball.y = 680
-        self.ball.color = (0.2, 0.75, 1.0, 1)
-
-        self.ball_velocity_y = 0
-        self.ball_velocity_x = 180
+        self.ball.color = (
+            0.2,
+            0.75,
+            1.0,
+            1,
+        )
+        self.ball_body.set_velocity(
+            180,
+            0,
+        )
+        self._sync_ball_label()
 
         self.target.x = 500
         self.target.y = 700
-        self.target_label.x = self.target.x + 24
-        self.target_label.y = self.target.y + 28
+        self.target_label.x = (
+            self.target.x + 24
+        )
+        self.target_label.y = (
+            self.target.y + 28
+        )
 
         self.score.reset()
-        self.score_label.set_text("Score: 0")
-        self.high_score_label.set_text(f"High Score: {self.score.high_score}")
-        self.progress_label.set_text(f"Goal Progress: 0 / {self.score_goal}")
+        self.score_label.set_text(
+            "Score: 0"
+        )
+        self.high_score_label.set_text(
+            f"High Score: {self.score.high_score}"
+        )
+        self.progress_label.set_text(
+            f"Goal Progress: 0 / {self.score_goal}"
+        )
         self.progress_bar.set_value(0)
-        self.status_label.set_text("Ready. Tap to apply force!")
+        self.status_label.set_text(
+            "Ready. Tap to apply force!"
+        )
 
 
 if __name__ == "__main__":
@@ -316,4 +427,6 @@ if __name__ == "__main__":
         title="HyperKit Simple Physics",
         width=720,
         height=1280,
-    ).set_scene(SimplePhysicsScene()).run()
+    ).set_scene(
+        SimplePhysicsScene()
+    ).run()
