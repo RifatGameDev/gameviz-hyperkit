@@ -98,9 +98,6 @@ jobs:
             --arch arm64-v8a \
             --overwrite
 
-          hyperkit init-firebase-analytics \
-            --path phase74-firebase-analytics-smoke
-
           cp examples/phase74_firebase_analytics_smoke/main.py \
             phase74-firebase-analytics-smoke/main.py
 
@@ -135,6 +132,13 @@ jobs:
               "Firebase configuration restored for cloud build."
           )
           PY
+
+      - name: Configure Firebase Analytics Android resources
+        run: |
+          hyperkit init-firebase-analytics \
+            --path phase74-firebase-analytics-smoke \
+            --google-services phase74-firebase-analytics-smoke/google-services.json \
+            --package-name org.gameviz.phase74analyticssmoke
 
       - name: Validate Firebase configuration
         run: |
@@ -231,12 +235,19 @@ jobs:
           grep -F "android.gradle_dependencies = com.google.firebase:firebase-analytics:23.2.0" "$SPEC"
           grep -F "android.enable_androidx = True" "$SPEC"
           grep -F "android.add_src = android_src" "$SPEC"
+          grep -F "android.add_resources = android_resources" "$SPEC"
 
           test -f \
             phase74-firebase-analytics-smoke/android_src/org/gameviz/hyperkit/analytics/HyperKitFirebaseAnalytics.java
 
           test -f \
             phase74-firebase-analytics-smoke/google-services.json
+
+          test -f \
+            phase74-firebase-analytics-smoke/android_resources/values/firebase_analytics.xml
+
+          grep -F "google_app_id" \
+            phase74-firebase-analytics-smoke/android_resources/values/firebase_analytics.xml
 
           test -f \
             phase74-firebase-analytics-smoke/hyperkit/analytics/firebase.py
