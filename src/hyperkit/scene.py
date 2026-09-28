@@ -4,6 +4,7 @@ from typing import Iterable
 
 from .object import GameObject
 from .state import GameState, StateMachine
+from .ui import find_button_at
 
 
 class Scene:
@@ -17,32 +18,53 @@ class Scene:
         self.game = None
         self.objects: list[GameObject] = []
         self.started = False
-        self.state_machine = StateMachine(GameState.PLAYING)
+        self.state_machine = StateMachine(
+            GameState.PLAYING
+        )
 
-    def bind_game(self, game: object) -> None:
+    def bind_game(
+        self,
+        game: object,
+    ) -> None:
         self.game = game
 
     @property
     def state(self) -> str:
         return self.state_machine.value
 
-    def set_state(self, state: GameState | str) -> None:
+    def set_state(
+        self,
+        state: GameState | str,
+    ) -> None:
         self.state_machine.set(state)
 
-    def is_state(self, state: GameState | str) -> bool:
-        return self.state_machine.is_state(state)
+    def is_state(
+        self,
+        state: GameState | str,
+    ) -> bool:
+        return self.state_machine.is_state(
+            state
+        )
 
     def is_menu(self) -> bool:
-        return self.is_state(GameState.MENU)
+        return self.is_state(
+            GameState.MENU
+        )
 
     def is_playing(self) -> bool:
-        return self.is_state(GameState.PLAYING)
+        return self.is_state(
+            GameState.PLAYING
+        )
 
     def is_paused(self) -> bool:
-        return self.is_state(GameState.PAUSED)
+        return self.is_state(
+            GameState.PAUSED
+        )
 
     def is_game_over(self) -> bool:
-        return self.is_state(GameState.GAME_OVER)
+        return self.is_state(
+            GameState.GAME_OVER
+        )
 
     def start_game(self) -> None:
         self.state_machine.start()
@@ -60,46 +82,105 @@ class Scene:
         self.state_machine.menu()
 
     def reset_game_state(self) -> None:
-        self.state_machine.reset(GameState.PLAYING)
+        self.state_machine.reset(
+            GameState.PLAYING
+        )
 
-    def add(self, obj: GameObject) -> GameObject:
+    def add(
+        self,
+        obj: GameObject,
+    ) -> GameObject:
         self.objects.append(obj)
         return obj
 
-    def remove(self, obj: GameObject) -> None:
+    def remove(
+        self,
+        obj: GameObject,
+    ) -> None:
         if obj in self.objects:
             self.objects.remove(obj)
 
     def clear(self) -> None:
         self.objects.clear()
 
-    def active_objects(self) -> Iterable[GameObject]:
-        return (obj for obj in self.objects if obj.active)
+    def active_objects(
+        self,
+    ) -> Iterable[GameObject]:
+        return (
+            obj
+            for obj in self.objects
+            if obj.active
+        )
+
+    def dispatch_tap(
+        self,
+        x: float,
+        y: float,
+    ) -> bool:
+        """Route a tap to the top-most enabled HyperKit button."""
+
+        button = find_button_at(
+            self.objects,
+            x,
+            y,
+        )
+
+        if button is None:
+            return False
+
+        return button.click()
 
     def start(self) -> None:
         pass
 
-    def update(self, dt: float) -> None:
+    def update(
+        self,
+        dt: float,
+    ) -> None:
         if not self.is_playing():
             return
 
         for obj in self.active_objects():
             obj.update(dt)
 
-    def draw(self, canvas: object) -> None:
+    def draw(
+        self,
+        canvas: object,
+    ) -> None:
         pass
 
-    def on_tap(self, x: float, y: float) -> None:
+    def on_tap(
+        self,
+        x: float,
+        y: float,
+    ) -> None:
         pass
 
-    def on_swipe(self, start: tuple[float, float], end: tuple[float, float], direction: str) -> None:
+    def on_swipe(
+        self,
+        start: tuple[float, float],
+        end: tuple[float, float],
+        direction: str,
+    ) -> None:
         pass
 
-    def on_touch_down(self, x: float, y: float) -> None:
+    def on_touch_down(
+        self,
+        x: float,
+        y: float,
+    ) -> None:
         pass
 
-    def on_touch_move(self, x: float, y: float) -> None:
+    def on_touch_move(
+        self,
+        x: float,
+        y: float,
+    ) -> None:
         pass
 
-    def on_touch_up(self, x: float, y: float) -> None:
+    def on_touch_up(
+        self,
+        x: float,
+        y: float,
+    ) -> None:
         pass

@@ -670,10 +670,16 @@ class Game:
                 )
 
                 Color(
-                    1,
-                    1,
-                    1,
-                    1,
+                    *getattr(
+                        obj,
+                        "text_color",
+                        (
+                            1,
+                            1,
+                            1,
+                            1,
+                        ),
+                    )
                 )
 
                 Rectangle(
@@ -946,10 +952,19 @@ class Game:
                         and gesture.kind
                         == "tap"
                     ):
-                        game.scene.on_tap(
-                            vx,
-                            vy,
+                        handled = (
+                            game.scene
+                            .dispatch_tap(
+                                vx,
+                                vy,
+                            )
                         )
+
+                        if not handled:
+                            game.scene.on_tap(
+                                vx,
+                                vy,
+                            )
 
                     elif (
                         gesture
