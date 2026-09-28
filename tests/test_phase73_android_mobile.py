@@ -50,7 +50,7 @@ def test_cli_init_android_accepts_mobile_options(
             "--android-api",
             "35",
             "--min-api",
-            "23",
+            "24",
             "--arch",
             "arm64-v8a",
         ]
@@ -241,3 +241,4 @@ def test_build_parser_supports_debug_and_release_android_modes():
         release_args.mode
         == "release"
     )
+

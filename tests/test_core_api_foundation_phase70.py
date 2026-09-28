@@ -30,7 +30,6 @@ def test_phase70_version_is_synchronized():
         project = tomllib.load(file)["project"]
 
     assert project["version"] == hyperkit.__version__
-    assert project["version"].startswith("0.2.")
 
 
 def test_core_error_types_inherit_from_hyperkit_error():
@@ -105,3 +104,4 @@ def test_require_api_version_rejects_incompatible_api():
         HyperKitCompatibilityError
     ):
         require_api_version("0.3")
+

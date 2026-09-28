@@ -13,7 +13,7 @@ except ModuleNotFoundError:
 def test_phase73_development_version():
     assert (
         hyperkit.__version__
-        == "0.3.0.dev0"
+        == "0.4.0.dev0"
     )
 
 
@@ -44,3 +44,4 @@ def test_core_api_contract_remains_02():
         hyperkit.API_VERSION
         == "0.2"
     )
+
