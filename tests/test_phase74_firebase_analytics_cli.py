@@ -80,3 +80,75 @@ def test_cli_init_firebase_analytics_configures_project(
         / "analytics"
         / "HyperKitFirebaseAnalytics.java"
     ).is_file()
+
+
+def test_cli_init_firebase_analytics_accepts_google_services(
+    tmp_path: Path,
+):
+    create_buildozer_spec(
+        tmp_path,
+        title="Firebase CLI Resources",
+    )
+
+    config = (
+        tmp_path
+        / "google-services.json"
+    )
+
+    config.write_text(
+        """{
+  "project_info": {
+    "project_id": "hyperkit-cli-project"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456:android:def",
+        "android_client_info": {
+          "package_name": "org.gameviz.cli"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "cli-api-key"
+        }
+      ]
+    }
+  ]
+}
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "init-firebase-analytics",
+            "--path",
+            str(tmp_path),
+            "--google-services",
+            str(config),
+            "--package-name",
+            "org.gameviz.cli",
+        ]
+    )
+
+    assert result == 0
+
+    spec = (
+        tmp_path
+        / "buildozer.spec"
+    ).read_text(
+        encoding="utf-8",
+    )
+
+    assert (
+        "android.add_resources = android_resources"
+        in spec
+    )
+
+    assert (
+        tmp_path
+        / "android_resources"
+        / "values"
+        / "firebase_analytics.xml"
+    ).is_file()
