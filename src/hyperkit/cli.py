@@ -1151,7 +1151,13 @@ def cmd_init_firebase_analytics(
 ) -> int:
     spec_path, java_path = (
         configure_firebase_analytics_android_project(
-            args.path
+            args.path,
+            google_services_path=(
+                args.google_services
+            ),
+            package_name=(
+                args.package_name
+            ),
         )
     )
 
@@ -1723,6 +1729,26 @@ def build_parser(
     p_init_firebase_analytics.add_argument(
         "--path",
         default=".",
+    )
+
+    p_init_firebase_analytics.add_argument(
+        "--google-services",
+        default=None,
+        help=(
+            "Optional google-services.json "
+            "used to generate Firebase "
+            "Android string resources."
+        ),
+    )
+
+    p_init_firebase_analytics.add_argument(
+        "--package-name",
+        default=None,
+        help=(
+            "Android package name to select "
+            "when google-services.json "
+            "contains multiple clients."
+        ),
     )
 
     p_init_firebase_analytics.set_defaults(
