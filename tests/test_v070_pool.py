@@ -119,3 +119,38 @@ def test_object_pool_rejects_invalid_sizes():
             initial_size=2,
             max_size=1,
         )
+
+
+
+def test_object_pool_release_uses_identity_for_equal_objects():
+    first = GameObject()
+    second = GameObject()
+    items = [
+        first,
+        second,
+    ]
+
+    pool = ObjectPool(
+        lambda: items.pop(0),
+    )
+
+    acquired_first = pool.acquire()
+    acquired_second = pool.acquire()
+
+    assert (
+        acquired_first
+        == acquired_second
+    )
+    assert (
+        acquired_first
+        is not acquired_second
+    )
+
+    assert pool.release(
+        acquired_second
+    )
+
+    assert (
+        pool.active_items
+        == (acquired_first,)
+    )
