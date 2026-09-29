@@ -24,13 +24,23 @@ class CameraShake:
     active: bool = False
     decay: bool = True
 
-    def __post_init__(self) -> None:
+    def __post_init__(
+        self,
+    ) -> None:
         if self.scene is not None:
-            self.bind(self.scene)
+            self.bind(
+                self.scene
+            )
 
-    def bind(self, scene: Any) -> "CameraShake":
+    def bind(
+        self,
+        scene: Any,
+    ) -> "CameraShake":
         self.scene = scene
-        self._set_offset(0.0, 0.0)
+        self._set_offset(
+            0.0,
+            0.0,
+        )
         return self
 
     def shake(
@@ -38,45 +48,103 @@ class CameraShake:
         intensity: float = 12.0,
         duration: float = 0.25,
         decay: bool = True,
-    ) -> None:
+    ) -> "CameraShake":
         if duration <= 0:
             self.stop()
-            return
+            return self
 
-        self.intensity = max(0.0, float(intensity))
-        self.duration = float(duration)
-        self.remaining = float(duration)
-        self.decay = decay
+        self.intensity = max(
+            0.0,
+            float(intensity),
+        )
+        self.duration = float(
+            duration
+        )
+        self.remaining = float(
+            duration
+        )
+        self.decay = bool(
+            decay
+        )
         self.active = True
 
-    def update(self, dt: float) -> tuple[float, float]:
+        return self
+
+    def update(
+        self,
+        dt: float,
+    ) -> tuple[float, float]:
+        dt = float(
+            dt
+        )
+
+        if dt < 0:
+            raise ValueError(
+                "dt must be non-negative"
+            )
+
         if not self.active:
-            return 0.0, 0.0
+            return (
+                0.0,
+                0.0,
+            )
 
         self.remaining -= dt
 
         if self.remaining <= 0:
             self.stop()
-            return 0.0, 0.0
+            return (
+                0.0,
+                0.0,
+            )
 
-        strength = self.intensity
+        strength = (
+            self.intensity
+        )
 
-        if self.decay and self.duration > 0:
-            strength *= self.remaining / self.duration
+        if (
+            self.decay
+            and self.duration > 0
+        ):
+            strength *= (
+                self.remaining
+                / self.duration
+            )
 
-        offset_x = uniform(-strength, strength)
-        offset_y = uniform(-strength, strength)
+        offset_x = uniform(
+            -strength,
+            strength,
+        )
+        offset_y = uniform(
+            -strength,
+            strength,
+        )
 
-        self._set_offset(offset_x, offset_y)
+        self._set_offset(
+            offset_x,
+            offset_y,
+        )
 
-        return offset_x, offset_y
+        return (
+            offset_x,
+            offset_y,
+        )
 
-    def stop(self) -> None:
+    def stop(
+        self,
+    ) -> None:
         self.active = False
         self.remaining = 0.0
-        self._set_offset(0.0, 0.0)
+        self._set_offset(
+            0.0,
+            0.0,
+        )
 
-    def _set_offset(self, x: float, y: float) -> None:
+    def _set_offset(
+        self,
+        x: float,
+        y: float,
+    ) -> None:
         if self.scene is None:
             return
 

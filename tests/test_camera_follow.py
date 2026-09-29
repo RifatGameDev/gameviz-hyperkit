@@ -1,4 +1,10 @@
-from hyperkit import CameraFollow, GameObject
+import pytest
+
+from hyperkit import (
+    CameraFollow,
+    GameObject,
+    WorldBounds,
+)
 
 
 class DummyScene:
@@ -7,18 +13,37 @@ class DummyScene:
 
 def test_camera_follow_sets_default_offset():
     scene = DummyScene()
-    target = GameObject(x=310, y=590, width=100, height=100)
+    target = GameObject(
+        x=310,
+        y=590,
+        width=100,
+        height=100,
+    )
 
-    follow = CameraFollow(scene=scene, target=target)
+    follow = CameraFollow(
+        scene=scene,
+        target=target,
+    )
 
-    assert scene.camera_follow_offset_x == 0.0
-    assert scene.camera_follow_offset_y == 0.0
+    assert (
+        scene.camera_follow_offset_x
+        == 0.0
+    )
+    assert (
+        scene.camera_follow_offset_y
+        == 0.0
+    )
     assert follow.target is target
 
 
 def test_camera_follow_centers_target_when_snapped():
     scene = DummyScene()
-    target = GameObject(x=0, y=0, width=100, height=100)
+    target = GameObject(
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
 
     follow = CameraFollow(
         scene=scene,
@@ -29,13 +54,24 @@ def test_camera_follow_centers_target_when_snapped():
 
     follow.snap_to_target()
 
-    assert scene.camera_follow_offset_x == 310.0
-    assert scene.camera_follow_offset_y == 590.0
+    assert (
+        scene.camera_follow_offset_x
+        == 310.0
+    )
+    assert (
+        scene.camera_follow_offset_y
+        == 590.0
+    )
 
 
 def test_camera_follow_updates_smoothly():
     scene = DummyScene()
-    target = GameObject(x=0, y=0, width=100, height=100)
+    target = GameObject(
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
 
     follow = CameraFollow(
         scene=scene,
@@ -45,7 +81,11 @@ def test_camera_follow_updates_smoothly():
         smoothness=1.0,
     )
 
-    offset_x, offset_y = follow.update(0.5)
+    offset_x, offset_y = (
+        follow.update(
+            0.5
+        )
+    )
 
     assert offset_x == 155.0
     assert offset_y == 295.0
@@ -53,7 +93,12 @@ def test_camera_follow_updates_smoothly():
 
 def test_camera_follow_no_smoothness_snaps_immediately():
     scene = DummyScene()
-    target = GameObject(x=0, y=0, width=100, height=100)
+    target = GameObject(
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
 
     follow = CameraFollow(
         scene=scene,
@@ -63,7 +108,11 @@ def test_camera_follow_no_smoothness_snaps_immediately():
         smoothness=0,
     )
 
-    offset_x, offset_y = follow.update(0.1)
+    offset_x, offset_y = (
+        follow.update(
+            0.1
+        )
+    )
 
     assert offset_x == 310.0
     assert offset_y == 590.0
@@ -71,26 +120,163 @@ def test_camera_follow_no_smoothness_snaps_immediately():
 
 def test_camera_follow_stop_resets_offset():
     scene = DummyScene()
-    target = GameObject(x=0, y=0, width=100, height=100)
+    target = GameObject(
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
 
-    follow = CameraFollow(scene=scene, target=target)
+    follow = CameraFollow(
+        scene=scene,
+        target=target,
+    )
     follow.snap_to_target()
     follow.stop()
 
     assert not follow.enabled
-    assert scene.camera_follow_offset_x == 0.0
-    assert scene.camera_follow_offset_y == 0.0
+    assert (
+        scene.camera_follow_offset_x
+        == 0.0
+    )
+    assert (
+        scene.camera_follow_offset_y
+        == 0.0
+    )
 
 
 def test_camera_follow_can_change_target():
     scene = DummyScene()
-    target_1 = GameObject(x=0, y=0, width=100, height=100)
-    target_2 = GameObject(x=310, y=590, width=100, height=100)
+    target_1 = GameObject(
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
+    target_2 = GameObject(
+        x=310,
+        y=590,
+        width=100,
+        height=100,
+    )
 
-    follow = CameraFollow(scene=scene, target=target_1)
-    follow.set_target(target_2)
+    follow = CameraFollow(
+        scene=scene,
+        target=target_1,
+    )
+    result = follow.set_target(
+        target_2
+    )
     follow.snap_to_target()
 
+    assert result is follow
     assert follow.target is target_2
-    assert scene.camera_follow_offset_x == 0.0
-    assert scene.camera_follow_offset_y == 0.0
+    assert (
+        scene.camera_follow_offset_x
+        == 0.0
+    )
+    assert (
+        scene.camera_follow_offset_y
+        == 0.0
+    )
+
+
+def test_camera_follow_clamps_to_world_edges():
+    scene = DummyScene()
+    target = GameObject(
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
+
+    follow = CameraFollow(
+        scene=scene,
+        target=target,
+        screen_width=720,
+        screen_height=1280,
+        smoothness=0,
+        world_bounds=WorldBounds(
+            x=0,
+            y=0,
+            width=2000,
+            height=3000,
+        ),
+    )
+
+    assert follow.snap_to_target() == (
+        0.0,
+        0.0,
+    )
+
+    target.x = 1900
+    target.y = 2900
+
+    assert follow.snap_to_target() == (
+        -1280.0,
+        -1720.0,
+    )
+
+
+def test_camera_follow_centers_world_smaller_than_screen():
+    scene = DummyScene()
+    target = GameObject(
+        x=0,
+        y=0,
+        width=20,
+        height=20,
+    )
+
+    follow = CameraFollow(
+        scene=scene,
+        target=target,
+        screen_width=100,
+        screen_height=100,
+        smoothness=0,
+        world_bounds=WorldBounds(
+            x=10,
+            y=20,
+            width=60,
+            height=40,
+        ),
+    )
+
+    assert follow.snap_to_target() == (
+        10.0,
+        10.0,
+    )
+
+
+def test_camera_follow_handles_missing_target():
+    scene = DummyScene()
+
+    follow = CameraFollow(
+        scene=scene,
+        target=None,
+    )
+
+    assert follow.snap_to_target() == (
+        0.0,
+        0.0,
+    )
+    assert follow.update(
+        0.1
+    ) == (
+        0.0,
+        0.0,
+    )
+
+
+def test_camera_follow_rejects_negative_dt():
+    follow = CameraFollow(
+        scene=DummyScene(),
+        target=GameObject(),
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="dt",
+    ):
+        follow.update(
+            -0.1
+        )
