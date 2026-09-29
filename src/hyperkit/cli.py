@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import shutil
 import subprocess
 import sys
@@ -557,6 +558,34 @@ def validate_project(
         issues.append(
             "Missing main.py"
         )
+    else:
+        try:
+            ast.parse(
+                main_file.read_text(
+                    encoding="utf-8"
+                ),
+                filename=str(
+                    main_file
+                ),
+            )
+        except (
+            OSError,
+            SyntaxError,
+        ) as exc:
+            issues.append(
+                "Invalid main.py syntax: "
+                f"{exc}"
+            )
+
+    readme_file = (
+        project_path
+        / "README.md"
+    )
+
+    if not readme_file.exists():
+        issues.append(
+            "Missing README.md"
+        )
 
     if not metadata_file.exists():
         issues.append(
@@ -593,6 +622,39 @@ def validate_project(
                     "hyperkit.toml "
                     "is missing "
                     "project.template"
+                )
+
+            run_main = (
+                metadata
+                .get(
+                    "run",
+                    {},
+                )
+                .get(
+                    "main",
+                    "main.py",
+                )
+            )
+
+            if (
+                not isinstance(
+                    run_main,
+                    str,
+                )
+                or not run_main.strip()
+            ):
+                issues.append(
+                    "hyperkit.toml "
+                    "has invalid run.main"
+                )
+            elif not (
+                project_path
+                / run_main
+            ).is_file():
+                issues.append(
+                    "Configured main file "
+                    "is missing: "
+                    f"{run_main}"
                 )
 
         except Exception as exc:
@@ -1494,6 +1556,38 @@ def cmd_doctor(
         f"{environment.guidance}"
     )
 
+    project_path = Path(
+        getattr(
+            args,
+            "path",
+            ".",
+        )
+    ).resolve()
+
+    if (
+        project_path
+        / "hyperkit.toml"
+    ).is_file():
+        valid, issues = validate_project(
+            project_path
+        )
+        print(
+            "Project: "
+            f"{'valid' if valid else 'invalid'}"
+        )
+        print(
+            f"Project path: {project_path}"
+        )
+
+        for issue in issues:
+            print(
+                f"Project issue: {issue}"
+            )
+    else:
+        print(
+            "Project: not detected"
+        )
+
     return 0
 
 
@@ -1977,9 +2071,14 @@ def build_parser(
     p_doctor = sub.add_parser(
         "doctor",
         help=(
-            "Check local "
-            "HyperKit environment"
+            "Check local HyperKit "
+            "environment and project"
         ),
+    )
+
+    p_doctor.add_argument(
+        "--path",
+        default=".",
     )
 
     p_doctor.set_defaults(
