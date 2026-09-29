@@ -46,25 +46,38 @@ def _record_lifecycle_state(
     )
 
 
-def _notify_game_systems(
+def _notify_runtime_services(
     context: SDKContext,
     method_name: str,
 ) -> None:
-    service = context.get_service(
-        "game_systems"
-    )
+    """Notify registered services that opt into runtime lifecycle hooks."""
 
-    if service is None:
-        return
+    seen: set[int] = set()
 
-    callback = getattr(
-        service,
-        method_name,
-        None,
-    )
+    for service in (
+        context.services.values()
+    ):
+        identity = id(
+            service
+        )
 
-    if callable(callback):
-        callback()
+        if identity in seen:
+            continue
+
+        seen.add(
+            identity
+        )
+
+        callback = getattr(
+            service,
+            method_name,
+            None,
+        )
+
+        if callable(
+            callback
+        ):
+            callback()
 
 
 def start_runtime(
@@ -105,7 +118,7 @@ def start_runtime(
         runtime
     )
 
-    _notify_game_systems(
+    _notify_runtime_services(
         runtime,
         "on_runtime_start",
     )
@@ -128,7 +141,7 @@ def pause_runtime(
         runtime
     )
 
-    _notify_game_systems(
+    _notify_runtime_services(
         runtime,
         "on_runtime_pause",
     )
@@ -151,7 +164,7 @@ def background_runtime(
         runtime
     )
 
-    _notify_game_systems(
+    _notify_runtime_services(
         runtime,
         "on_runtime_background",
     )
@@ -174,7 +187,7 @@ def resume_runtime(
         runtime
     )
 
-    _notify_game_systems(
+    _notify_runtime_services(
         runtime,
         "on_runtime_resume",
     )
@@ -197,7 +210,7 @@ def stop_runtime(
         runtime
     )
 
-    _notify_game_systems(
+    _notify_runtime_services(
         runtime,
         "on_runtime_stop",
     )
