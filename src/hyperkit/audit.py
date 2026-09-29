@@ -188,21 +188,64 @@ def _find_forbidden_terms(root_path: Path) -> list[str]:
 
 def _find_unbalanced_markdown(root_path: Path) -> list[str]:
     findings: list[str] = []
+    markdown_files: list[Path] = []
 
-    markdown_files = [root_path / "README.md"]
-    docs_dir = root_path / "docs"
+    for root_file in (
+        root_path / "README.md",
+        root_path / "ROADMAP.md",
+    ):
+        if root_file.is_file():
+            markdown_files.append(
+                root_file
+            )
 
+    docs_dir = (
+        root_path
+        / "docs"
+    )
     if docs_dir.exists():
-        markdown_files.extend(docs_dir.glob("*.md"))
+        markdown_files.extend(
+            path
+            for path in docs_dir.rglob(
+                "*.md"
+            )
+            if path.is_file()
+        )
 
-    for file_path in markdown_files:
-        if not file_path.exists():
-            continue
+    templates_dir = (
+        root_path
+        / "src"
+        / "hyperkit"
+        / "templates"
+    )
+    if templates_dir.exists():
+        markdown_files.extend(
+            path
+            for path in templates_dir.rglob(
+                "*.md"
+            )
+            if path.is_file()
+        )
 
-        content = _read_text(file_path)
+    for file_path in sorted(
+        set(
+            markdown_files
+        )
+    ):
+        content = _read_text(
+            file_path
+        )
 
-        if not _markdown_fences_are_balanced(content):
-            findings.append(file_path.relative_to(root_path).as_posix())
+        if not _markdown_fences_are_balanced(
+            content
+        ):
+            findings.append(
+                file_path
+                .relative_to(
+                    root_path
+                )
+                .as_posix()
+            )
 
     return findings
 
