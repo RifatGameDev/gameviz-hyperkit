@@ -66,6 +66,11 @@ REQUIRED_RELEASE_FILES = [
     ".github/workflows/ci.yml",
     "src/hyperkit/performance.py",
     "docs/V060_MOBILE_RUNTIME_PERFORMANCE.md",
+    "src/hyperkit/content.py",
+    "src/hyperkit/prefab.py",
+    "src/hyperkit/pool.py",
+    "src/hyperkit/level_sequence.py",
+    "docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "docs/PROJECT_HEALTH_REPORT.md",
@@ -170,6 +175,14 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_v060_mobile_runtime.py",
     "tests/test_v060_service_lifecycle.py",
     "tests/test_v060_milestone.py",
+    "tests/test_v070_content.py",
+    "tests/test_v070_prefab.py",
+    "tests/test_v070_pool.py",
+    "tests/test_v070_level_sequence.py",
+    "tests/test_v070_asset_cache.py",
+    "tests/test_v070_sprite_pattern.py",
+    "tests/test_v070_cli.py",
+    "tests/test_v070_milestone.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
