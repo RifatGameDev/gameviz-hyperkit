@@ -4,30 +4,32 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/gameviz-hyperkit)](https://pypi.org/project/gameviz-hyperkit/)
 [![License](https://img.shields.io/pypi/l/gameviz-hyperkit)](LICENSE)
 
-**GameViz HyperKit** is a lightweight Python SDK for creating **2D hypercasual and hybrid-casual game prototypes** quickly.
+**GameViz HyperKit** is a lightweight Python SDK for building **complete small 2D hypercasual and hybrid-casual games** with a code-first workflow.
 
-It is designed for beginners, students, game-jam developers, indie developers, and small teams who want to test simple mobile-style game ideas using Python.
+It is designed for beginners, students, game-jam developers, indie developers, and small teams that want a focused Python toolkit for mobile-style 2D games.
 
-> HyperKit is not a full game engine like Unity, Unreal Engine, or Godot.  
-> It is a prototype-focused SDK with reusable systems, helper modules, and ready-made templates.
+> HyperKit is not a general-purpose engine like Unity, Unreal Engine, or Godot.  
+> It focuses on a smaller 2D mobile-game scope with reusable runtime, physics, UI, input, persistence, audio, monetization, analytics, and project tooling.
 
 ---
 
 ## Current Release Status
 
-HyperKit is publicly available on PyPI and remains in active alpha development.
+HyperKit is publicly available on PyPI and remains in active development toward a stable 1.0 release.
 
 Current package status:
 
-- Current package version: `0.2.0`
+- Latest published PyPI release: `0.2.0`
+- Active development version: `0.4.0.dev0`
 - Installation command: `pip install gameviz-hyperkit`
-- Package maturity: Alpha / early SDK preview
+- Package maturity: Alpha / active SDK development
+- Public compatibility contract: API `0.2`
 - API stability target: future `1.0.0`
 - Supported Python versions: Python 3.9–3.12
 
-HyperKit `0.2.0` establishes the core SDK architecture, including runtime context, structured logging, project configuration, platform detection, lifecycle management, deprecation support, and a protected public API contract.
+The current development line expands the original core SDK with Android/mobile workflow support, provider-based ads and analytics, stronger physics and collision systems, UI interaction, persistence, audio, animation, particles, level loading, timers, input actions, and game-session/progression systems.
 
-HyperKit is suitable for learning, prototyping, game jams, and early 2D mobile game development. It is not yet intended to replace a full production game engine.
+HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
 ---
 
@@ -460,31 +462,28 @@ Package publication is handled through the project's controlled release workflow
 
 ## Current Limitations
 
-- HyperKit is not a complete general-purpose game engine.
+- HyperKit is not a general-purpose 2D/3D engine.
 - Advanced 3D rendering is not supported.
-- Android APK build support remains experimental.
-- AdMob and analytics helper systems are not implemented yet.
-- The current focus is 2D hypercasual and hybrid-casual prototypes.
-- Templates are intended for learning and prototyping rather than finished commercial production.
-- The public API may change before version `1.0.0`.
+- Android builds depend on the external Android/Buildozer toolchain and still require final device-level release validation.
+- AdMob and Firebase Analytics integrations exist, but production-provider configuration and release QA remain environment-dependent.
+- The current focus is complete small 2D hypercasual and hybrid-casual mobile games.
+- The public API may still change before version `1.0.0`.
+- Final 1.0 documentation, API freeze, clean-install validation, and release-candidate QA are still pending.
 
 ---
 
 ## Roadmap
 
-Planned improvements include:
+The active `0.4.0.dev0` line is in SDK completion and hardening. Remaining release work is focused on integration quality rather than adding broad new feature categories:
 
-- Better beginner documentation
-- More polished starter templates
-- Template screenshots and animated demonstrations
-- Stronger asset and audio workflows
-- Improved mobile project structure
-- Android build workflow improvements
-- AdMob integration helpers
-- Analytics integration helpers
-- Additional complete example games
-- More automated package compatibility testing
-- Stable API milestone for version `1.0.0`
+- finish subsystem and integration audits
+- keep all built-in templates aligned with the hardened SDK
+- complete Android/device smoke validation
+- complete AdMob/Firebase test-mode release validation
+- synchronize public documentation and examples
+- freeze the intended 1.0 public API
+- run clean-install, wheel, sdist, and `twine check` validation
+- publish a release candidate before the stable `1.0.0` milestone
 
 ---
 
