@@ -144,3 +144,99 @@ def test_timer_manager_clear_stops_all_timers():
     manager.clear()
 
     assert manager.timers == []
+
+
+
+def test_repeating_timer_fires_multiple_intervals_from_large_dt():
+    count = {"value": 0}
+
+    timer = Timer(
+        1.0,
+        repeat=True,
+        on_complete=lambda: count.update(
+            value=count["value"] + 1
+        ),
+    )
+
+    assert timer.update(2.5) is True
+    assert count["value"] == 2
+    assert timer.times_fired == 2
+    assert timer.elapsed == pytest.approx(0.5)
+
+
+def test_timer_rejects_negative_dt():
+    timer = Timer(1.0)
+
+    with pytest.raises(
+        TimerError,
+        match="dt",
+    ):
+        timer.update(-0.1)
+
+
+def test_cooldown_rejects_negative_dt():
+    cooldown = Cooldown(1.0)
+
+    with pytest.raises(
+        TimerError,
+        match="dt",
+    ):
+        cooldown.update(-0.1)
+
+
+def test_timer_lifecycle_methods_are_chainable():
+    timer = Timer(
+        1.0,
+        auto_start=False,
+    )
+
+    assert timer.start() is timer
+    assert timer.pause() is timer
+    assert timer.resume() is timer
+    assert timer.stop() is timer
+    assert timer.reset() is timer
+
+
+def test_timer_manager_can_remove_timer():
+    manager = TimerManager()
+    timer = manager.after(
+        1.0,
+        lambda: None,
+    )
+
+    assert manager.remove(timer) is True
+    assert timer.completed
+    assert manager.timers == []
+    assert manager.remove(timer) is False
+
+
+def test_timer_manager_pause_and_resume_all():
+    manager = TimerManager()
+    first = manager.after(
+        1.0,
+        lambda: None,
+    )
+    second = manager.every(
+        1.0,
+        lambda: None,
+    )
+
+    manager.pause_all()
+
+    assert not first.active
+    assert not second.active
+
+    manager.resume_all()
+
+    assert first.active
+    assert second.active
+
+
+def test_timer_manager_rejects_negative_dt():
+    manager = TimerManager()
+
+    with pytest.raises(
+        TimerError,
+        match="dt",
+    ):
+        manager.update(-0.1)
