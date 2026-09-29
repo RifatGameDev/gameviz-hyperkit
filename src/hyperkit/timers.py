@@ -28,6 +28,7 @@ class Timer:
     active: bool = False
     completed: bool = False
     times_fired: int = 0
+    times_fired: int = 0
 
     def __post_init__(self) -> None:
         self.duration = float(self.duration)
@@ -252,6 +253,14 @@ class TimerManager:
                 remaining_timers.append(timer)
 
         self.timers = remaining_timers
+
+    def pause_all(self) -> None:
+        for timer in self.timers:
+            timer.pause()
+
+    def resume_all(self) -> None:
+        for timer in self.timers:
+            timer.resume()
 
     def pause_all(self) -> None:
         for timer in self.timers:
