@@ -54,7 +54,7 @@ def _notify_runtime_services(
 
     seen: set[int] = set()
 
-    for service in (
+    for service in list(
         context.services.values()
     ):
         identity = id(
