@@ -344,6 +344,45 @@ REQUIRED_PATHS = {
     "v0.6 milestone tests": (
         "tests/test_v060_milestone.py"
     ),
+    "v0.7 content source": (
+        "src/hyperkit/content.py"
+    ),
+    "v0.7 prefab source": (
+        "src/hyperkit/prefab.py"
+    ),
+    "v0.7 object pool source": (
+        "src/hyperkit/pool.py"
+    ),
+    "v0.7 level sequence source": (
+        "src/hyperkit/level_sequence.py"
+    ),
+    "v0.7 documentation": (
+        "docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md"
+    ),
+    "v0.7 content tests": (
+        "tests/test_v070_content.py"
+    ),
+    "v0.7 prefab tests": (
+        "tests/test_v070_prefab.py"
+    ),
+    "v0.7 pool tests": (
+        "tests/test_v070_pool.py"
+    ),
+    "v0.7 level sequence tests": (
+        "tests/test_v070_level_sequence.py"
+    ),
+    "v0.7 asset cache tests": (
+        "tests/test_v070_asset_cache.py"
+    ),
+    "v0.7 sprite pattern tests": (
+        "tests/test_v070_sprite_pattern.py"
+    ),
+    "v0.7 CLI tests": (
+        "tests/test_v070_cli.py"
+    ),
+    "v0.7 milestone tests": (
+        "tests/test_v070_milestone.py"
+    ),
 }
 
 
