@@ -310,6 +310,27 @@ class AudioManager:
             sounds
         )
 
+    def on_runtime_pause(
+        self,
+    ) -> None:
+        self.pause_music()
+
+    def on_runtime_background(
+        self,
+    ) -> None:
+        self.pause_music()
+
+    def on_runtime_resume(
+        self,
+    ) -> None:
+        self.resume_music()
+
+    def on_runtime_stop(
+        self,
+    ) -> None:
+        self.stop_all_sounds()
+        self.stop_music()
+
     def set_sound_volume(
         self,
         volume: float,
