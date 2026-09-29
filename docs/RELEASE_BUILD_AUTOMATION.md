@@ -43,8 +43,10 @@ After `hyperkit release-check` passes, run:
 
 `twine check dist/*`
 
-## Current Publishing Rule
+Then perform clean-install verification from a fresh virtual environment using the built wheel before release.
 
-For now, HyperKit should remain on GitHub and TestPyPI.
+## Publishing Rule
 
-Do not publish to real PyPI until the SDK and templates are more stable.
+Use TestPyPI when release-candidate packaging validation is useful.
+
+A stable release may be published to real PyPI only after the full release gates pass, including automated tests, template validation, package build validation, `twine check`, clean-install verification, and required Android/provider QA for the target release.
