@@ -48,6 +48,7 @@ REQUIRED_PATHS = {
     "Package metadata": "pyproject.toml",
     "Main README": "README.md",
     "Changelog": "CHANGELOG.md",
+    "Roadmap": "ROADMAP.md",
     "Templates documentation": "docs/TEMPLATES.md",
     "Template helper guide": "docs/TEMPLATE_HELPERS.md",
     "Template quality checklist": "docs/TEMPLATE_QUALITY_CHECKLIST.md",
@@ -55,6 +56,7 @@ REQUIRED_PATHS = {
     "Version history": "docs/VERSION_HISTORY.md",
     "Generated project smoke docs": "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "Package source": "src/hyperkit/__init__.py",
+    "Package module CLI entry": "src/hyperkit/__main__.py",
     "CLI source": "src/hyperkit/cli.py",
     "Templates folder": "src/hyperkit/templates",
     "Examples folder": "examples",
@@ -281,6 +283,18 @@ REQUIRED_PATHS = {
     ),
     "Phase 68 readiness tests": (
         "tests/test_stable_release_readiness_phase68.py"
+    ),
+    "Phase 75 documentation sync tests": (
+        "tests/test_phase75_documentation_sync.py"
+    ),
+    "Phase 75 public API audit tests": (
+        "tests/test_phase75_public_api_audit.py"
+    ),
+    "Phase 75 CLI entry tests": (
+        "tests/test_phase75_cli_entry.py"
+    ),
+    "Phase 75 release integration tests": (
+        "tests/test_phase75_release_integration.py"
     ),
 }
 
