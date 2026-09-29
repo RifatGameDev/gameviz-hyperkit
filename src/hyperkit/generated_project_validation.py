@@ -40,6 +40,7 @@ FOLLOWUP_CHECK_NAMES = [
     "README.md is usable",
     "main.py syntax is valid",
     "main.py imports HyperKit",
+    "main.py HyperKit imports are public",
     "main.py has game entry",
     "hyperkit.toml is valid",
     "hyperkit.toml matches template",
@@ -290,6 +291,88 @@ def _validate_hyperkit_import(
     )
 
 
+def _validate_public_hyperkit_imports(
+    report: GeneratedProjectValidationReport,
+    template_name: str,
+    main_file: Path,
+) -> None:
+    check_name = (
+        "main.py HyperKit imports are public"
+    )
+
+    if not main_file.exists():
+        report.add(
+            template=template_name,
+            name=check_name,
+            passed=False,
+            message="main.py missing",
+        )
+        return
+
+    try:
+        tree = ast.parse(
+            _read_text(main_file),
+            filename=str(main_file),
+        )
+    except SyntaxError as exc:
+        report.add(
+            template=template_name,
+            name=check_name,
+            passed=False,
+            message=(
+                "Cannot inspect HyperKit imports: "
+                f"{exc}"
+            ),
+        )
+        return
+
+    imported_names: set[str] = set()
+
+    for node in ast.walk(tree):
+        if (
+            isinstance(node, ast.ImportFrom)
+            and node.module == "hyperkit"
+        ):
+            imported_names.update(
+                alias.name
+                for alias in node.names
+                if alias.name != "*"
+            )
+
+    if not imported_names:
+        report.add(
+            template=template_name,
+            name=check_name,
+            passed=False,
+            message="No explicit HyperKit imports found",
+        )
+        return
+
+    import hyperkit
+
+    public_names = set(
+        hyperkit.__all__
+    )
+    missing = sorted(
+        imported_names
+        - public_names
+    )
+
+    report.add(
+        template=template_name,
+        name=check_name,
+        passed=not missing,
+        message=(
+            "All imported HyperKit names are public"
+            if not missing
+            else (
+                "Missing public exports: "
+                + ", ".join(missing)
+            )
+        ),
+    )
+
+
 def _validate_game_entry(
     report: GeneratedProjectValidationReport,
     template_name: str,
@@ -502,6 +585,12 @@ def _validate_generated_project(
     )
 
     _validate_hyperkit_import(
+        report=report,
+        template_name=template_name,
+        main_file=main_file,
+    )
+
+    _validate_public_hyperkit_imports(
         report=report,
         template_name=template_name,
         main_file=main_file,
