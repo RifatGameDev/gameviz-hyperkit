@@ -70,7 +70,7 @@ def test_phase75_hardened_systems_are_public():
 def test_package_version_and_api_contract_remain_separate():
     assert (
         hyperkit.__version__
-        == "0.5.0.dev0"
+        == "0.6.0.dev0"
     )
     assert (
         hyperkit.API_VERSION
