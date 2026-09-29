@@ -103,6 +103,39 @@ class Scene:
     def clear(self) -> None:
         self.objects.clear()
 
+    def release_resources(
+        self,
+    ) -> int:
+        """Release disposable scene objects and clear the scene."""
+
+        objects = list(
+            self.objects
+        )
+
+        for obj in objects:
+            for method_name in (
+                "dispose",
+                "close",
+                "release",
+            ):
+                callback = getattr(
+                    obj,
+                    method_name,
+                    None,
+                )
+
+                if callable(
+                    callback
+                ):
+                    callback()
+                    break
+
+        self.objects.clear()
+
+        return len(
+            objects
+        )
+
     def active_objects(
         self,
     ) -> Iterable[GameObject]:
@@ -182,5 +215,25 @@ class Scene:
         self,
         x: float,
         y: float,
+    ) -> None:
+        pass
+
+    def on_pause(
+        self,
+    ) -> None:
+        pass
+
+    def on_background(
+        self,
+    ) -> None:
+        pass
+
+    def on_resume(
+        self,
+    ) -> None:
+        pass
+
+    def on_stop(
+        self,
     ) -> None:
         pass
