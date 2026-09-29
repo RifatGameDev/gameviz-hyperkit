@@ -105,6 +105,7 @@ HyperKit is useful for:
 - Fixed-step simulation helper
 - Runtime service lifecycle hooks
 - Scene resource cleanup
+- Runtime safe-area updates
 - Touch move-noise filtering
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
