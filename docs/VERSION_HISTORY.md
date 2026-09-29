@@ -1,132 +1,145 @@
-## 0.1.1 — Stable Release
+# GameViz HyperKit — Version History
 
-Status: Preparing for PyPI publication
-
-This release is based on the validated `0.1.1rc2` release candidate.
-
-Highlights:
-
-- Six complete built-in templates
-- Python 3.9–3.12 package compatibility
-- Complete manual runtime QA evidence
-- TestPyPI release-candidate validation
-- CLI and generated-project validation
-- Python 3.9 and 3.10 TOML compatibility
-
-# Version History
-
-This document explains the version history and development direction of HyperKit.
-
----
+This document summarizes the public releases and active development
+milestones of HyperKit.
 
 ## Current Package Identity
 
-Package name:
+- Package: `gameviz-hyperkit`
+- Import: `hyperkit`
+- CLI: `hyperkit`
+- Latest published PyPI release: `0.2.0`
+- Active development version: `0.6.0.dev0`
+- Public compatibility contract: API `0.2`
 
-gameviz-hyperkit
+## Development Roadmap
 
-Import name:
+```text
+v0.1.0  Foundation / Initial SDK
+   ↓
+v0.2.0  Core SDK
+   ↓
+v0.3.0  Android + Mobile
+   ↓
+v0.4.0  Ads + Analytics + Game Systems
+   ↓
+v0.5.0  Complete Games + Developer Tooling
+   ↓
+v0.6.0  Mobile Production Runtime + Performance
+          ← ACTIVE DEVELOPMENT
+   ↓
+v0.7.0  Content, Assets + Advanced Game Features
+   ↓
+v0.8.0  Build, Publishing + Production Hardening
+   ↓
+v0.9.0  API Freeze + Public Beta
+   ↓
+v1.0.0  Stable Release
+```
 
-hyperkit
+## 0.6.0 — Active Development
 
-CLI command:
+Focus: Mobile Production Runtime + Performance.
 
-hyperkit
+Current work includes:
 
----
+- mobile performance profiles
+- frame-hitch delta protection
+- bounded fixed-step simulation
+- runtime performance statistics
+- pause/background/resume/stop lifecycle hardening
+- registered-service lifecycle propagation
+- lifecycle-aware audio behavior
+- scene resource cleanup
+- runtime safe-area updates
+- touch move-noise filtering
+- viewport-aware touch routing
 
-## Version 0.1.0
+## 0.5.0 — Development Milestone
 
-Version `0.1.0` is the first working public development version of HyperKit.
+Focus: Complete Games + Developer Tooling.
 
-It introduced the core SDK structure:
+Delivered:
 
-- package structure
-- CLI command
-- starter templates
-- basic game loop structure
-- scene system
-- game object system
-- score system
-- UI helpers
-- responsive canvas scaling
-- local package build
-- TestPyPI publishing test
+- six complete built-in small-game loops
+- complete-game validation
+- project diagnostics CLI
+- runtime diagnostics and debug overlay
+- Python 3.9–3.12 CI
+- package build and `twine check` validation
 
-This version was mainly focused on proving that HyperKit can work as a Python package and CLI-based starter kit for simple 2D mobile-style game prototypes.
+The v0.5 closeout reached 973 passing automated tests.
 
----
+## 0.4.0 — Development Milestone
 
-## Unreleased Development Work
+Focus: Ads + Analytics + Game Systems.
 
-After `0.1.0`, HyperKit development focused on improving the SDK and making templates more useful for real prototypes.
+Delivered foundations include:
 
-Main areas improved:
+- provider-based Ads architecture
+- AdMob Android test-mode integration
+- provider-based Analytics architecture
+- Firebase Analytics Android integration
+- game sessions and progression
+- broad SDK subsystem hardening
+- public API, CLI, health, release, and generated-project validation
 
-- assets
-- image rendering
-- audio
-- animation
-- sprite animation
-- particles
-- camera shake
-- scene transitions
-- timers
-- cooldowns
-- input action mapping
-- level data loading
-- camera follow
-- screen and world bounds
-- progress bars
-- helper-based template upgrades
-- template quality tests
-- release readiness tests
-- documentation
+The v0.4 closeout reached 949 passing automated tests.
 
----
+## 0.3.0 — Development Milestone
 
-## Versioning Plan
+Focus: Android + Mobile.
 
-HyperKit currently uses simple semantic-style versioning:
+Delivered foundations include:
 
-MAJOR.MINOR.PATCH
+- Android configuration and build workflow
+- mobile display profiles
+- safe-area and viewport support
+- runtime lifecycle integration
+- touch/multi-pointer foundations
+- Android environment diagnostics
 
-Example:
+## 0.2.0 — Published Release
 
-0.1.0
+Version `0.2.0` is the latest published PyPI release.
 
-Recommended meaning:
+It introduced the core SDK/runtime foundation, including:
 
-- PATCH update: bug fixes and small documentation updates
-- MINOR update: new helpers, new templates, or meaningful SDK improvements
-- MAJOR update: breaking changes in public API or project structure
+- SDK context and runtime lifecycle
+- configuration and logging
+- environment detection
+- project configuration
+- deprecation framework
+- API compatibility helpers
+- stable API `0.2` compatibility contract
 
----
+## 0.1.x — Initial Public Releases
 
-## Suggested Next Version
+The initial public line established:
 
-The next package version should likely be:
+- Python package structure
+- HyperKit CLI
+- six starter templates
+- scene and game-object systems
+- input, score, persistence, physics, UI, assets, audio, animation,
+  particles, camera, timers, levels, and other early helpers
+- TestPyPI validation
+- clean-install validation
+- initial PyPI publication
 
-0.2.0
+## Versioning Direction
 
-Reason:
+HyperKit uses semantic-style package versions:
 
-The current development work adds many new helper systems, template upgrades, tests, and documentation. This is more than a patch update.
+`MAJOR.MINOR.PATCH`
 
----
+Development versions may use suffixes such as `.dev0`, and release
+candidates may use `rc1`, `rc2`, and so on.
 
-## Release Stability Notes
+The package version and public compatibility contract are intentionally
+separate. During the current development roadmap, the package may advance
+through `0.x` milestones while the compatibility contract remains API
+`0.2`.
 
-HyperKit is still in early development.
-
-For now, recommended publishing target:
-
-GitHub + TestPyPI
-
-Real PyPI publishing should wait until:
-
-- helper APIs are stable
-- template structure is stable
-- documentation is complete
-- generated projects are tested across key templates
-- package build and metadata validation pass consistently
+The intended API freeze is scheduled for v0.9 before the stable v1.0
+release.
