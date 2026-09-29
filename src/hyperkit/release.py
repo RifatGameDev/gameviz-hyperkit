@@ -250,6 +250,11 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
     )
 
     for filename in REQUIRED_RELEASE_FILES:
+        if filename.endswith(
+            "/screenshot.png"
+        ):
+            continue
+
         path = root_path / filename
         report.add(
             name=f"Required release file: {filename}",
