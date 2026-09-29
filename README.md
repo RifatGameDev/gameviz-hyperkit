@@ -20,14 +20,14 @@ HyperKit is publicly available on PyPI and remains in active development toward 
 Current package status:
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.5.0.dev0`
+- Active development version: `0.6.0.dev0`
 - Installation command: `pip install gameviz-hyperkit`
 - Package maturity: Alpha / active SDK development
 - Public compatibility contract: API `0.2`
 - API stability target: future `1.0.0`
 - Supported Python versions: Python 3.9–3.12
 
-The current development line builds on the Android, Ads, Analytics, and Game Systems foundation by focusing on complete built-in game loops and developer tooling. HyperKit v0.5 adds runtime diagnostics, an optional debug overlay, complete-game validation, stronger project diagnostics, and a cross-version CI workflow.
+The current development line builds on the complete-game and developer-tooling foundation by hardening HyperKit for mobile runtime reliability and performance. HyperKit v0.6 adds performance profiles, frame-hitch protection, fixed-step simulation support, stronger pause/background/resume/stop handling, runtime service lifecycle propagation, scene cleanup, and touch-noise filtering.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -100,6 +100,12 @@ HyperKit is useful for:
 - Project diagnostics CLI
 - Runtime FPS/frame diagnostics
 - Optional debug overlay
+- Mobile performance profiles
+- Frame-time hitch protection
+- Fixed-step simulation helper
+- Runtime service lifecycle hooks
+- Scene resource cleanup
+- Touch move-noise filtering
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
@@ -267,6 +273,22 @@ game = Game(
 
 game.set_scene(MyScene())
 game.run()
+```
+
+For mobile runtime tuning, you can use a performance profile:
+
+```python
+from hyperkit import Game, PerformanceProfile
+
+game = Game(
+    title="My HyperKit Game",
+    performance_profile=(
+        PerformanceProfile.from_mode(
+            "balanced"
+        )
+    ),
+    touch_move_min_distance=3,
+)
 ```
 
 ---
@@ -461,6 +483,7 @@ Package publication is handled through the project's controlled release workflow
 - [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
 - [Release Evidence Workspace](docs/release-evidence/README.md)
 - [HyperKit v0.5 — Complete Games + Developer Tooling](docs/V050_COMPLETE_GAMES_TOOLING.md)
+- [HyperKit v0.6 — Mobile Production Runtime + Performance](docs/V060_MOBILE_RUNTIME_PERFORMANCE.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -492,16 +515,18 @@ Package publication is handled through the project's controlled release workflow
 
 ## Roadmap
 
-The active `0.5.0.dev0` line focuses on **Complete Games + Developer Tooling**:
+The active `0.6.0.dev0` line focuses on **Mobile Production Runtime + Performance**:
 
-- certify all six built-in templates as complete small-game loops
-- provide project diagnostics and runtime performance diagnostics
-- provide an optional debug overlay
-- validate complete games from the CLI
-- protect development with a Python 3.9–3.12 CI workflow
-- keep the v0.4 Android, Ads, Analytics, and Game Systems foundation green
+- protect scene updates from large frame-time hitches
+- provide battery, balanced, and performance runtime profiles
+- provide bounded fixed-step simulation support
+- strengthen pause/background/resume/stop lifecycle behavior
+- propagate lifecycle events to registered runtime services
+- release scene resources during transitions and shutdown
+- filter noisy touch-move events when developers opt in
+- keep all v0.5 complete-game and developer-tooling checks green
 
-After v0.5, the roadmap continues through mobile production runtime/performance, content and advanced game features, publishing hardening, and public beta. The later v0.9 stage will freeze the intended 1.0 public API before the stable `1.0.0` milestone.
+After v0.6, the roadmap continues through content/assets and advanced game features, build/publishing hardening, and public beta. The later v0.9 stage will freeze the intended 1.0 public API before the stable `1.0.0` milestone.
 
 ---
 
