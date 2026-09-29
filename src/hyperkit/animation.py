@@ -75,12 +75,27 @@ class Tween:
     _easing_func: EasingFunction = field(default=linear, init=False)
 
     def __post_init__(self):
+        self.duration = float(self.duration)
+        self.delay = float(self.delay)
+        self.attr = str(self.attr).strip()
+
         if self.duration <= 0:
             raise ValueError("Tween duration must be greater than 0.")
+
+        if self.delay < 0:
+            raise ValueError("Tween delay cannot be negative.")
+
+        if not self.attr:
+            raise ValueError("Tween attr must not be empty.")
 
         self._easing_func = get_easing(self.easing)
 
     def _start(self) -> None:
+        if not hasattr(self.target, self.attr):
+            raise AttributeError(
+                f"Tween target has no attribute '{self.attr}'."
+            )
+
         current_value = float(getattr(self.target, self.attr))
 
         self._start_value = current_value if self.from_value is None else float(
@@ -93,13 +108,21 @@ class Tween:
         self._started = True
 
     def update(self, dt: float) -> bool:
+        dt = float(dt)
+
+        if dt < 0:
+            raise ValueError("Tween dt cannot be negative.")
+
         if not self.active or self.completed:
             return False
 
         if self.delay > 0:
-            self.delay -= dt
-            if self.delay > 0:
+            if dt <= self.delay:
+                self.delay -= dt
                 return True
+
+            dt -= self.delay
+            self.delay = 0.0
 
         if not self._started:
             self._start()
@@ -115,10 +138,18 @@ class Tween:
 
         if t >= 1.0:
             if self.loop:
-                self.elapsed = 0.0
+                self.elapsed = self.elapsed % self.duration
 
                 if self.yoyo:
                     self._start_value, self._end_value = self._end_value, self._start_value
+
+                if self.elapsed > 0:
+                    loop_t = self.elapsed / self.duration
+                    loop_eased = self._easing_func(loop_t)
+                    loop_value = self._start_value + (
+                        self._end_value - self._start_value
+                    ) * loop_eased
+                    setattr(self.target, self.attr, loop_value)
 
                 return True
 
@@ -132,9 +163,10 @@ class Tween:
 
         return True
 
-    def stop(self) -> None:
+    def stop(self) -> "Tween":
         self.active = False
         self.completed = True
+        return self
 
 
 @dataclass
@@ -167,8 +199,25 @@ class ColorTween:
     _easing_func: EasingFunction = field(default=linear, init=False)
 
     def __post_init__(self):
+        self.duration = float(self.duration)
+        self.delay = float(self.delay)
+
         if self.duration <= 0:
             raise ValueError("ColorTween duration must be greater than 0.")
+
+        if self.delay < 0:
+            raise ValueError("ColorTween delay cannot be negative.")
+
+        if len(self.to_color) != 4:
+            raise ValueError("ColorTween to_color must contain 4 values.")
+
+        if self.from_color is not None and len(self.from_color) != 4:
+            raise ValueError("ColorTween from_color must contain 4 values.")
+
+        self.to_color = tuple(float(value) for value in self.to_color)
+
+        if self.from_color is not None:
+            self.from_color = tuple(float(value) for value in self.from_color)
 
         self._easing_func = get_easing(self.easing)
 
@@ -184,13 +233,21 @@ class ColorTween:
         self._started = True
 
     def update(self, dt: float) -> bool:
+        dt = float(dt)
+
+        if dt < 0:
+            raise ValueError("ColorTween dt cannot be negative.")
+
         if not self.active or self.completed:
             return False
 
         if self.delay > 0:
-            self.delay -= dt
-            if self.delay > 0:
+            if dt <= self.delay:
+                self.delay -= dt
                 return True
+
+            dt -= self.delay
+            self.delay = 0.0
 
         if not self._started:
             self._start()
@@ -208,10 +265,20 @@ class ColorTween:
 
         if t >= 1.0:
             if self.loop:
-                self.elapsed = 0.0
+                self.elapsed = self.elapsed % self.duration
 
                 if self.yoyo:
                     self._start_color, self._end_color = self._end_color, self._start_color
+
+                if self.elapsed > 0:
+                    loop_t = self.elapsed / self.duration
+                    loop_eased = self._easing_func(loop_t)
+                    self.target.color = tuple(
+                        self._start_color[i] + (
+                            self._end_color[i] - self._start_color[i]
+                        ) * loop_eased
+                        for i in range(4)
+                    )
 
                 return True
 
@@ -225,9 +292,10 @@ class ColorTween:
 
         return True
 
-    def stop(self) -> None:
+    def stop(self) -> "ColorTween":
         self.active = False
         self.completed = True
+        return self
 
 
 class AnimationManager:
@@ -346,8 +414,9 @@ class AnimationManager:
 
         return self.add(tween)
 
-    def stop(self, target: Any | None = None, attr: str | None = None) -> None:
+    def stop(self, target: Any | None = None, attr: str | None = None) -> int:
         remaining = []
+        stopped = 0
 
         for animation in self.animations:
             same_target = target is None or animation.target is target
@@ -356,18 +425,27 @@ class AnimationManager:
 
             if same_target and same_attr:
                 animation.stop()
+                stopped += 1
             else:
                 remaining.append(animation)
 
         self.animations = remaining
+        return stopped
 
-    def clear(self) -> None:
+    def clear(self) -> int:
+        count = len(self.animations)
+
         for animation in self.animations:
             animation.stop()
 
         self.animations.clear()
+        return count
 
     def update(self, dt: float) -> None:
+        dt = float(dt)
+
+        if dt < 0:
+            raise ValueError("AnimationManager dt cannot be negative.")
         self.animations = [
             animation
             for animation in self.animations
