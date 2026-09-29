@@ -48,3 +48,27 @@ jobs:
 
       - name: Run release readiness check
         run: hyperkit release-check
+
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build wheel and source distribution
+        run: python -m build
+
+      - name: Validate package artifacts
+        run: python -m twine check dist/*
