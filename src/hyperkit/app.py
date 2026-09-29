@@ -249,6 +249,12 @@ class Game:
             ):
                 release()
 
+            if hasattr(
+                previous_scene,
+                "started",
+            ):
+                previous_scene.started = False
+
         self.scene = scene
 
         scene.bind_game(
