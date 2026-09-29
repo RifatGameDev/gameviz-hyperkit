@@ -219,6 +219,36 @@ class Game:
         self,
         scene: Scene,
     ) -> "Game":
+        previous_scene = (
+            self.scene
+        )
+
+        if (
+            previous_scene is not None
+            and previous_scene is not scene
+        ):
+            stop_hook = getattr(
+                previous_scene,
+                "on_stop",
+                None,
+            )
+
+            if callable(
+                stop_hook
+            ):
+                stop_hook()
+
+            release = getattr(
+                previous_scene,
+                "release_resources",
+                None,
+            )
+
+            if callable(
+                release
+            ):
+                release()
+
         self.scene = scene
 
         scene.bind_game(
@@ -351,6 +381,18 @@ class Game:
         self._call_scene_hook(
             "on_stop"
         )
+
+        if self.scene is not None:
+            release = getattr(
+                self.scene,
+                "release_resources",
+                None,
+            )
+
+            if callable(
+                release
+            ):
+                release()
 
     def run(
         self,
