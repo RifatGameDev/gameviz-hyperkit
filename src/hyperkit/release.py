@@ -64,6 +64,8 @@ REQUIRED_RELEASE_FILES = [
     "src/hyperkit/devtools.py",
     "src/hyperkit/complete_games.py",
     ".github/workflows/ci.yml",
+    "src/hyperkit/performance.py",
+    "docs/V060_MOBILE_RUNTIME_PERFORMANCE.md",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "docs/PROJECT_HEALTH_REPORT.md",
@@ -164,6 +166,10 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_phase75_documentation_sync.py",
     "tests/test_phase75_public_api_audit.py",
     "tests/test_phase75_cli_entry.py",
+    "tests/test_v060_performance.py",
+    "tests/test_v060_mobile_runtime.py",
+    "tests/test_v060_service_lifecycle.py",
+    "tests/test_v060_milestone.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
