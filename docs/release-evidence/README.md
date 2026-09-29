@@ -23,14 +23,15 @@ Each template has its own folder:
 
 ## Required Template Evidence
 
-Each template folder should eventually include:
+Each template folder should include:
 
 - completed manual QA result
 - automated validation output
-- runtime screenshot
 - runtime notes
 - issue notes when needed
 - final release-readiness decision
+
+Optional supporting media may include `screenshot.png`, demo GIFs, or short gameplay videos. Binary media is not required for portable source-repository CI.
 
 Use:
 
