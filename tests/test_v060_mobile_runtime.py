@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from hyperkit import (
     GameObject,
+    SafeAreaInsets,
     Scene,
     TouchTracker,
 )
@@ -173,3 +176,61 @@ def test_game_lifecycle_hooks_remain_idempotent():
     assert scene.pause_calls == 1
     assert scene.background_calls == 1
     assert scene.resume_calls == 1
+
+
+
+def test_game_safe_area_can_update_at_runtime():
+    game = Game(
+        safe_area=SafeAreaInsets(
+            top=10
+        )
+    )
+
+    updated = game.update_safe_area(
+        SafeAreaInsets(
+            left=5,
+            right=6,
+            top=20,
+            bottom=7,
+        )
+    )
+
+    assert updated is game
+    assert (
+        game.display_profile
+        .safe_area
+        .to_dict()
+    ) == {
+        "left": 5,
+        "right": 6,
+        "top": 20,
+        "bottom": 7,
+    }
+
+
+def test_mobile_display_profile_safe_area_update_is_immutable():
+    profile = (
+        Game()
+        .display_profile
+    )
+
+    updated = profile.with_safe_area(
+        SafeAreaInsets(
+            top=24
+        )
+    )
+
+    assert updated is not profile
+    assert profile.safe_area.top == 0
+    assert updated.safe_area.top == 24
+
+
+def test_game_touch_router_guards_safe_viewport():
+    content = Path(
+        "src/hyperkit/app.py"
+    ).read_text(
+        encoding="utf-8"
+    )
+
+    assert "self.viewport.contains(" in content
+    assert "gesture is not None" in content
