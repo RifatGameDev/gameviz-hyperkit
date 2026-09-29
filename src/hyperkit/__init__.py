@@ -240,6 +240,21 @@ from .api_contract import (
     validate_public_api,
 )
 
+from .devtools import (
+    DebugOverlay,
+    RuntimeDiagnostics,
+    RuntimeSnapshot,
+)
+
+from .complete_games import (
+    COMPLETE_GAME_TEMPLATES,
+    CompleteGameCheck,
+    CompleteGameReport,
+    format_complete_game_report,
+    generate_complete_game_report,
+    run_complete_game_validation,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -404,6 +419,15 @@ __all__ = [
     "REQUIRED_PUBLIC_API",
     "get_missing_public_api",
     "validate_public_api",
+    "DebugOverlay",
+    "RuntimeDiagnostics",
+    "RuntimeSnapshot",
+    "COMPLETE_GAME_TEMPLATES",
+    "CompleteGameCheck",
+    "CompleteGameReport",
+    "format_complete_game_report",
+    "generate_complete_game_report",
+    "run_complete_game_validation",
 ]
 
 
