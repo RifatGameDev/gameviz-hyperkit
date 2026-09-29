@@ -5,9 +5,9 @@ milestones of HyperKit.
 
 ## Current Package Identity
 
-- Package: `gameviz-hyperkit`
-- Import: `hyperkit`
-- CLI: `hyperkit`
+- Package name: `gameviz-hyperkit`
+- Import name: `hyperkit`
+- CLI command: `hyperkit`
 - Latest published PyPI release: `0.2.0`
 - Active development version: `0.6.0.dev0`
 - Public compatibility contract: API `0.2`
