@@ -64,3 +64,15 @@ def test_complete_game_report_format():
     assert "Passed: 54/54" in output
     assert "Failed: 0" in output
     assert "Complete game validation status: PASS" in output
+
+
+
+def test_complete_game_validation_falls_back_to_installed_templates(
+    tmp_path,
+):
+    report = generate_complete_game_report(
+        tmp_path
+    )
+
+    assert report.total == 54
+    assert report.passed
