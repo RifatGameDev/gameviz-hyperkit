@@ -24,7 +24,7 @@ def test_public_readme_explains_current_status():
     content = readme_content()
 
     assert "Latest published PyPI release: `0.2.0`" in content
-    assert "Active development version: `0.6.0.dev0`" in content
+    assert "Active development version: `0.7.0.dev0`" in content
     assert (
         "Installation command: "
         "`pip install gameviz-hyperkit`"
