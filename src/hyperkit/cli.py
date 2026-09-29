@@ -133,7 +133,9 @@ def get_hyperkit_version() -> str:
         )
 
     except PackageNotFoundError:
-        return "0.0.0-dev"
+        from . import __version__
+
+        return __version__
 
 
 def normalize_template_name(
@@ -1560,8 +1562,17 @@ def build_parser(
         prog="hyperkit",
         description=(
             "GameViz HyperKit CLI for "
-            "creating 2D hypercasual "
-            "game prototypes."
+            "building complete small "
+            "2D mobile games."
+        ),
+    )
+
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=(
+            "gameviz-hyperkit "
+            f"{get_hyperkit_version()}"
         ),
     )
 
