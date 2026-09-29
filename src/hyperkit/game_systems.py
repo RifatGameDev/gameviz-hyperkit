@@ -44,6 +44,31 @@ class GameSession:
     pause_count: int = 0
     resume_count: int = 0
 
+    def __post_init__(self) -> None:
+        self.session_id = str(self.session_id).strip()
+        self.started_at = float(self.started_at)
+
+        if not self.session_id:
+            raise ValueError(
+                "session_id must not be empty."
+            )
+
+        if self.ended_at is not None:
+            self.ended_at = float(self.ended_at)
+
+        self.pause_count = int(self.pause_count)
+        self.resume_count = int(self.resume_count)
+
+        if self.pause_count < 0:
+            raise ValueError(
+                "pause_count cannot be negative."
+            )
+
+        if self.resume_count < 0:
+            raise ValueError(
+                "resume_count cannot be negative."
+            )
+
     @property
     def ended(self) -> bool:
         return self.state == SessionState.ENDED
@@ -63,6 +88,20 @@ class SessionTracker:
             lambda: uuid4().hex
         )
         self.current: GameSession | None = None
+
+    @property
+    def active(self) -> bool:
+        return (
+            self.current is not None
+            and not self.current.ended
+        )
+
+    @property
+    def session_id(self) -> str | None:
+        if self.current is None:
+            return None
+
+        return self.current.session_id
 
     def start(self) -> GameSession:
         if (
@@ -223,6 +262,24 @@ class ProgressionTracker:
         self.level += amount
         return self.level
 
+    def reset(
+        self,
+        *,
+        level: int = 1,
+        xp: int = 0,
+        coins: int = 0,
+    ) -> "ProgressionTracker":
+        replacement = ProgressionTracker(
+            level=level,
+            xp=xp,
+            coins=coins,
+        )
+
+        self.level = replacement.level
+        self.xp = replacement.xp
+        self.coins = replacement.coins
+        return self
+
     def as_dict(self) -> dict[str, int]:
         return {
             "level": self.level,
@@ -275,6 +332,10 @@ class GameSystems:
         )
 
         self._initialized = False
+
+    @property
+    def initialized(self) -> bool:
+        return self._initialized
 
     def initialize(self) -> "GameSystems":
         if self._initialized:
@@ -331,7 +392,7 @@ class GameSystems:
         )
 
     def on_runtime_pause(self) -> None:
-        if self.session.current is None:
+        if not self.session.active:
             return
 
         self.session.pause()
@@ -340,7 +401,7 @@ class GameSystems:
         )
 
     def on_runtime_background(self) -> None:
-        if self.session.current is None:
+        if not self.session.active:
             return
 
         self.session.background()
@@ -349,7 +410,7 @@ class GameSystems:
         )
 
     def on_runtime_resume(self) -> None:
-        if self.session.current is None:
+        if not self.session.active:
             return
 
         self.session.resume()
@@ -408,6 +469,11 @@ class GameSystems:
             else int(level)
         )
 
+        if resolved_level < 1:
+            raise ValueError(
+                "level must be at least 1."
+            )
+
         self.analytics.level_start(
             resolved_level,
             **properties,
@@ -426,6 +492,11 @@ class GameSystems:
             if level is None
             else int(level)
         )
+
+        if resolved_level < 1:
+            raise ValueError(
+                "level must be at least 1."
+            )
 
         self.analytics.level_complete(
             resolved_level,
@@ -451,9 +522,13 @@ class GameSystems:
         self,
         **properties: Any,
     ) -> None:
+        payload = dict(properties)
+        payload.update(
+            self.progression.as_dict()
+        )
+
         self.analytics.progression(
-            **self.progression.as_dict(),
-            **properties,
+            **payload
         )
 
     def add_coins(
@@ -470,6 +545,21 @@ class GameSystems:
             self.record_progression()
 
         return value
+
+    def spend_coins(
+        self,
+        amount: int,
+        *,
+        track: bool = True,
+    ) -> bool:
+        spent = self.progression.spend_coins(
+            amount
+        )
+
+        if spent and track:
+            self.record_progression()
+
+        return spent
 
     def add_xp(
         self,
