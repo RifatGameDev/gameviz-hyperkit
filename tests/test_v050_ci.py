@@ -42,3 +42,13 @@ def test_v050_ci_runs_core_validation_commands():
 
     for command in required:
         assert command in content
+
+
+
+def test_v050_ci_builds_and_checks_distribution():
+    content = WORKFLOW.read_text(
+        encoding="utf-8"
+    )
+
+    assert "python -m build" in content
+    assert "python -m twine check dist/*" in content
