@@ -244,6 +244,19 @@ class Game:
             )
         )
 
+    def update_safe_area(
+        self,
+        safe_area: SafeAreaInsets,
+    ) -> "Game":
+        self.display_profile = (
+            self.display_profile
+            .with_safe_area(
+                safe_area
+            )
+        )
+
+        return self
+
     def set_scene(
         self,
         scene: Scene,
