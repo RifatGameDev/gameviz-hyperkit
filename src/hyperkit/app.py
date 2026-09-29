@@ -1068,6 +1068,14 @@ class Game:
                 self,
                 touch,
             ):
+                self._update_scaler()
+
+                if not self.viewport.contains(
+                    touch.x,
+                    touch.y,
+                ):
+                    return False
+
                 (
                     vx,
                     vy,
@@ -1161,15 +1169,17 @@ class Game:
                     )
                 )
 
-                if game.scene:
+                if (
+                    game.scene
+                    and gesture is not None
+                ):
                     game.scene.on_touch_up(
                         vx,
                         vy,
                     )
 
                     if (
-                        gesture
-                        and gesture.kind
+                        gesture.kind
                         == "tap"
                     ):
                         handled = (
@@ -1187,8 +1197,7 @@ class Game:
                             )
 
                     elif (
-                        gesture
-                        and gesture.kind
+                        gesture.kind
                         == "swipe"
                         and gesture.direction
                     ):
