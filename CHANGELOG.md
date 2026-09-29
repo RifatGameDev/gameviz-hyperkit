@@ -28,6 +28,7 @@ Current development version: ``0.6.0.dev0``.
 - Scene resource cleanup through `release_resources()`.
 - Runtime lifecycle propagation to all registered SDK services.
 - Touch move-noise filtering with `move_min_distance`.
+- Runtime safe-area updates through `Game.update_safe_area()` and `MobileDisplayProfile.with_safe_area()`.
 - v0.6 mobile performance, lifecycle, cleanup, and input regression coverage.
 - v0.5 Complete Games + Developer Tooling milestone.
 - `RuntimeDiagnostics` and immutable `RuntimeSnapshot` performance data.
