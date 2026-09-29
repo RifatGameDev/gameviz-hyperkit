@@ -15,25 +15,37 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``0.4.0.dev0``.
+Current development version: ``0.5.0.dev0``.
 
 ### Added
 
-- Phase 75 SDK completion audit and hardening.
+- v0.5 Complete Games + Developer Tooling milestone.
+- `RuntimeDiagnostics` and immutable `RuntimeSnapshot` performance data.
+- Optional `DebugOverlay` for FPS, frame-time, and dropped-frame feedback.
+- Complete-game validator for all six built-in game templates.
+- `hyperkit diagnostics` project diagnostics command.
+- `hyperkit validate-complete-games` CLI command.
+- General Python 3.9–3.12 GitHub Actions CI workflow.
+- v0.5 complete-game, diagnostics, CLI, and CI regression coverage.
+- Phase 75 SDK completion audit and hardening from the v0.4 closeout.
 - Expanded physics world, collision manifolds, body/material, trigger, layer, and mask support.
 - Stronger geometry, camera, bounds, layout, persistence, state, transition, timer, level, input, audio, UI, particle, animation, sprite, asset, and game-system helpers.
-- Additional regression coverage across the hardened subsystems.
 
 ### Changed
 
-- Simple Physics now uses the reusable PhysicsWorld architecture.
-- Public development documentation now distinguishes the latest published PyPI release from the active development version.
-- Roadmap work is now organized around completion gates, integration QA, API review, Android/device validation, and release-candidate preparation.
+- Tap Counter now has a complete round, game-over/completion state, and restart flow.
+- Built-in templates are treated as complete small-game starters rather than prototype-only examples.
+- Package development version advanced to `0.5.0.dev0`.
+- Simple Physics uses the reusable PhysicsWorld architecture.
+- Public development documentation distinguishes the latest published PyPI release from the active development version.
+- The authoritative roadmap now follows v0.5 through v1.0 instead of skipping directly from v0.4 to release-candidate work.
 
 ### Validation
 
+- v0.4 closeout finished with 949 passing automated tests before v0.5 development started.
+- v0.4 closeout reports passed: health 133/133, templates 42/42, generated projects 90/90, release readiness 117/117, pre-release audit 10/10.
 - Phase 75 regression suite reached 919 passing tests before documentation synchronization.
-- API compatibility contract remains `0.2` while package development continues at `0.4.0.dev0`.
+- API compatibility contract remains `0.2` while package development continues at `0.5.0.dev0`.
 
 ---
 
