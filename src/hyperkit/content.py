@@ -433,24 +433,26 @@ class ContentManager:
             if normalized in item.tags
         ]
 
-    def resolve_asset(
+    def load_item(
         self,
         content_id: str,
-    ) -> str:
+    ) -> Any:
         item = self.require(
             content_id
         )
 
         if item.asset is None:
-            raise ContentError(
-                "Content item has no asset: "
-                f"{item.content_id}"
+            return dict(
+                item.data
             )
 
         loaders = {
             "image": self.assets.load_image,
             "audio": self.assets.load_audio,
             "font": self.assets.load_font,
+            "json": self.assets.load_json,
+            "csv": self.assets.load_csv,
+            "text": self.assets.load_text,
         }
 
         loader = loaders.get(
@@ -459,13 +461,38 @@ class ContentManager:
 
         if loader is None:
             raise ContentError(
-                "Content asset resolution supports "
-                "image, audio, and font items. "
-                f"Got: {item.kind}"
+                "Unsupported content item kind "
+                f"for asset loading: {item.kind}"
             )
 
         return loader(
             item.asset
+        )
+
+    def resolve_asset(
+        self,
+        content_id: str,
+    ) -> str:
+        item = self.require(
+            content_id
+        )
+
+        if item.kind not in {
+            "image",
+            "audio",
+            "font",
+        }:
+            raise ContentError(
+                "resolve_asset supports image, "
+                "audio, and font content items."
+            )
+
+        loaded = self.load_item(
+            content_id
+        )
+
+        return str(
+            loaded
         )
 
     def validate_assets(
@@ -477,15 +504,8 @@ class ContentManager:
             if item.asset is None:
                 continue
 
-            if item.kind not in {
-                "image",
-                "audio",
-                "font",
-            }:
-                continue
-
             try:
-                self.resolve_asset(
+                self.load_item(
                     item.content_id
                 )
             except Exception as exc:
