@@ -326,6 +326,24 @@ REQUIRED_PATHS = {
     "General CI workflow": (
         ".github/workflows/ci.yml"
     ),
+    "v0.6 performance runtime source": (
+        "src/hyperkit/performance.py"
+    ),
+    "v0.6 mobile runtime documentation": (
+        "docs/V060_MOBILE_RUNTIME_PERFORMANCE.md"
+    ),
+    "v0.6 performance tests": (
+        "tests/test_v060_performance.py"
+    ),
+    "v0.6 mobile runtime tests": (
+        "tests/test_v060_mobile_runtime.py"
+    ),
+    "v0.6 service lifecycle tests": (
+        "tests/test_v060_service_lifecycle.py"
+    ),
+    "v0.6 milestone tests": (
+        "tests/test_v060_milestone.py"
+    ),
 }
 
 
