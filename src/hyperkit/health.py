@@ -299,6 +299,30 @@ REQUIRED_PATHS = {
     "Phase 75 release docs alignment tests": (
         "tests/test_phase75_release_docs_alignment.py"
     ),
+    "v0.5 developer tooling source": (
+        "src/hyperkit/devtools.py"
+    ),
+    "v0.5 complete games source": (
+        "src/hyperkit/complete_games.py"
+    ),
+    "v0.5 documentation": (
+        "docs/V050_COMPLETE_GAMES_TOOLING.md"
+    ),
+    "v0.5 developer tooling tests": (
+        "tests/test_v050_devtools.py"
+    ),
+    "v0.5 complete game tests": (
+        "tests/test_v050_complete_games.py"
+    ),
+    "v0.5 CLI tests": (
+        "tests/test_v050_cli.py"
+    ),
+    "v0.5 CI tests": (
+        "tests/test_v050_ci.py"
+    ),
+    "General CI workflow": (
+        ".github/workflows/ci.yml"
+    ),
 }
 
 
