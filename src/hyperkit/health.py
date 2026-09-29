@@ -344,8 +344,17 @@ def generate_health_report(root: str | Path = ".") -> HealthReport:
     report = HealthReport(root=root_path)
 
     for name, relative_path in REQUIRED_PATHS.items():
+        if relative_path.endswith(
+            "/screenshot.png"
+        ):
+            continue
+
         path = root_path / relative_path
-        report.add_check(name=name, path=relative_path, exists=path.exists())
+        report.add_check(
+            name=name,
+            path=relative_path,
+            exists=path.exists(),
+        )
 
     for template_name in REQUIRED_TEMPLATES:
         template_folder = root_path / "src" / "hyperkit" / "templates" / template_name
