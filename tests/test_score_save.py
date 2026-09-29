@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from hyperkit import SaveManager, ScoreManager
 
 
