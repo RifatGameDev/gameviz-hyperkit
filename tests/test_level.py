@@ -133,3 +133,170 @@ def test_level_manager_adds_objects_to_scene(tmp_path: Path):
 
     assert len(objects) == 2
     assert len(scene.objects) == 2
+
+
+
+def test_level_data_rejects_invalid_dimensions():
+    with pytest.raises(
+        LevelError,
+        match="width",
+    ):
+        LevelData.from_dict(
+            {
+                "width": 0,
+            }
+        )
+
+    with pytest.raises(
+        LevelError,
+        match="height",
+    ):
+        LevelData.from_dict(
+            {
+                "height": -1,
+            }
+        )
+
+
+def test_level_data_rejects_invalid_metadata():
+    with pytest.raises(
+        LevelError,
+        match="metadata",
+    ):
+        LevelData.from_dict(
+            {
+                "metadata": [],
+            }
+        )
+
+
+def test_level_data_rejects_non_object_entries():
+    with pytest.raises(
+        LevelError,
+        match="index 0",
+    ):
+        LevelData.from_dict(
+            {
+                "objects": [
+                    "player",
+                ],
+            }
+        )
+
+
+def test_level_data_clamps_background_color():
+    level = LevelData.from_dict(
+        {
+            "background_color": [
+                -1,
+                0.5,
+                2,
+                1,
+            ],
+        }
+    )
+
+    assert level.background_color == (
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+    )
+
+
+def test_level_manager_normalizes_rectangle_shape(
+    tmp_path: Path,
+):
+    manager = LevelManager(
+        project_path=tmp_path
+    )
+
+    obj = manager.create_object(
+        {
+            "shape": "rectangle",
+        }
+    )
+
+    assert obj.shape == "rect"
+
+
+def test_level_manager_rejects_invalid_shape(
+    tmp_path: Path,
+):
+    manager = LevelManager(
+        project_path=tmp_path
+    )
+
+    with pytest.raises(
+        LevelError,
+        match="shape",
+    ):
+        manager.create_object(
+            {
+                "shape": "triangle",
+            }
+        )
+
+
+def test_level_manager_rejects_invalid_object_size(
+    tmp_path: Path,
+):
+    manager = LevelManager(
+        project_path=tmp_path
+    )
+
+    with pytest.raises(
+        LevelError,
+        match="width",
+    ):
+        manager.create_object(
+            {
+                "width": 0,
+            }
+        )
+
+
+def test_level_manager_has_level_and_unload(
+    tmp_path: Path,
+):
+    create_level_file(
+        tmp_path
+    )
+
+    manager = LevelManager(
+        project_path=tmp_path
+    )
+
+    assert not manager.has_level
+
+    manager.load(
+        "level_1.json"
+    )
+
+    assert manager.has_level
+
+    manager.unload()
+
+    assert not manager.has_level
+
+
+def test_level_manager_requires_scene_add_method(
+    tmp_path: Path,
+):
+    manager = LevelManager(
+        project_path=tmp_path
+    )
+    level = LevelData.from_dict(
+        {
+            "objects": [],
+        }
+    )
+
+    with pytest.raises(
+        LevelError,
+        match="add",
+    ):
+        manager.add_to_scene(
+            object(),
+            level,
+        )
