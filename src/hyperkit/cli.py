@@ -51,6 +51,10 @@ from .complete_games import (
     generate_complete_game_report,
 )
 
+from .content import (
+    ContentManager,
+)
+
 from .health import (
     format_health_report,
     generate_health_report,
@@ -970,6 +974,77 @@ def cmd_diagnostics(
         if is_valid
         else 1
     )
+
+
+def cmd_validate_content(
+    args: argparse.Namespace,
+) -> int:
+    project_path = Path(
+        getattr(
+            args,
+            "path",
+            ".",
+        )
+    ).resolve()
+    manifest_file = getattr(
+        args,
+        "manifest",
+        "content.json",
+    )
+
+    manager = ContentManager(
+        project_path=project_path
+    )
+
+    manifest = manager.load(
+        manifest_file
+    )
+
+    issues = manager.validate_assets()
+
+    print(
+        "HyperKit Content Validation"
+    )
+    print(
+        "---------------------------"
+    )
+    print(
+        f"Project: {project_path}"
+    )
+    print(
+        f"Manifest: {manifest_file}"
+    )
+    print(
+        f"Name: {manifest.name}"
+    )
+    print(
+        f"Items: {len(manifest.items)}"
+    )
+
+    if issues:
+        print(
+            f"Failed assets: {len(issues)}"
+        )
+
+        for issue in issues:
+            print(
+                f"- {issue}"
+            )
+
+        print(
+            "Content validation status: FAIL"
+        )
+
+        return 1
+
+    print(
+        "Failed assets: 0"
+    )
+    print(
+        "Content validation status: PASS"
+    )
+
+    return 0
 
 
 def cmd_validate_complete_games(
@@ -2151,6 +2226,37 @@ def build_parser(
 
     p_pre_release_audit.set_defaults(
         func=cmd_pre_release_audit
+    )
+
+    p_validate_content = (
+        sub.add_parser(
+            "validate-content",
+            help=(
+                "Validate a content manifest "
+                "and referenced assets"
+            ),
+        )
+    )
+
+    p_validate_content.add_argument(
+        "--path",
+        default=".",
+        help=(
+            "HyperKit project root"
+        ),
+    )
+
+    p_validate_content.add_argument(
+        "--manifest",
+        default="content.json",
+        help=(
+            "Content manifest filename "
+            "inside assets/data"
+        ),
+    )
+
+    p_validate_content.set_defaults(
+        func=cmd_validate_content
     )
 
     p_validate_complete_games = (
