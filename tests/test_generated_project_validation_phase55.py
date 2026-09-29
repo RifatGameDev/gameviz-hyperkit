@@ -33,7 +33,7 @@ def test_polished_template_list_is_complete():
 def test_generated_project_validation_passes_for_all_templates(tmp_path):
     report = generate_generated_project_validation_report(tmp_path)
 
-    assert report.total == len(EXPECTED_TEMPLATES) * 10
+    assert report.total == len(EXPECTED_TEMPLATES) * 14
     assert report.failed_count == 0
     assert report.passed
 
@@ -58,12 +58,16 @@ def test_generated_project_validation_checks_required_files(tmp_path):
     assert "Project generation" in check_names
     assert "Project directory exists" in check_names
     assert "main.py exists" in check_names
+    assert "README.md exists" in check_names
     assert "hyperkit.toml exists" in check_names
     assert "assets directory exists" in check_names
+    assert "asset subdirectories exist" in check_names
+    assert "README.md is usable" in check_names
     assert "main.py syntax is valid" in check_names
     assert "main.py imports HyperKit" in check_names
     assert "main.py has game entry" in check_names
     assert "hyperkit.toml is valid" in check_names
+    assert "hyperkit.toml matches template" in check_names
     assert "No forbidden local paths" in check_names
 
 
@@ -72,7 +76,7 @@ def test_generated_project_validation_format_contains_summary(tmp_path):
     output = format_generated_project_validation_report(report)
 
     assert "HyperKit Generated Project Validation" in output
-    assert "Passed: 60/60" in output
+    assert "Passed: 84/84" in output
     assert "Failed: 0" in output
     assert "Generated project validation status: PASS" in output
 
