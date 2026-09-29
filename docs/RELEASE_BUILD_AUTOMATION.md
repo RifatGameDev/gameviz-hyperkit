@@ -16,6 +16,10 @@ This command checks whether the package looks ready for a release preparation st
 - required release test files
 - package identity in README
 - version notes in CHANGELOG
+- synchronized package version metadata
+- active development version in README and CHANGELOG
+- Python module CLI entry point
+- current roadmap completion state
 - build command guidance
 - twine check command guidance
 
