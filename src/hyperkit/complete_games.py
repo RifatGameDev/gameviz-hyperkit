@@ -265,6 +265,14 @@ def generate_complete_game_report(
         / "templates"
     )
 
+    if not templates_root.is_dir():
+        templates_root = (
+            Path(__file__)
+            .resolve()
+            .parent
+            / "templates"
+        )
+
     for template in (
         COMPLETE_GAME_TEMPLATES
     ):
