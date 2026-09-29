@@ -1,6 +1,7 @@
 """GameViz HyperKit.
 
-A lightweight Python SDK for mobile-ready 2D hypercasual game prototypes.
+A focused Python SDK for building complete small 2D hypercasual and
+hybrid-casual mobile games.
 """
 
 from .errors import (
