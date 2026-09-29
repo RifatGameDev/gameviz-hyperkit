@@ -320,6 +320,9 @@ REQUIRED_PATHS = {
     "v0.5 CI tests": (
         "tests/test_v050_ci.py"
     ),
+    "v0.5 milestone tests": (
+        "tests/test_v050_milestone.py"
+    ),
     "General CI workflow": (
         ".github/workflows/ci.yml"
     ),
