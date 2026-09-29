@@ -33,12 +33,16 @@ FORBIDDEN_GENERATED_PROJECT_TERMS = [
 FOLLOWUP_CHECK_NAMES = [
     "Project directory exists",
     "main.py exists",
+    "README.md exists",
     "hyperkit.toml exists",
     "assets directory exists",
+    "asset subdirectories exist",
+    "README.md is usable",
     "main.py syntax is valid",
     "main.py imports HyperKit",
     "main.py has game entry",
     "hyperkit.toml is valid",
+    "hyperkit.toml matches template",
     "No forbidden local paths",
 ]
 
@@ -143,6 +147,7 @@ def _validate_required_paths(
     required_paths = {
         "Project directory exists": project_path,
         "main.py exists": project_path / "main.py",
+        "README.md exists": project_path / "README.md",
         "hyperkit.toml exists": project_path / "hyperkit.toml",
         "assets directory exists": project_path / "assets",
     }
@@ -154,6 +159,72 @@ def _validate_required_paths(
             passed=required_path.exists(),
             message=str(required_path),
         )
+
+
+def _validate_asset_structure(
+    report: GeneratedProjectValidationReport,
+    template_name: str,
+    project_path: Path,
+) -> None:
+    asset_root = project_path / "assets"
+    required = [
+        asset_root / "images",
+        asset_root / "audio",
+        asset_root / "fonts",
+        asset_root / "data",
+    ]
+
+    missing = [
+        path.name
+        for path in required
+        if not path.is_dir()
+    ]
+
+    report.add(
+        template=template_name,
+        name="asset subdirectories exist",
+        passed=not missing,
+        message=(
+            "images, audio, fonts, and data folders found"
+            if not missing
+            else "Missing: " + ", ".join(missing)
+        ),
+    )
+
+
+def _validate_readme(
+    report: GeneratedProjectValidationReport,
+    template_name: str,
+    readme_file: Path,
+) -> None:
+    if not readme_file.is_file():
+        report.add(
+            template=template_name,
+            name="README.md is usable",
+            passed=False,
+            message="README.md missing",
+        )
+        return
+
+    content = _read_text(
+        readme_file
+    ).strip()
+
+    usable = (
+        len(content) > 20
+        and "template" in content.lower()
+    )
+
+    report.add(
+        template=template_name,
+        name="README.md is usable",
+        passed=usable,
+        message=(
+            "README contains template guidance"
+            if usable
+            else "README is empty or missing template guidance"
+        ),
+    )
 
 
 def _validate_main_syntax(
@@ -264,21 +335,17 @@ def _validate_project_metadata(
             passed=False,
             message="hyperkit.toml missing",
         )
+        report.add(
+            template=template_name,
+            name="hyperkit.toml matches template",
+            passed=False,
+            message="hyperkit.toml missing",
+        )
         return
 
     try:
-        metadata = tomllib.loads(_read_text(metadata_file))
-        is_valid = isinstance(metadata, dict) and len(metadata) > 0
-
-        report.add(
-            template=template_name,
-            name="hyperkit.toml is valid",
-            passed=is_valid,
-            message=(
-                "Valid TOML metadata"
-                if is_valid
-                else "TOML metadata is empty"
-            ),
+        metadata = tomllib.loads(
+            _read_text(metadata_file)
         )
     except tomllib.TOMLDecodeError as exc:
         report.add(
@@ -287,6 +354,68 @@ def _validate_project_metadata(
             passed=False,
             message=f"Invalid TOML: {exc}",
         )
+        report.add(
+            template=template_name,
+            name="hyperkit.toml matches template",
+            passed=False,
+            message="Cannot validate template metadata",
+        )
+        return
+
+    is_valid = (
+        isinstance(metadata, dict)
+        and len(metadata) > 0
+    )
+
+    report.add(
+        template=template_name,
+        name="hyperkit.toml is valid",
+        passed=is_valid,
+        message=(
+            "Valid TOML metadata"
+            if is_valid
+            else "TOML metadata is empty"
+        ),
+    )
+
+    project = metadata.get(
+        "project",
+        {},
+    )
+    run = metadata.get(
+        "run",
+        {},
+    )
+    expected_cli_template = (
+        template_name.replace(
+            "_",
+            "-",
+        )
+    )
+
+    matches = (
+        isinstance(project, dict)
+        and project.get("template")
+        == expected_cli_template
+        and project.get("template_folder")
+        == template_name
+        and project.get("created_by")
+        == "gameviz-hyperkit"
+        and isinstance(run, dict)
+        and run.get("main")
+        == "main.py"
+    )
+
+    report.add(
+        template=template_name,
+        name="hyperkit.toml matches template",
+        passed=matches,
+        message=(
+            "Template metadata matches generated project"
+            if matches
+            else "Template metadata does not match generated project"
+        ),
+    )
 
 
 def _validate_no_forbidden_paths(
@@ -345,12 +474,25 @@ def _validate_generated_project(
     project_path: Path,
 ) -> None:
     main_file = project_path / "main.py"
+    readme_file = project_path / "README.md"
     metadata_file = project_path / "hyperkit.toml"
 
     _validate_required_paths(
         report=report,
         template_name=template_name,
         project_path=project_path,
+    )
+
+    _validate_asset_structure(
+        report=report,
+        template_name=template_name,
+        project_path=project_path,
+    )
+
+    _validate_readme(
+        report=report,
+        template_name=template_name,
+        readme_file=readme_file,
     )
 
     _validate_main_syntax(
