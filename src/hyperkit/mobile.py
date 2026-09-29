@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import Enum
 from typing import Optional, Tuple, Union
 
@@ -237,6 +237,23 @@ class MobileDisplayProfile:
             y=self.safe_area.bottom,
             width=width,
             height=height,
+        )
+
+    def with_safe_area(
+        self,
+        safe_area: SafeAreaInsets,
+    ) -> "MobileDisplayProfile":
+        if not isinstance(
+            safe_area,
+            SafeAreaInsets,
+        ):
+            raise TypeError(
+                "safe_area must be a SafeAreaInsets instance."
+            )
+
+        return replace(
+            self,
+            safe_area=safe_area,
         )
 
     def to_dict(
