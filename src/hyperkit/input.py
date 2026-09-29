@@ -67,6 +67,7 @@ class TouchTracker:
         tap_max_distance: float = 25.0,
         tap_max_duration: float = 0.25,
         swipe_min_distance: float = 80.0,
+        move_min_distance: float = 0.0,
     ) -> None:
         if tap_max_distance < 0:
             raise ValueError(
@@ -83,6 +84,11 @@ class TouchTracker:
                 "swipe_min_distance cannot be negative."
             )
 
+        if move_min_distance < 0:
+            raise ValueError(
+                "move_min_distance cannot be negative."
+            )
+
         self.tap_max_distance = float(
             tap_max_distance
         )
@@ -93,6 +99,10 @@ class TouchTracker:
 
         self.swipe_min_distance = float(
             swipe_min_distance
+        )
+
+        self.move_min_distance = float(
+            move_min_distance
         )
 
         self._starts: Dict[
@@ -218,9 +228,41 @@ class TouchTracker:
         ):
             return None
 
+        current = self._current.get(
+            pointer_id
+        )
+
+        next_x = float(
+            x
+        )
+        next_y = float(
+            y
+        )
+
+        if (
+            current is not None
+            and self.move_min_distance > 0
+        ):
+            dx = (
+                next_x
+                - current.x
+            )
+            dy = (
+                next_y
+                - current.y
+            )
+
+            if (
+                dx * dx
+                + dy * dy
+            ) ** 0.5 < (
+                self.move_min_distance
+            ):
+                return None
+
         event = TouchEvent(
-            x=float(x),
-            y=float(y),
+            x=next_x,
+            y=next_y,
             timestamp=(
                 monotonic()
                 if timestamp is None
@@ -373,6 +415,12 @@ class TouchTracker:
 
     def cancel_all(
         self,
-    ) -> None:
+    ) -> int:
+        count = len(
+            self._starts
+        )
+
         self._starts.clear()
         self._current.clear()
+
+        return count
