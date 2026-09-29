@@ -64,3 +64,46 @@ def test_project_health_doc_exists():
 
     assert "Project Health Report" in content
     assert "hyperkit health" in content
+
+
+
+def test_health_report_tracks_phase75_completion_artifacts():
+    report = generate_health_report(".")
+    paths = {
+        check.path
+        for check in report.checks
+    }
+
+    assert "ROADMAP.md" in paths
+    assert "src/hyperkit/__main__.py" in paths
+
+
+def test_health_report_tracks_phase75_regression_tests():
+    report = generate_health_report(".")
+    paths = {
+        check.path
+        for check in report.checks
+    }
+
+    expected = {
+        "tests/test_phase75_documentation_sync.py",
+        "tests/test_phase75_public_api_audit.py",
+        "tests/test_phase75_cli_entry.py",
+        "tests/test_phase75_release_integration.py",
+    }
+
+    assert expected.issubset(
+        paths
+    )
+
+
+def test_health_report_paths_are_unique():
+    report = generate_health_report(".")
+    paths = [
+        check.path
+        for check in report.checks
+    ]
+
+    assert len(paths) == len(
+        set(paths)
+    )
