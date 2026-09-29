@@ -14,9 +14,9 @@ v0.3.0  Android + Mobile
 v0.4.0  Ads + Analytics + Game Systems
    ↓
 v0.5.0  Complete Games + Developer Tooling
-          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.6.0  Mobile Production Runtime + Performance
+          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.7.0  Content, Assets + Advanced Game Features
    ↓
@@ -30,10 +30,10 @@ v1.0.0  Stable Release
 ## Current State
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.5.0.dev0`
+- Active development version: `0.6.0.dev0`
 - Public compatibility contract: API `0.2`
-- Active development branch: `feature/v0.5-complete-games-tooling`
-- Current focus: v0.5 Complete Games + Developer Tooling
+- Active development branch: `feature/v0.6-mobile-runtime-performance`
+- Current focus: v0.6 Mobile Production Runtime + Performance
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133
@@ -125,17 +125,51 @@ v0.5 includes:
 - full pytest suite passes
 - health/template/generated-project/release/audit commands remain green
 
+v0.5 completed with 973 passing automated tests, complete-game validation
+54/54, generated-project validation 90/90, release readiness 115/115,
+pre-release audit 10/10, Python 3.9–3.12 CI, and successful wheel/sdist
+plus `twine check`.
+
 ## v0.6.0 — Mobile Production Runtime + Performance
 
-Planned focus:
+The v0.6 milestone hardens the existing game runtime for mobile use.
 
-- mobile runtime profiling
-- frame pacing and performance hardening
-- lifecycle stress handling
-- memory/resource cleanup
-- touch/input production tuning
-- Android runtime reliability
-- device performance guidance
+### Runtime Performance
+
+- `PerformanceMode`
+- `PerformanceProfile`
+- `FrameTimeController`
+- `FixedStepClock`
+- frame-delta clamping before scene updates
+- bounded fixed-step backlog handling
+- runtime performance statistics from `Game`
+
+### Lifecycle and Resource Reliability
+
+- explicit scene pause/background/resume/stop hooks
+- idempotent `Game.stop()`
+- active-touch cancellation on suspension/shutdown
+- runtime lifecycle propagation to registered services
+- lifecycle-aware `AudioManager`
+- scene object cleanup through `release_resources()`
+- cleanup of old scenes during scene transitions
+
+### Mobile Input Tuning
+
+- optional touch-move filtering with `move_min_distance`
+- `Game(touch_move_min_distance=...)`
+- pointer cancellation count from `TouchTracker.cancel_all()`
+
+### v0.6 Definition of Done
+
+- frame timing and fixed-step tests pass
+- lifecycle stress tests pass
+- runtime service lifecycle tests pass
+- scene resource cleanup tests pass
+- touch filtering tests pass
+- all v0.5 regressions remain green
+- Python 3.9–3.12 CI remains green
+- package wheel/sdist and `twine check` remain green
 
 ## v0.7.0 — Content, Assets + Advanced Game Features
 
