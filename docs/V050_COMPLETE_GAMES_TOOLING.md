@@ -73,6 +73,14 @@ The runtime diagnostics helper tracks:
 
 ## Project Diagnostics CLI
 
+HyperKit v0.5 also strengthens `hyperkit doctor` and
+`hyperkit validate`:
+
+- doctor can report the current project validation state
+- validate checks `main.py` syntax
+- validate checks `README.md`
+- validate checks the configured `run.main` file
+
 Run:
 
 `hyperkit diagnostics`
@@ -107,6 +115,8 @@ CI runs:
 - complete-game validation
 - generated-project validation
 - release-readiness validation
+- wheel and source-distribution build
+- `twine check` package validation
 
 ## v0.5 Completion Rule
 
