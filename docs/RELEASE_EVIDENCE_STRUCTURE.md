@@ -63,9 +63,11 @@ Before a template is marked beta-ready, include:
 
 - completed manual QA result
 - automated validation output
-- at least one runtime screenshot
+- runtime notes
 - notes for any failed or incomplete QA item
 - final PASS, PASS WITH NOTES, or FAIL decision
+
+Screenshots and demo media are recommended supporting evidence, but they are not required for portable source-repository CI because binary QA media may be stored outside the repository.
 
 ---
 
@@ -73,6 +75,7 @@ Before a template is marked beta-ready, include:
 
 Additional evidence may include:
 
+- `screenshot.png`
 - demo GIF
 - short gameplay video
 - multiple screen-size screenshots
