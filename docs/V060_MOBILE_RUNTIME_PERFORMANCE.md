@@ -132,6 +132,28 @@ when the runtime returns, and stop audio during runtime shutdown.
 Scene changes release the previous scene before starting the next scene.
 Released scenes are marked as not started so they can be reused later.
 
+## Runtime Safe-Area Updates
+
+Mobile safe areas may change with device posture, system UI, or runtime
+configuration. HyperKit v0.6 supports replacing safe-area insets without
+recreating the game:
+
+```python
+from hyperkit import SafeAreaInsets
+
+game.update_safe_area(
+    SafeAreaInsets(
+        left=0,
+        right=0,
+        top=32,
+        bottom=20,
+    )
+)
+```
+
+`MobileDisplayProfile.with_safe_area(...)` returns a new immutable profile
+with the updated insets.
+
 ## Touch Input Tuning
 
 `TouchTracker` supports `move_min_distance`.
