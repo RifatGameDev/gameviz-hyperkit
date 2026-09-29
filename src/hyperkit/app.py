@@ -201,7 +201,6 @@ class Game:
             .is_mobile
         )
 
-    @property
     def performance_stats(
         self,
     ) -> dict[str, float | int]:
