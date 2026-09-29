@@ -150,3 +150,54 @@ def test_audio_manager_follows_runtime_lifecycle():
     assert audio.current_music is None
     assert audio.sound_count == 0
     assert effect.stop_calls == 1
+
+
+
+class SelfRemovingService:
+    def __init__(
+        self,
+        context,
+        name,
+    ):
+        self.context = context
+        self.name = name
+        self.calls = 0
+
+    def on_runtime_pause(
+        self,
+    ):
+        self.calls += 1
+        self.context.unregister_service(
+            self.name
+        )
+
+
+def test_runtime_service_dispatch_allows_registry_mutation():
+    context = create_context()
+    removing = SelfRemovingService(
+        context,
+        "removing",
+    )
+    other = LifecycleService()
+
+    context.register_service(
+        "removing",
+        removing,
+    )
+    context.register_service(
+        "other",
+        other,
+    )
+
+    start_runtime(
+        context
+    )
+    pause_runtime(
+        context
+    )
+
+    assert removing.calls == 1
+    assert "pause" in other.events
+    assert not context.has_service(
+        "removing"
+    )
