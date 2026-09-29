@@ -15,10 +15,19 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``0.6.0.dev0``.
+Current development version: ``0.7.0.dev0``.
 
 ### Added
 
+- v0.7 Content, Assets + Advanced Game Features milestone.
+- `ContentManifest`, `ContentItem`, and `ContentManager`.
+- Tagged and kind-based content lookup with asset validation.
+- `Prefab` and `PrefabLibrary` for JSON-driven reusable GameObjects.
+- Opt-in cached JSON/CSV/TXT loading plus `preload_data(...)`.
+- `LevelSequence` for ordered multi-level progression.
+- Generic `ObjectPool` with capacity and lifecycle callbacks.
+- `SpriteAnimation.from_pattern(...)` for numbered frame sequences.
+- v0.7 content, prefab, pool, level-sequence, asset-cache, and sprite regression coverage.
 - v0.6 Mobile Production Runtime + Performance milestone.
 - `PerformanceMode` and `PerformanceProfile` mobile runtime presets.
 - `FrameTimeController` frame-hitch protection.
@@ -44,6 +53,9 @@ Current development version: ``0.6.0.dev0``.
 
 ### Changed
 
+- Package development version advanced to `0.7.0.dev0`.
+- Game content can now be described and loaded through reusable manifests and prefabs instead of only direct code references.
+- Data-heavy games can opt into cached/preloaded JSON, CSV, and text assets.
 - `Game` now clamps large frame deltas before scene updates.
 - `Game.stop()` is idempotent and Kivy shutdown now uses the stop lifecycle instead of treating shutdown as backgrounding.
 - Active pointers are cancelled when the game is paused, backgrounded, or stopped.
@@ -60,12 +72,14 @@ Current development version: ``0.6.0.dev0``.
 
 ### Validation
 
+- v0.6 closeout finished with 998 passing automated tests before v0.7 development started.
+- v0.6 closeout passed health 142/142, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 121/121, pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine validation.
 - v0.5 closeout finished with 973 passing automated tests before v0.6 development started.
 - v0.5 closeout passed complete-game validation 54/54, generated-project validation 90/90, release readiness 115/115, pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine validation.
 - v0.4 closeout finished with 949 passing automated tests before v0.5 development started.
 - v0.4 closeout reports passed: health 133/133, templates 42/42, generated projects 90/90, release readiness 117/117, pre-release audit 10/10.
 - Phase 75 regression suite reached 919 passing tests before documentation synchronization.
-- API compatibility contract remains `0.2` while package development continues at `0.6.0.dev0`.
+- API compatibility contract remains `0.2` while package development continues at `0.7.0.dev0`.
 
 ---
 
