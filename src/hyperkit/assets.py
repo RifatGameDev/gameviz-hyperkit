@@ -46,9 +46,23 @@ class AssetManager:
     └── data/
     """
 
-    def __init__(self, project_path: str | Path = ".", assets_folder: str = "assets"):
+    def __init__(
+        self,
+        project_path: str | Path = ".",
+        assets_folder: str = "assets",
+    ):
+        assets_folder = str(assets_folder).strip()
+
+        if not assets_folder:
+            raise AssetError(
+                "assets_folder must not be empty."
+            )
+
         self.project_path = Path(project_path).resolve()
-        self.assets_path = (self.project_path / assets_folder).resolve()
+        self.assets_path = (
+            self.project_path
+            / assets_folder
+        ).resolve()
 
     def _candidate_path(self, folder: str, filename: str | Path) -> Path:
         raw_path = Path(filename)
@@ -101,8 +115,10 @@ class AssetManager:
         self._ensure_inside_assets_folder(path)
         self._validate_extension(path, allowed_extensions, asset_type)
 
-        if not path.exists():
-            raise AssetNotFoundError(f"Asset not found: {path}")
+        if not path.exists() or not path.is_file():
+            raise AssetNotFoundError(
+                f"Asset not found: {path}"
+            )
 
         return path
 
@@ -145,18 +161,84 @@ class AssetManager:
             "data", filename, TEXT_EXTENSIONS, "text data")
         return path.read_text(encoding="utf-8")
 
-    def list_assets(self, folder: str, extensions: set[str]) -> list[str]:
-        folder_path = self.assets_path / folder
+    def exists(
+        self,
+        folder: str,
+        filename: str | Path,
+        extensions: set[str],
+        asset_type: str = "asset",
+    ) -> bool:
+        """Return whether a valid asset exists without raising."""
+
+        try:
+            self._resolve_asset(
+                folder,
+                filename,
+                extensions,
+                asset_type,
+            )
+        except AssetError:
+            return False
+
+        return True
+
+    def list_assets(
+        self,
+        folder: str,
+        extensions: set[str],
+        recursive: bool = False,
+    ) -> list[str]:
+        folder = str(folder).strip()
+
+        if not folder:
+            raise AssetError(
+                "Asset folder must not be empty."
+            )
+
+        folder_path = (
+            self.assets_path
+            / folder
+        ).resolve()
+
+        self._ensure_inside_assets_folder(
+            folder_path
+        )
 
         if not folder_path.exists():
             return []
 
+        if not folder_path.is_dir():
+            raise AssetError(
+                f"Asset folder is not a directory: {folder_path}"
+            )
+
+        normalized_extensions = {
+            str(extension).lower()
+            for extension in extensions
+        }
+
+        iterator = (
+            folder_path.rglob("*")
+            if recursive
+            else folder_path.iterdir()
+        )
+
         results = []
 
-        for path in folder_path.iterdir():
-            if path.is_file() and path.suffix.lower() in extensions:
-                relative_path = path.relative_to(self.assets_path)
-                results.append(str(relative_path).replace("\\", "/"))
+        for path in iterator:
+            if (
+                path.is_file()
+                and path.suffix.lower()
+                in normalized_extensions
+            ):
+                relative_path = (
+                    path.relative_to(
+                        self.assets_path
+                    )
+                )
+                results.append(
+                    relative_path.as_posix()
+                )
 
         return sorted(results)
 
