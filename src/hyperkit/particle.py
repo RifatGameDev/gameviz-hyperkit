@@ -18,6 +18,32 @@ class ParticleConfig:
     gravity: float = -500
     color: tuple[float, float, float, float] = (1.0, 0.85, 0.2, 1)
     shape: str = "circle"
+    fade: bool = True
+
+    def __post_init__(self) -> None:
+        self.count = int(self.count)
+        self.min_speed = float(self.min_speed)
+        self.max_speed = float(self.max_speed)
+        self.min_size = float(self.min_size)
+        self.max_size = float(self.max_size)
+        self.lifetime = float(self.lifetime)
+        self.gravity = float(self.gravity)
+
+        if self.count < 0:
+            raise ValueError("Particle count cannot be negative.")
+
+        if self.min_speed < 0 or self.max_speed < self.min_speed:
+            raise ValueError(
+                "Particle speed range must satisfy 0 <= min_speed <= max_speed."
+            )
+
+        if self.min_size <= 0 or self.max_size < self.min_size:
+            raise ValueError(
+                "Particle size range must satisfy 0 < min_size <= max_size."
+            )
+
+        if self.lifetime <= 0:
+            raise ValueError("Particle lifetime must be greater than 0.")
 
 
 class Particle:
@@ -29,17 +55,34 @@ class Particle:
         fade: bool = True,
     ) -> None:
         self.obj = obj
-        self.lifetime = lifetime
-        self.remaining = lifetime
-        self.gravity = gravity
-        self.fade = fade
+        self.lifetime = float(lifetime)
+
+        if self.lifetime <= 0:
+            raise ValueError("Particle lifetime must be greater than 0.")
+
+        self.remaining = self.lifetime
+        self.gravity = float(gravity)
+        self.fade = bool(fade)
         self.start_alpha = obj.color[3] if len(obj.color) >= 4 else 1.0
 
     @property
     def alive(self) -> bool:
         return self.remaining > 0 and self.obj.active
 
+    @property
+    def age(self) -> float:
+        return max(0.0, self.lifetime - self.remaining)
+
+    @property
+    def progress(self) -> float:
+        return min(1.0, self.age / self.lifetime)
+
     def update(self, dt: float) -> bool:
+        dt = float(dt)
+
+        if dt < 0:
+            raise ValueError("Particle dt must be non-negative.")
+
         if not self.alive:
             self.obj.active = False
             self.obj.visible = False
@@ -72,8 +115,17 @@ class ParticleEmitter:
     """
 
     def __init__(self, scene: Any):
+        if not hasattr(scene, "add"):
+            raise ValueError(
+                "ParticleEmitter scene must provide an add() method."
+            )
+
         self.scene = scene
         self.particles: list[Particle] = []
+
+    @property
+    def active_count(self) -> int:
+        return len(self.particles)
 
     def burst(
         self,
@@ -90,20 +142,42 @@ class ParticleEmitter:
         shape: str = "circle",
         fade: bool = True,
     ) -> list[Particle]:
+        config = ParticleConfig(
+            count=count,
+            min_speed=min_speed,
+            max_speed=max_speed,
+            min_size=min_size,
+            max_size=max_size,
+            lifetime=lifetime,
+            gravity=gravity,
+            color=color,
+            shape=shape,
+            fade=fade,
+        )
+
         created: list[Particle] = []
 
-        for _ in range(count):
-            size = uniform(min_size, max_size)
+        for _ in range(config.count):
+            size = uniform(
+                config.min_size,
+                config.max_size,
+            )
 
             obj = GameObject(
                 x=x - size / 2,
                 y=y - size / 2,
                 width=size,
                 height=size,
-                vx=uniform(-max_speed, max_speed),
-                vy=uniform(min_speed, max_speed),
-                color=color,
-                shape=shape,
+                vx=uniform(
+                    -config.max_speed,
+                    config.max_speed,
+                ),
+                vy=uniform(
+                    config.min_speed,
+                    config.max_speed,
+                ),
+                color=config.color,
+                shape=config.shape,
                 name="particle",
             )
 
@@ -111,9 +185,9 @@ class ParticleEmitter:
 
             particle = Particle(
                 obj=obj,
-                lifetime=lifetime,
-                gravity=gravity,
-                fade=fade,
+                lifetime=config.lifetime,
+                gravity=config.gravity,
+                fade=config.fade,
             )
 
             self.particles.append(particle)
@@ -134,18 +208,27 @@ class ParticleEmitter:
             lifetime=config.lifetime,
             gravity=config.gravity,
             shape=config.shape,
+            fade=config.fade,
         )
 
     def update(self, dt: float) -> None:
+        dt = float(dt)
+
+        if dt < 0:
+            raise ValueError("ParticleEmitter dt must be non-negative.")
+
         self.particles = [
             particle
             for particle in self.particles
             if particle.update(dt)
         ]
 
-    def clear(self) -> None:
+    def clear(self) -> int:
+        count = len(self.particles)
+
         for particle in self.particles:
             particle.obj.active = False
             particle.obj.visible = False
 
         self.particles.clear()
+        return count
