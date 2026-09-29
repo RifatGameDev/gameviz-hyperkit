@@ -35,7 +35,11 @@ REQUIRED_PASS_EVIDENCE = [
     "manual-qa-result.md",
     "validation-output.txt",
     "runtime-notes.md",
+]
+
+OPTIONAL_PASS_EVIDENCE = [
     "screenshot.png",
+    "demo.gif",
 ]
 
 
