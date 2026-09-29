@@ -135,18 +135,7 @@ class PhysicsBody:
 
     @property
     def collider(self) -> Rect | Circle:
-        if self.obj.shape == "circle":
-            radius = min(
-                self.obj.width,
-                self.obj.height,
-            ) / 2.0
-            return Circle(
-                self.obj.x + self.obj.width / 2.0,
-                self.obj.y + self.obj.height / 2.0,
-                radius,
-            )
-
-        return self.obj.rect
+        return self.obj.collider
 
     def set_velocity(
         self,

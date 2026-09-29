@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from .collision import rect_intersects_rect
-from .geometry import Rect, Vector2
+from .collision import intersects, point_in_circle
+from .geometry import Circle, Rect, Vector2
 
 
 @dataclass
@@ -36,17 +36,62 @@ class GameObject:
 
     @property
     def rect(self) -> Rect:
-        return Rect(self.x, self.y, self.width, self.height)
+        return Rect(
+            self.x,
+            self.y,
+            self.width,
+            self.height,
+        )
+
+    @property
+    def circle(self) -> Circle:
+        radius = min(
+            self.width,
+            self.height,
+        ) / 2.0
+
+        return Circle(
+            self.x + self.width / 2.0,
+            self.y + self.height / 2.0,
+            radius,
+        )
+
+    @property
+    def collider(self) -> Rect | Circle:
+        if self.shape == "circle":
+            return self.circle
+
+        return self.rect
 
     @property
     def center(self) -> Vector2:
         return self.rect.center
 
-    def contains(self, x: float, y: float) -> bool:
-        return self.rect.contains(x, y)
+    def contains(
+        self,
+        x: float,
+        y: float,
+    ) -> bool:
+        if self.shape == "circle":
+            return point_in_circle(
+                x,
+                y,
+                self.circle,
+            )
 
-    def collides_with(self, other: "GameObject") -> bool:
-        return rect_intersects_rect(self.rect, other.rect)
+        return self.rect.contains(
+            x,
+            y,
+        )
+
+    def collides_with(
+        self,
+        other: "GameObject",
+    ) -> bool:
+        return intersects(
+            self.collider,
+            other.collider,
+        )
 
     def update(self, dt: float) -> None:
         self.x += self.vx * dt
