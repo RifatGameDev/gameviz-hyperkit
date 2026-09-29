@@ -61,7 +61,7 @@ hyperkit list-templates
 Create and run important starter templates outside the package repo:
 
 ```bash
-cd /d D:\AI\HyperKit
+cd <workspace-outside-the-repository>
 hyperkit new release-tap-test --template tap_counter
 hyperkit new release-flappy-test --template flappy_mini
 hyperkit new release-runner-test --template swipe_runner
@@ -147,15 +147,11 @@ Before release, confirm these files exist:
 
 ---
 
-## 9. Current Publishing Rule
+## 9. Publishing Rule
 
-For now, HyperKit should stay on:
+Use TestPyPI for release-candidate or packaging validation when needed.
 
-```text
-GitHub + TestPyPI
-```
-
-Do not publish to real PyPI until the package is more stable.
+Publish a stable release to real PyPI only after the full release gates pass, including tests, template validation, build validation, `twine check`, clean-install verification, and required Android/provider QA for the target release.
 
 ---
 
@@ -166,5 +162,5 @@ Use a clear release preparation commit:
 ```bash
 git add .
 git commit -m "Prepare release readiness validation"
-git push origin develop
+git push origin <release-branch>
 ```
