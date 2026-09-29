@@ -45,6 +45,11 @@ from .generated_project_validation import (
     generate_generated_project_validation_report,
 )
 
+from .complete_games import (
+    format_complete_game_report,
+    generate_complete_game_report,
+)
+
 from .health import (
     format_health_report,
     generate_health_report,
@@ -818,6 +823,112 @@ def cmd_validate(
         )
 
     return 1
+
+
+def cmd_diagnostics(
+    args: argparse.Namespace,
+) -> int:
+    project_path = Path(
+        getattr(
+            args,
+            "path",
+            ".",
+        )
+    ).resolve()
+
+    is_valid, issues = validate_project(
+        project_path
+    )
+
+    print(
+        "HyperKit Project Diagnostics"
+    )
+    print(
+        "----------------------------"
+    )
+    print(
+        f"Path: {project_path}"
+    )
+    print(
+        "HyperKit: "
+        f"{get_hyperkit_version()}"
+    )
+    print(
+        "Python: "
+        f"{sys.version.split()[0]}"
+    )
+
+    metadata = {}
+    try:
+        metadata = read_project_metadata(
+            project_path
+        )
+    except Exception:
+        metadata = {}
+
+    project = metadata.get(
+        "project",
+        {},
+    )
+
+    print(
+        "Template: "
+        f"{project.get('template', 'unknown')}"
+    )
+    print(
+        "Main: "
+        f"{project_path / 'main.py'}"
+    )
+    print(
+        "Assets: "
+        f"{project_path / 'assets'}"
+    )
+    print(
+        "Project status: "
+        f"{'valid' if is_valid else 'invalid'}"
+    )
+
+    if issues:
+        print("")
+        print(
+            "Issues:"
+        )
+        for issue in issues:
+            print(
+                f"- {issue}"
+            )
+
+    return (
+        0
+        if is_valid
+        else 1
+    )
+
+
+def cmd_validate_complete_games(
+    args: argparse.Namespace,
+) -> int:
+    root = getattr(
+        args,
+        "path",
+        ".",
+    )
+
+    report = generate_complete_game_report(
+        root
+    )
+
+    print(
+        format_complete_game_report(
+            report
+        )
+    )
+
+    return (
+        0
+        if report.passed
+        else 1
+    )
 
 
 def cmd_validate_templates(
@@ -1636,6 +1747,23 @@ def build_parser(
         func=cmd_info
     )
 
+    p_diagnostics = sub.add_parser(
+        "diagnostics",
+        help=(
+            "Show project-focused "
+            "developer diagnostics"
+        ),
+    )
+
+    p_diagnostics.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_diagnostics.set_defaults(
+        func=cmd_diagnostics
+    )
+
     p_validate = sub.add_parser(
         "validate",
         help=(
@@ -1919,6 +2047,29 @@ def build_parser(
 
     p_pre_release_audit.set_defaults(
         func=cmd_pre_release_audit
+    )
+
+    p_validate_complete_games = (
+        sub.add_parser(
+            "validate-complete-games",
+            help=(
+                "Validate complete game "
+                "loops in built-in templates"
+            ),
+        )
+    )
+
+    p_validate_complete_games.add_argument(
+        "--path",
+        default=".",
+        help=(
+            "Repository root "
+            "path to check"
+        ),
+    )
+
+    p_validate_complete_games.set_defaults(
+        func=cmd_validate_complete_games
     )
 
     p_validate_templates = (
