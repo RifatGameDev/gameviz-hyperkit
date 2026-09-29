@@ -141,20 +141,32 @@ class ObjectPool(
         self,
         item: T,
     ) -> bool:
-        if item not in self._active:
+        index = next(
+            (
+                index
+                for index, active
+                in enumerate(
+                    self._active
+                )
+                if active is item
+            ),
+            None,
+        )
+
+        if index is None:
             return False
 
-        self._active.remove(
-            item
+        released = self._active.pop(
+            index
         )
 
         if self.on_release is not None:
             self.on_release(
-                item
+                released
             )
 
         self._available.append(
-            item
+            released
         )
 
         return True
