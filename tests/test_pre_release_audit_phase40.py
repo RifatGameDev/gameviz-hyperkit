@@ -67,3 +67,57 @@ def test_readme_has_no_literal_escaped_newline_artifacts():
     content = Path("README.md").read_text(encoding="utf-8")
 
     assert "\\n" not in content
+
+
+
+def test_markdown_audit_scans_nested_docs(tmp_path):
+    from hyperkit.audit import _find_unbalanced_markdown
+
+    nested = tmp_path / "docs" / "nested"
+    nested.mkdir(parents=True)
+
+    fence = chr(96) * 3
+    broken = nested / "BROKEN.md"
+    broken.write_text(
+        "# Broken\n\n"
+        + fence
+        + "python\nprint('x')\n",
+        encoding="utf-8",
+    )
+
+    findings = _find_unbalanced_markdown(
+        tmp_path
+    )
+
+    assert "docs/nested/BROKEN.md" in findings
+
+
+def test_markdown_audit_scans_template_docs(tmp_path):
+    from hyperkit.audit import _find_unbalanced_markdown
+
+    template = (
+        tmp_path
+        / "src"
+        / "hyperkit"
+        / "templates"
+        / "demo"
+    )
+    template.mkdir(parents=True)
+
+    fence = chr(96) * 3
+    broken = template / "README.md"
+    broken.write_text(
+        "# Demo\n\n"
+        + fence
+        + "text\nunclosed\n",
+        encoding="utf-8",
+    )
+
+    findings = _find_unbalanced_markdown(
+        tmp_path
+    )
+
+    assert (
+        "src/hyperkit/templates/demo/README.md"
+        in findings
+    )
