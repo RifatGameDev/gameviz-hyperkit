@@ -377,9 +377,11 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
             and _file_contains(
                 roadmap_path,
                 [
-                    "Phase 75",
+                    "Current State",
                     project_version,
-                    "Release Gates Before 1.0",
+                    "CURRENT DEVELOPMENT STAGE",
+                    "v1.0.0",
+                    "Stable Release",
                 ],
             )
         ),
