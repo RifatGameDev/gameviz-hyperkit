@@ -12,12 +12,15 @@ class FakeSound:
         self.loop = False
         self.play_count = 0
         self.stop_count = 0
+        self.state = "stop"
 
     def play(self):
         self.play_count += 1
+        self.state = "play"
 
     def stop(self):
         self.stop_count += 1
+        self.state = "stop"
 
 
 class FakeSoundLoader:
@@ -122,3 +125,155 @@ def test_audio_manager_clamps_volume(tmp_path: Path):
     sound = audio.play_sound(tmp_path / "quiet.wav", volume=-2.0)
 
     assert sound.volume == 0.0
+
+
+
+def test_audio_manager_tracks_sound_count_and_stop_sound(
+    tmp_path: Path,
+):
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    sound = audio.play_sound(
+        tmp_path / "click.wav"
+    )
+
+    assert audio.sound_count == 1
+    assert audio.stop_sound(sound) is True
+    assert sound.stop_count == 1
+    assert audio.sound_count == 0
+    assert audio.stop_sound(sound) is False
+
+
+def test_audio_manager_cleans_finished_sounds(
+    tmp_path: Path,
+):
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    first = audio.play_sound(
+        tmp_path / "first.wav"
+    )
+    audio.play_sound(
+        tmp_path / "second.wav"
+    )
+
+    first.stop()
+
+    assert audio.cleanup_sounds() == 1
+    assert audio.sound_count == 1
+
+
+def test_audio_manager_music_pause_resume_state(
+    tmp_path: Path,
+):
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    music = audio.play_music(
+        tmp_path / "music.wav"
+    )
+
+    assert audio.has_music
+    assert not audio.music_paused
+
+    assert audio.pause_music() is True
+    assert audio.music_paused
+    assert music.stop_count == 1
+    assert audio.pause_music() is False
+
+    assert audio.resume_music() is True
+    assert not audio.music_paused
+    assert music.play_count == 2
+    assert audio.resume_music() is False
+
+
+def test_audio_manager_stop_music_reports_result(
+    tmp_path: Path,
+):
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    assert audio.stop_music() is False
+
+    audio.play_music(
+        tmp_path / "music.wav"
+    )
+
+    assert audio.stop_music() is True
+    assert not audio.has_music
+    assert not audio.music_paused
+
+
+def test_audio_manager_stop_all_sounds_reports_count(
+    tmp_path: Path,
+):
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    audio.play_sound(
+        tmp_path / "one.wav"
+    )
+    audio.play_sound(
+        tmp_path / "two.wav"
+    )
+
+    assert audio.stop_all_sounds() == 2
+    assert audio.sound_count == 0
+
+
+def test_audio_manager_volume_setters_are_chainable(
+    tmp_path: Path,
+):
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    music = audio.play_music(
+        tmp_path / "music.wav"
+    )
+
+    assert audio.set_sound_volume(0.25) is audio
+    assert audio.sound_volume == 0.25
+
+    assert audio.set_music_volume(0.4) is audio
+    assert audio.music_volume == 0.4
+    assert music.volume == 0.4
+
+
+def test_audio_manager_rejects_empty_audio_path():
+    loader = FakeSoundLoader()
+    audio = AudioManager(
+        sound_loader=loader
+    )
+
+    with pytest.raises(
+        AudioLoadError,
+        match="must not be empty",
+    ):
+        audio.play_sound("   ")
+
+
+def test_audio_manager_rejects_invalid_loader():
+    audio = AudioManager(
+        sound_loader=object()
+    )
+
+    with pytest.raises(
+        Exception,
+        match="load",
+    ):
+        audio.play_sound(
+            "sound.wav"
+        )
