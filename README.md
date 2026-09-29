@@ -20,14 +20,14 @@ HyperKit is publicly available on PyPI and remains in active development toward 
 Current package status:
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.4.0.dev0`
+- Active development version: `0.5.0.dev0`
 - Installation command: `pip install gameviz-hyperkit`
 - Package maturity: Alpha / active SDK development
 - Public compatibility contract: API `0.2`
 - API stability target: future `1.0.0`
 - Supported Python versions: Python 3.9–3.12
 
-The current development line expands the original core SDK with Android/mobile workflow support, provider-based ads and analytics, stronger physics and collision systems, UI interaction, persistence, audio, animation, particles, level loading, timers, input actions, and game-session/progression systems.
+The current development line builds on the Android, Ads, Analytics, and Game Systems foundation by focusing on complete built-in game loops and developer tooling. HyperKit v0.5 adds runtime diagnostics, an optional debug overlay, complete-game validation, stronger project diagnostics, and a cross-version CI workflow.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -57,9 +57,9 @@ HyperKit is intended to support complete small 2D mobile games inside its focuse
 HyperKit is useful for:
 
 - Learning 2D game development with Python
-- Building quick hypercasual game prototypes
-- Creating tap, swipe, runner, puzzle, quiz, and physics-style demos
-- Testing simple game concepts before moving to a larger engine
+- Building complete small hypercasual and hybrid-casual games
+- Creating tap, swipe, runner, puzzle, quiz, and physics-style games
+- Testing and shipping focused game concepts with a lightweight SDK
 - Building game-jam and educational projects
 - Students and indie developers who want a small code-first game toolkit
 
@@ -96,6 +96,11 @@ HyperKit is useful for:
 - Ready-made starter templates
 - Generated-project validation
 - Project health and release validation commands
+- Complete-game validation
+- Project diagnostics CLI
+- Runtime FPS/frame diagnostics
+- Optional debug overlay
+- Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
 ---
@@ -189,12 +194,12 @@ hyperkit list-templates
 
 | Template | Command Name | Description |
 | --- | --- | --- |
-| Tap Counter | `tap-counter` | Tap or click scoring prototype |
-| Flappy Mini | `flappy-mini` | Flappy-style tap-to-jump prototype |
-| Swipe Runner | `swipe-runner` | Three-lane swipe runner prototype |
-| Puzzle Game | `puzzle-game` | Color-matching puzzle prototype |
-| Quiz Game | `quiz-game` | Educational quiz prototype |
-| Simple Physics | `simple-physics` | Gravity, bounce, and coin-collection prototype |
+| Tap Counter | `tap-counter` | Complete tap-to-score round with restart and high score |
+| Flappy Mini | `flappy-mini` | Flappy-style game loop with scoring and restart |
+| Swipe Runner | `swipe-runner` | Three-lane runner with obstacles, scoring, and restart |
+| Puzzle Game | `puzzle-game` | Color-matching puzzle game with completion and restart |
+| Quiz Game | `quiz-game` | Educational quiz game with results and restart |
+| Simple Physics | `simple-physics` | Physics game with triggers, scoring, and restart |
 
 Underscore-style aliases are also accepted:
 
@@ -334,6 +339,18 @@ hyperkit info
 hyperkit validate
 ```
 
+### Show developer diagnostics
+
+```bash
+hyperkit diagnostics
+```
+
+### Validate complete built-in games
+
+```bash
+hyperkit validate-complete-games
+```
+
 ### Show the package health report
 
 ```bash
@@ -443,6 +460,7 @@ Package publication is handled through the project's controlled release workflow
 - [Manual QA Result Template](docs/MANUAL_QA_RESULT_TEMPLATE.md)
 - [Release Evidence Structure](docs/RELEASE_EVIDENCE_STRUCTURE.md)
 - [Release Evidence Workspace](docs/release-evidence/README.md)
+- [HyperKit v0.5 — Complete Games + Developer Tooling](docs/V050_COMPLETE_GAMES_TOOLING.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -474,16 +492,16 @@ Package publication is handled through the project's controlled release workflow
 
 ## Roadmap
 
-The active `0.4.0.dev0` line is in SDK completion and hardening. Remaining release work is focused on integration quality rather than adding broad new feature categories:
+The active `0.5.0.dev0` line focuses on **Complete Games + Developer Tooling**:
 
-- finish subsystem and integration audits
-- keep all built-in templates aligned with the hardened SDK
-- complete Android/device smoke validation
-- complete AdMob/Firebase test-mode release validation
-- synchronize public documentation and examples
-- freeze the intended 1.0 public API
-- run clean-install, wheel, sdist, and `twine check` validation
-- publish a release candidate before the stable `1.0.0` milestone
+- certify all six built-in templates as complete small-game loops
+- provide project diagnostics and runtime performance diagnostics
+- provide an optional debug overlay
+- validate complete games from the CLI
+- protect development with a Python 3.9–3.12 CI workflow
+- keep the v0.4 Android, Ads, Analytics, and Game Systems foundation green
+
+After v0.5, the roadmap continues through mobile production runtime/performance, content and advanced game features, publishing hardening, and public beta. The later v0.9 stage will freeze the intended 1.0 public API before the stable `1.0.0` milestone.
 
 ---
 
