@@ -213,32 +213,39 @@ class FixedStepClock:
 
         self.accumulator += dt
 
+        available_steps = int(
+            self.accumulator
+            / self.step
+        )
+
         steps = min(
-            int(
-                self.accumulator
-                / self.step
-            ),
+            available_steps,
             self.max_substeps,
         )
 
-        consumed = (
+        if (
+            available_steps
+            > self.max_substeps
+        ):
+            allowed_time = (
+                self.step
+                * self.max_substeps
+            )
+
+            self.dropped_time += max(
+                0.0,
+                self.accumulator
+                - allowed_time,
+            )
+
+            self.accumulator = (
+                allowed_time
+            )
+
+        self.accumulator -= (
             steps
             * self.step
         )
-
-        self.accumulator -= consumed
-
-        max_backlog = (
-            self.step
-            * self.max_substeps
-        )
-
-        if self.accumulator > max_backlog:
-            self.dropped_time += (
-                self.accumulator
-                - max_backlog
-            )
-            self.accumulator = max_backlog
 
         return steps
 
