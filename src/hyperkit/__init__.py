@@ -255,6 +255,13 @@ from .complete_games import (
     run_complete_game_validation,
 )
 
+from .performance import (
+    FixedStepClock,
+    FrameTimeController,
+    PerformanceMode,
+    PerformanceProfile,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -428,10 +435,14 @@ __all__ = [
     "format_complete_game_report",
     "generate_complete_game_report",
     "run_complete_game_validation",
+    "FixedStepClock",
+    "FrameTimeController",
+    "PerformanceMode",
+    "PerformanceProfile",
 ]
 
 
-__version__ = "0.5.0.dev0"
+__version__ = "0.6.0.dev0"
 
 # Phase 73 mobile public API
 from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
