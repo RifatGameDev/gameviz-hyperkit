@@ -15,11 +15,12 @@ This document records the first production-quality polish pass for the Simple Ph
 The Simple Physics template now includes:
 
 - clearer beginner-friendly code
-- gravity-style movement
+- PhysicsWorld-driven gravity and integration
+- dynamic/static physics bodies
+- PhysicsMaterial bounce behavior
+- collision layers and masks
+- trigger-based target collection
 - tap-to-apply-force input
-- floor bounce behavior
-- wall bounce behavior
-- target collection logic
 - score and high-score display
 - progress bar goal feedback
 - restart flow
@@ -35,10 +36,12 @@ The Simple Physics template now includes:
 Simple Physics is designed to teach:
 
 - tap/click input
-- gravity-style movement
-- simple force input
-- basic bounce behavior
-- target collision checks
+- PhysicsWorld-based movement
+- dynamic/static body setup
+- simple force-style input
+- material-based bounce behavior
+- collision layers and masks
+- collision and trigger callbacks
 - GameObject usage
 - TextLabel usage
 - ScoreManager usage
