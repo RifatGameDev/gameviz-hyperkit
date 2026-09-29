@@ -64,6 +64,16 @@ Supported loadable content kinds are:
 
 Content entries without an asset can carry inline configuration in their `data` field.
 
+## Content Validation CLI
+
+Validate a project's content manifest and referenced assets:
+
+```bash
+hyperkit validate-content --manifest content.json
+```
+
+Use `--path` to validate another HyperKit project directory.
+
 ## Prefabs
 
 `PrefabLibrary` provides reusable JSON-driven `GameObject` definitions.
