@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gameviz-hyperkit"
-version = "0.6.0.dev0"
+version = "0.7.0.dev0"
 description = "A focused Python SDK for building complete small 2D hypercasual and hybrid-casual mobile games."
 readme = "README.md"
 requires-python = ">=3.9"
