@@ -33,16 +33,7 @@ def _is_android_runtime(
 def _get_android_private_root(
     environ: Optional[Mapping[str, str]] = None,
 ) -> Optional[Path]:
-    """Resolve Android's writable app-private storage directory.
-
-    python-for-android exposes ANDROID_PRIVATE as the application's
-    internal files directory. This is the preferred location for
-    persistent HyperKit save data on Android.
-
-    Older or unusual python-for-android environments may not expose
-    ANDROID_PRIVATE. In that case, ANDROID_ARGUMENT or ANDROID_APP_PATH
-    is used as a fallback.
-    """
+    """Resolve Android's writable app-private storage directory."""
 
     env = os.environ if environ is None else environ
 
@@ -62,20 +53,11 @@ def _get_android_private_root(
     if app_path_value:
         app_path = Path(app_path_value)
 
-        # Modern python-for-android commonly points these variables to:
-        #
-        # /data/user/0/<package>/files/app
-        #
-        # Save data belongs beside "app", inside the package's private
-        # files directory, not inside Android's protected /data root.
         if app_path.name.lower() == "app":
             return app_path.parent
 
         return app_path
 
-    # Last-resort Android fallback. python-for-android normally changes
-    # the current working directory to the application's private app
-    # directory before executing main.py.
     return Path.cwd()
 
 
@@ -91,7 +73,7 @@ def _get_default_save_root(app_name: str) -> Path:
 
 
 class SaveManager:
-    """Simple JSON save manager for scores, settings, and local progress.
+    """JSON persistence for settings, scores, and local game progress.
 
     Desktop default:
         ~/.<app_name>/save.json
@@ -99,7 +81,7 @@ class SaveManager:
     Android default:
         <app-private-files>/.<app_name>/save.json
 
-    A custom ``root`` always takes precedence over automatic
+    A custom root always takes precedence over automatic
     platform-specific storage selection.
     """
 
@@ -109,20 +91,43 @@ class SaveManager:
         filename: str = "save.json",
         root: str | Path | None = None,
     ) -> None:
-        if root:
+        app_name = str(app_name).strip()
+        filename = str(filename).strip()
+
+        if not app_name:
+            raise ValueError(
+                "app_name must not be empty"
+            )
+
+        if not filename:
+            raise ValueError(
+                "filename must not be empty"
+            )
+
+        if root is not None:
             base = Path(root)
         else:
-            base = _get_default_save_root(app_name)
+            base = _get_default_save_root(
+                app_name
+            )
 
         base.mkdir(
             parents=True,
             exist_ok=True,
         )
 
+        self.app_name = app_name
+        self.filename = filename
         self.path = base / filename
         self.data: dict[str, Any] = {}
 
         self.load()
+
+    @property
+    def exists(self) -> bool:
+        """Return whether the save file currently exists."""
+
+        return self.path.is_file()
 
     def load(self) -> dict[str, Any]:
         """Load existing JSON save data.
@@ -131,42 +136,64 @@ class SaveManager:
         the game from starting.
         """
 
-        if self.path.exists():
-            try:
-                loaded = json.loads(
-                    self.path.read_text(
-                        encoding="utf-8",
-                    )
+        if not self.path.exists():
+            self.data = {}
+            return self.data
+
+        try:
+            loaded = json.loads(
+                self.path.read_text(
+                    encoding="utf-8",
                 )
+            )
 
-                if isinstance(loaded, dict):
-                    self.data = loaded
-                else:
-                    self.data = {}
-
-            except (
-                json.JSONDecodeError,
-                UnicodeDecodeError,
-            ):
+            if isinstance(loaded, dict):
+                self.data = loaded
+            else:
                 self.data = {}
+
+        except (
+            json.JSONDecodeError,
+            UnicodeDecodeError,
+        ):
+            self.data = {}
 
         return self.data
 
+    def reload(self) -> dict[str, Any]:
+        """Reload the current save file from disk."""
+
+        return self.load()
+
     def save(self) -> None:
-        """Write the current save data to disk."""
+        """Atomically write the current save data to disk."""
 
         self.path.parent.mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        self.path.write_text(
-            json.dumps(
-                self.data,
-                indent=2,
-            ),
-            encoding="utf-8",
+        content = json.dumps(
+            self.data,
+            indent=2,
+            ensure_ascii=False,
         )
+
+        temporary = self.path.with_name(
+            f".{self.path.name}.tmp"
+        )
+
+        try:
+            temporary.write_text(
+                content,
+                encoding="utf-8",
+            )
+            temporary.replace(
+                self.path
+            )
+        finally:
+            if temporary.exists():
+                temporary.unlink()
 
     def get(
         self,
@@ -180,6 +207,11 @@ class SaveManager:
             default,
         )
 
+    def has(self, key: str) -> bool:
+        """Return whether a key exists in the save data."""
+
+        return key in self.data
+
     def set(
         self,
         key: str,
@@ -192,6 +224,44 @@ class SaveManager:
 
         if auto_save:
             self.save()
+
+    def update(
+        self,
+        values: Mapping[str, Any],
+        auto_save: bool = True,
+    ) -> None:
+        """Update multiple save values in one operation."""
+
+        self.data.update(
+            dict(values)
+        )
+
+        if auto_save:
+            self.save()
+
+    def delete(
+        self,
+        key: str,
+        auto_save: bool = True,
+    ) -> bool:
+        """Delete a saved key and report whether it existed."""
+
+        if key not in self.data:
+            return False
+
+        del self.data[key]
+
+        if auto_save:
+            self.save()
+
+        return True
+
+    def snapshot(self) -> dict[str, Any]:
+        """Return a shallow copy of the current save data."""
+
+        return dict(
+            self.data
+        )
 
     def reset(self) -> None:
         """Clear all saved data and persist the empty save."""

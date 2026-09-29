@@ -309,3 +309,192 @@ def test_save_manager_rejects_non_dictionary_json_as_save_data(
     )
 
     assert save.data == {}
+
+
+
+def test_save_manager_batch_update_persists_values(
+    tmp_path,
+):
+    save = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    save.update(
+        {
+            "coins": 15,
+            "level": 4,
+        }
+    )
+
+    reloaded = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    assert reloaded.snapshot() == {
+        "coins": 15,
+        "level": 4,
+    }
+
+
+def test_save_manager_delete_and_has(
+    tmp_path,
+):
+    save = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+    save.set(
+        "coins",
+        12,
+    )
+
+    assert save.has("coins")
+    assert save.delete("coins")
+    assert not save.has("coins")
+    assert not save.delete("missing")
+
+
+def test_save_manager_can_defer_writes(
+    tmp_path,
+):
+    save = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    save.set(
+        "coins",
+        10,
+        auto_save=False,
+    )
+    save.update(
+        {"level": 2},
+        auto_save=False,
+    )
+
+    assert not save.exists
+
+    save.save()
+
+    assert save.exists
+
+    reloaded = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    assert reloaded.get("coins") == 10
+    assert reloaded.get("level") == 2
+
+
+def test_save_manager_reload_refreshes_memory(
+    tmp_path,
+):
+    first = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+    second = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    first.set(
+        "coins",
+        99,
+    )
+
+    assert second.get("coins") is None
+
+    second.reload()
+
+    assert second.get("coins") == 99
+
+
+def test_save_manager_snapshot_is_independent(
+    tmp_path,
+):
+    save = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+    save.set(
+        "coins",
+        7,
+        auto_save=False,
+    )
+
+    snapshot = save.snapshot()
+    snapshot["coins"] = 999
+
+    assert save.get("coins") == 7
+
+
+def test_save_manager_atomic_write_leaves_no_temp_file(
+    tmp_path,
+):
+    save = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    save.set(
+        "coins",
+        5,
+    )
+
+    temporary = save.path.with_name(
+        f".{save.path.name}.tmp"
+    )
+
+    assert save.path.is_file()
+    assert not temporary.exists()
+
+
+def test_save_manager_reset_persists_empty_data(
+    tmp_path,
+):
+    save = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+    save.update(
+        {
+            "coins": 1,
+            "level": 3,
+        }
+    )
+
+    save.reset()
+
+    reloaded = SaveManager(
+        app_name="test_game",
+        root=tmp_path,
+    )
+
+    assert reloaded.data == {}
+
+
+def test_save_manager_rejects_empty_names(
+    tmp_path,
+):
+    with pytest.raises(
+        ValueError,
+        match="app_name",
+    ):
+        SaveManager(
+            app_name=" ",
+            root=tmp_path,
+        )
+
+    with pytest.raises(
+        ValueError,
+        match="filename",
+    ):
+        SaveManager(
+            app_name="test_game",
+            filename=" ",
+            root=tmp_path,
+        )
