@@ -205,7 +205,7 @@ def _check_template(
 
     has_progress = (
         "ProgressBar" in content
-        and "Goal Progress" in content
+        and ".set_value(" in content
     )
     report.add(
         template,
