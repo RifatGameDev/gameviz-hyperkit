@@ -1,3 +1,5 @@
+import pytest
+
 from hyperkit import InputActionMap
 
 
@@ -114,3 +116,121 @@ def test_latest_binding_has_priority():
 
     assert event is not None
     assert event.action == "second"
+
+
+
+def test_input_action_rejects_empty_action_name():
+    actions = InputActionMap()
+
+    with pytest.raises(
+        ValueError,
+        match="must not be empty",
+    ):
+        actions.map_tap("   ")
+
+
+def test_area_binding_rejects_non_positive_size():
+    actions = InputActionMap()
+
+    with pytest.raises(
+        ValueError,
+        match="greater than zero",
+    ):
+        actions.map_area(
+            "attack",
+            x=0,
+            y=0,
+            width=0,
+            height=100,
+        )
+
+
+def test_swipe_direction_is_normalized():
+    actions = InputActionMap()
+    actions.map_swipe(
+        "move_left",
+        direction=" LEFT ",
+    )
+
+    event = actions.handle_swipe(
+        (300, 300),
+        (100, 300),
+        "left",
+    )
+
+    assert event is not None
+    assert event.direction == "left"
+
+
+def test_action_map_can_be_disabled_and_reenabled():
+    actions = InputActionMap()
+    actions.map_tap("jump")
+
+    assert actions.set_enabled(False) is actions
+    assert actions.handle_tap(10, 10) is None
+
+    actions.set_enabled(True)
+
+    assert actions.handle_tap(10, 10) is not None
+
+
+def test_has_action_and_bindings_for():
+    actions = InputActionMap()
+    first = actions.map_tap("jump")
+    second = actions.map_area(
+        "jump",
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
+
+    assert actions.has_action("jump")
+    assert actions.bindings_for("jump") == [
+        first,
+        second,
+    ]
+
+
+def test_enable_disable_action_report_binding_count():
+    actions = InputActionMap()
+    actions.map_tap("jump")
+    actions.map_area(
+        "jump",
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
+
+    assert actions.disable_action("jump") == 2
+    assert actions.enable_action("jump") == 2
+
+
+def test_remove_action_reports_removed_binding_count():
+    actions = InputActionMap()
+    actions.map_tap("jump")
+    actions.map_area(
+        "jump",
+        x=0,
+        y=0,
+        width=100,
+        height=100,
+    )
+
+    assert actions.remove_action("jump") == 2
+    assert actions.remove_action("jump") == 0
+
+
+def test_clear_is_chainable_and_resets_last_event():
+    actions = InputActionMap()
+    actions.map_tap("jump")
+    actions.handle_tap(10, 10)
+
+    assert actions.last_event is not None
+
+    result = actions.clear()
+
+    assert result is actions
+    assert actions.bindings == []
+    assert actions.last_event is None
