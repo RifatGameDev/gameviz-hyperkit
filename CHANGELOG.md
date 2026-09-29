@@ -17,6 +17,24 @@ HyperKit currently uses the following change categories:
 
 Current development version: ``0.4.0.dev0``.
 
+### Added
+
+- Phase 75 SDK completion audit and hardening.
+- Expanded physics world, collision manifolds, body/material, trigger, layer, and mask support.
+- Stronger geometry, camera, bounds, layout, persistence, state, transition, timer, level, input, audio, UI, particle, animation, sprite, asset, and game-system helpers.
+- Additional regression coverage across the hardened subsystems.
+
+### Changed
+
+- Simple Physics now uses the reusable PhysicsWorld architecture.
+- Public development documentation now distinguishes the latest published PyPI release from the active development version.
+- Roadmap work is now organized around completion gates, integration QA, API review, Android/device validation, and release-candidate preparation.
+
+### Validation
+
+- Phase 75 regression suite reached 919 passing tests before documentation synchronization.
+- API compatibility contract remains `0.2` while package development continues at `0.4.0.dev0`.
+
 ---
 
 ## 0.2.0 - 2026-09-13
