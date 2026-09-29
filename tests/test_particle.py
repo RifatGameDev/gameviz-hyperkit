@@ -1,3 +1,5 @@
+import pytest
+
 from hyperkit import ParticleConfig, ParticleEmitter
 
 
@@ -65,3 +67,146 @@ def test_particle_clear_disables_particles():
     for obj in scene.objects:
         assert obj.active is False
         assert obj.visible is False
+
+
+
+def test_particle_config_validates_ranges():
+    with pytest.raises(
+        ValueError,
+        match="count",
+    ):
+        ParticleConfig(
+            count=-1
+        )
+
+    with pytest.raises(
+        ValueError,
+        match="speed",
+    ):
+        ParticleConfig(
+            min_speed=200,
+            max_speed=100,
+        )
+
+    with pytest.raises(
+        ValueError,
+        match="size",
+    ):
+        ParticleConfig(
+            min_size=0,
+        )
+
+    with pytest.raises(
+        ValueError,
+        match="lifetime",
+    ):
+        ParticleConfig(
+            lifetime=0,
+        )
+
+
+def test_particle_reports_age_and_progress():
+    scene = DummyScene()
+    emitter = ParticleEmitter(scene)
+
+    particle = emitter.burst(
+        x=0,
+        y=0,
+        count=1,
+        lifetime=2.0,
+    )[0]
+
+    particle.update(0.5)
+
+    assert particle.age == pytest.approx(0.5)
+    assert particle.progress == pytest.approx(0.25)
+
+
+def test_particle_rejects_negative_dt():
+    scene = DummyScene()
+    emitter = ParticleEmitter(scene)
+
+    particle = emitter.burst(
+        x=0,
+        y=0,
+        count=1,
+    )[0]
+
+    with pytest.raises(
+        ValueError,
+        match="dt",
+    ):
+        particle.update(-0.1)
+
+
+def test_particle_emitter_requires_scene_add_method():
+    with pytest.raises(
+        ValueError,
+        match="add",
+    ):
+        ParticleEmitter(object())
+
+
+def test_particle_emitter_reports_active_count():
+    scene = DummyScene()
+    emitter = ParticleEmitter(scene)
+
+    emitter.burst(
+        x=0,
+        y=0,
+        count=3,
+    )
+
+    assert emitter.active_count == 3
+
+    emitter.update(1.0)
+
+    assert emitter.active_count == 0
+
+
+def test_particle_emitter_clear_returns_removed_count():
+    scene = DummyScene()
+    emitter = ParticleEmitter(scene)
+
+    emitter.burst(
+        x=0,
+        y=0,
+        count=4,
+    )
+
+    assert emitter.clear() == 4
+    assert emitter.active_count == 0
+
+
+def test_particle_config_respects_fade_flag():
+    scene = DummyScene()
+    emitter = ParticleEmitter(scene)
+
+    config = ParticleConfig(
+        count=1,
+        lifetime=1.0,
+        fade=False,
+    )
+
+    particle = emitter.emit_config(
+        x=0,
+        y=0,
+        config=config,
+    )[0]
+
+    original_alpha = particle.obj.color[3]
+
+    particle.update(0.5)
+
+    assert particle.obj.color[3] == original_alpha
+
+
+def test_particle_emitter_rejects_negative_dt():
+    scene = DummyScene()
+    emitter = ParticleEmitter(scene)
+
+    with pytest.raises(
+        ValueError,
+        match="dt",
+    ):
+        emitter.update(-0.1)
