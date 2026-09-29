@@ -15,10 +15,20 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``0.5.0.dev0``.
+Current development version: ``0.6.0.dev0``.
 
 ### Added
 
+- v0.6 Mobile Production Runtime + Performance milestone.
+- `PerformanceMode` and `PerformanceProfile` mobile runtime presets.
+- `FrameTimeController` frame-hitch protection.
+- `FixedStepClock` bounded fixed-step simulation support.
+- `Game.performance_stats()` runtime timing telemetry.
+- Scene lifecycle hooks for pause, background, resume, and stop.
+- Scene resource cleanup through `release_resources()`.
+- Runtime lifecycle propagation to all registered SDK services.
+- Touch move-noise filtering with `move_min_distance`.
+- v0.6 mobile performance, lifecycle, cleanup, and input regression coverage.
 - v0.5 Complete Games + Developer Tooling milestone.
 - `RuntimeDiagnostics` and immutable `RuntimeSnapshot` performance data.
 - Optional `DebugOverlay` for FPS, frame-time, and dropped-frame feedback.
@@ -33,19 +43,28 @@ Current development version: ``0.5.0.dev0``.
 
 ### Changed
 
+- `Game` now clamps large frame deltas before scene updates.
+- `Game.stop()` is idempotent and Kivy shutdown now uses the stop lifecycle instead of treating shutdown as backgrounding.
+- Active pointers are cancelled when the game is paused, backgrounded, or stopped.
+- Scene changes release the previous scene before starting the replacement.
+- `AudioManager` now responds to runtime pause/background/resume/stop lifecycle events.
+- Runtime services registered under multiple names are notified only once per lifecycle event.
+- Package development version advanced to `0.6.0.dev0`.
 - Tap Counter now has a complete round, game-over/completion state, and restart flow.
 - Built-in templates are treated as complete small-game starters rather than prototype-only examples.
-- Package development version advanced to `0.5.0.dev0`.
+- v0.5 advanced the package development version to `0.5.0.dev0`.
 - Simple Physics uses the reusable PhysicsWorld architecture.
 - Public development documentation distinguishes the latest published PyPI release from the active development version.
 - The authoritative roadmap now follows v0.5 through v1.0 instead of skipping directly from v0.4 to release-candidate work.
 
 ### Validation
 
+- v0.5 closeout finished with 973 passing automated tests before v0.6 development started.
+- v0.5 closeout passed complete-game validation 54/54, generated-project validation 90/90, release readiness 115/115, pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine validation.
 - v0.4 closeout finished with 949 passing automated tests before v0.5 development started.
 - v0.4 closeout reports passed: health 133/133, templates 42/42, generated projects 90/90, release readiness 117/117, pre-release audit 10/10.
 - Phase 75 regression suite reached 919 passing tests before documentation synchronization.
-- API compatibility contract remains `0.2` while package development continues at `0.5.0.dev0`.
+- API compatibility contract remains `0.2` while package development continues at `0.6.0.dev0`.
 
 ---
 
