@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -63,6 +64,10 @@ class AssetManager:
             self.project_path
             / assets_folder
         ).resolve()
+        self._cache: dict[
+            tuple[str, str],
+            Any,
+        ] = {}
 
     def _candidate_path(self, folder: str, filename: str | Path) -> Path:
         raw_path = Path(filename)
@@ -122,6 +127,37 @@ class AssetManager:
 
         return path
 
+    @property
+    def cache_size(
+        self,
+    ) -> int:
+        return len(
+            self._cache
+        )
+
+    def clear_cache(
+        self,
+    ) -> int:
+        count = len(
+            self._cache
+        )
+        self._cache.clear()
+        return count
+
+    def _cache_key(
+        self,
+        asset_type: str,
+        filename: str | Path,
+    ) -> tuple[str, str]:
+        return (
+            str(
+                asset_type
+            ),
+            str(
+                filename
+            ),
+        )
+
     def load_image(self, filename: str | Path) -> str:
         """Return image file path from assets/images."""
         path = self._resolve_asset(
@@ -139,27 +175,109 @@ class AssetManager:
         path = self._resolve_asset("fonts", filename, FONT_EXTENSIONS, "font")
         return str(path)
 
-    def load_json(self, filename: str | Path) -> Any:
+    def load_json(
+        self,
+        filename: str | Path,
+        *,
+        cached: bool = False,
+    ) -> Any:
         """Load JSON data from assets/data."""
+        key = self._cache_key(
+            "json",
+            filename,
+        )
+
+        if cached and key in self._cache:
+            return deepcopy(
+                self._cache[
+                    key
+                ]
+            )
+
         path = self._resolve_asset(
             "data", filename, JSON_EXTENSIONS, "JSON data")
 
         with path.open("r", encoding="utf-8") as file:
-            return json.load(file)
+            data = json.load(file)
 
-    def load_csv(self, filename: str | Path) -> list[dict[str, str]]:
+        if cached:
+            self._cache[
+                key
+            ] = deepcopy(
+                data
+            )
+
+        return data
+
+    def load_csv(
+        self,
+        filename: str | Path,
+        *,
+        cached: bool = False,
+    ) -> list[dict[str, str]]:
         """Load CSV data from assets/data."""
+        key = self._cache_key(
+            "csv",
+            filename,
+        )
+
+        if cached and key in self._cache:
+            return deepcopy(
+                self._cache[
+                    key
+                ]
+            )
+
         path = self._resolve_asset(
             "data", filename, CSV_EXTENSIONS, "CSV data")
 
         with path.open("r", encoding="utf-8", newline="") as file:
-            return list(csv.DictReader(file))
+            rows = list(
+                csv.DictReader(
+                    file
+                )
+            )
 
-    def load_text(self, filename: str | Path) -> str:
+        if cached:
+            self._cache[
+                key
+            ] = deepcopy(
+                rows
+            )
+
+        return rows
+
+    def load_text(
+        self,
+        filename: str | Path,
+        *,
+        cached: bool = False,
+    ) -> str:
         """Load text data from assets/data."""
+        key = self._cache_key(
+            "text",
+            filename,
+        )
+
+        if cached and key in self._cache:
+            return str(
+                self._cache[
+                    key
+                ]
+            )
+
         path = self._resolve_asset(
             "data", filename, TEXT_EXTENSIONS, "text data")
-        return path.read_text(encoding="utf-8")
+        content = path.read_text(
+            encoding="utf-8"
+        )
+
+        if cached:
+            self._cache[
+                key
+            ] = content
+
+        return content
 
     def exists(
         self,
@@ -241,6 +359,52 @@ class AssetManager:
                 )
 
         return sorted(results)
+
+    def preload_data(
+        self,
+        filenames: list[
+            str | Path
+        ],
+    ) -> dict[str, Any]:
+        loaded: dict[
+            str,
+            Any,
+        ] = {}
+
+        for filename in filenames:
+            path = Path(
+                filename
+            )
+            extension = (
+                path.suffix
+                .lower()
+            )
+
+            key = str(
+                filename
+            )
+
+            if extension in JSON_EXTENSIONS:
+                loaded[key] = self.load_json(
+                    filename,
+                    cached=True,
+                )
+            elif extension in CSV_EXTENSIONS:
+                loaded[key] = self.load_csv(
+                    filename,
+                    cached=True,
+                )
+            elif extension in TEXT_EXTENSIONS:
+                loaded[key] = self.load_text(
+                    filename,
+                    cached=True,
+                )
+            else:
+                raise UnsupportedAssetTypeError(
+                    "preload_data supports JSON, CSV, and TXT files."
+                )
+
+        return loaded
 
     def list_images(self) -> list[str]:
         return self.list_assets("images", IMAGE_EXTENSIONS)
