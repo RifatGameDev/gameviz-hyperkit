@@ -10,6 +10,7 @@ The player taps anywhere on the screen to move the target and increase the score
 
 - beginner-friendly tap/click gameplay
 - score and high-score display
+- complete round and restart flow
 - tap goal progress
 - progress bar feedback
 - simple status messages
