@@ -33,13 +33,32 @@ class SpriteAnimation:
     completed: bool = False
 
     def __post_init__(self) -> None:
+        self.name = str(self.name).strip()
+        self.frames = [
+            str(frame).strip()
+            for frame in self.frames
+        ]
+        self.fps = float(self.fps)
+
+        if not self.name:
+            raise SpriteAnimationError(
+                "SpriteAnimation name must not be empty."
+            )
+
         if not self.frames:
             raise SpriteAnimationError(
-                "SpriteAnimation requires at least one frame.")
+                "SpriteAnimation requires at least one frame."
+            )
+
+        if any(not frame for frame in self.frames):
+            raise SpriteAnimationError(
+                "SpriteAnimation frames must not contain empty paths."
+            )
 
         if self.fps <= 0:
             raise SpriteAnimationError(
-                "SpriteAnimation fps must be greater than 0.")
+                "SpriteAnimation fps must be greater than 0."
+            )
 
     @property
     def frame_duration(self) -> float:
@@ -49,31 +68,41 @@ class SpriteAnimation:
     def current_frame(self) -> str:
         return self.frames[self.current_index]
 
-    def reset(self) -> None:
+    def reset(self) -> "SpriteAnimation":
         self.current_index = 0
         self.elapsed = 0.0
         self.playing = True
         self.completed = False
+        return self
 
-    def play(self, restart: bool = False) -> None:
+    def play(self, restart: bool = False) -> "SpriteAnimation":
         if restart:
-            self.reset()
-            return
+            return self.reset()
 
         self.playing = True
         self.completed = False
+        return self
 
-    def pause(self) -> None:
+    def pause(self) -> "SpriteAnimation":
         self.playing = False
+        return self
 
-    def stop(self) -> None:
+    def stop(self) -> "SpriteAnimation":
         self.current_index = 0
         self.elapsed = 0.0
         self.playing = False
         self.completed = True
+        return self
 
     def update(self, dt: float) -> str:
-        if not self.playing or self.completed:
+        dt = float(dt)
+
+        if dt < 0:
+            raise SpriteAnimationError(
+                "SpriteAnimation dt must be non-negative."
+            )
+
+        if not self.playing or self.completed or dt == 0:
             return self.current_frame
 
         self.elapsed += dt
@@ -115,18 +144,24 @@ class SpriteAnimator:
         self.current_name: str | None = None
 
     @property
+    def animation_names(self) -> list[str]:
+        return sorted(self.animations.keys())
+
+    @property
     def current_animation(self) -> SpriteAnimation | None:
         if self.current_name is None:
             return None
 
         return self.animations.get(self.current_name)
 
-    def set_target(self, target: Any) -> None:
+    def set_target(self, target: Any) -> "SpriteAnimator":
         self.target = target
 
         animation = self.current_animation
         if animation is not None:
             self._set_target_frame(animation.current_frame)
+
+        return self
 
     def add_animation(
         self,
@@ -144,10 +179,11 @@ class SpriteAnimator:
             on_complete=on_complete,
         )
 
-        self.animations[name] = animation
+        key = animation.name
+        self.animations[key] = animation
 
         if self.current_name is None:
-            self.current_name = name
+            self.current_name = key
             self._set_target_frame(animation.current_frame)
 
         return animation
@@ -166,26 +202,68 @@ class SpriteAnimator:
 
         return animation
 
-    def pause(self) -> None:
+    def pause(self) -> bool:
         animation = self.current_animation
 
-        if animation is not None:
-            animation.pause()
+        if animation is None:
+            return False
 
-    def resume(self) -> None:
+        animation.pause()
+        return True
+
+    def resume(self) -> bool:
         animation = self.current_animation
 
-        if animation is not None:
-            animation.play(restart=False)
+        if animation is None:
+            return False
 
-    def stop(self) -> None:
+        animation.play(restart=False)
+        return True
+
+    def stop(self) -> bool:
         animation = self.current_animation
 
-        if animation is not None:
-            animation.stop()
-            self._set_target_frame(animation.current_frame)
+        if animation is None:
+            return False
+
+        animation.stop()
+        self._set_target_frame(animation.current_frame)
+        return True
+
+    def remove_animation(self, name: str) -> bool:
+        name = str(name).strip()
+
+        if name not in self.animations:
+            return False
+
+        del self.animations[name]
+
+        if self.current_name == name:
+            self.current_name = None
+
+            if self.animations:
+                self.current_name = next(iter(self.animations))
+                animation = self.current_animation
+
+                if animation is not None:
+                    self._set_target_frame(animation.current_frame)
+
+        return True
+
+    def clear(self) -> int:
+        count = len(self.animations)
+        self.animations.clear()
+        self.current_name = None
+        return count
 
     def update(self, dt: float) -> str | None:
+        dt = float(dt)
+
+        if dt < 0:
+            raise SpriteAnimationError(
+                "SpriteAnimator dt must be non-negative."
+            )
+
         animation = self.current_animation
 
         if animation is None:
