@@ -1,6 +1,6 @@
 # Simple Physics Template
 
-Simple Physics is a beginner-friendly HyperKit template for learning gravity, bouncing, and force-style gameplay.
+Simple Physics is a beginner-friendly HyperKit template for learning HyperKit's reusable 2D physics, bouncing, triggers, and force-style gameplay.
 
 The player taps to push the ball upward and keeps it bouncing while collecting targets.
 
@@ -8,11 +8,12 @@ The player taps to push the ball upward and keeps it bouncing while collecting t
 
 ## Features
 
-- gravity-style ball movement
+- PhysicsWorld-driven ball movement
+- dynamic and static physics bodies
+- reusable PhysicsMaterial bounce behavior
+- collision layers and masks
+- trigger-based target collection
 - tap-to-apply-force input
-- floor bounce behavior
-- wall bounce behavior
-- target collection
 - score and high-score display
 - progress bar feedback
 - simple restart flow
@@ -61,6 +62,7 @@ After game over, tap again to restart.
 This template demonstrates these HyperKit helper systems:
 
 - AssetManager
+- BodyType
 - BoundsManager
 - Cooldown
 - GameObject
@@ -80,18 +82,20 @@ This template demonstrates these HyperKit helper systems:
 - adding GameObjects
 - using TextLabel UI
 - handling tap/click input
-- applying gravity-style movement
-- applying force-style input
-- creating simple bounce behavior
-- checking target collision
+- using PhysicsWorld for gravity and integration
+- using dynamic and static PhysicsBody instances
+- applying force-style input through body velocity
+- configuring bounce with PhysicsMaterial
+- filtering collisions with layers and masks
+- handling collision and trigger callbacks
 - tracking score and high score
 - using ScoreManager for score and high-score tracking
 - using ProgressBar for goal progress feedback
 - using ParticleEmitter for tap and target feedback
 - using CameraShake for bounce feedback
-- preparing BoundsManager for future bounds organization
-- preparing InputActionMap for input organization
-- preparing AssetManager for future image assets
+- preparing BoundsManager for additional world-bound organization
+- preparing InputActionMap for extended input organization
+- preparing AssetManager for optional image assets
 - creating a clean mobile-style layout
 - preparing Cooldown for controlled force timing
 
