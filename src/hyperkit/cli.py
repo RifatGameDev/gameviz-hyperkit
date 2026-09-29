@@ -81,51 +81,54 @@ TEMPLATES = {
     "tap-counter": {
         "folder": "tap_counter",
         "description": (
-            "Simple tap/click game. Good for "
-            "tap-to-score, tap-to-move, and "
-            "beginner prototypes."
+            "Complete tap/click scoring game "
+            "with round completion, restart, "
+            "and persistent high score."
         ),
     },
 
     "flappy-mini": {
         "folder": "flappy_mini",
         "description": (
-            "Small flappy-style prototype "
-            "with tap-to-jump style gameplay."
+            "Complete flappy-style game "
+            "with tap-to-jump gameplay, "
+            "scoring, game over, and restart."
         ),
     },
 
     "swipe-runner": {
         "folder": "swipe_runner",
         "description": (
-            "3-lane swipe runner prototype "
-            "with obstacles, score, and game over."
+            "Complete 3-lane swipe runner "
+            "with obstacles, score, game over, "
+            "and restart."
         ),
     },
 
     "puzzle-game": {
         "folder": "puzzle_game",
         "description": (
-            "3x3 color matching puzzle prototype "
-            "with score, target color, and restart."
+            "Complete 3x3 color matching puzzle "
+            "with score, target color, completion, "
+            "and restart."
         ),
     },
 
     "quiz-game": {
         "folder": "quiz_game",
         "description": (
-            "Educational quiz prototype with "
+            "Complete educational quiz game with "
             "questions, answer buttons, score, "
-            "and result screen."
+            "result screen, and restart."
         ),
     },
 
     "simple-physics": {
         "folder": "simple_physics",
         "description": (
-            "Physics prototype with gravity, "
-            "bounce, coin collection, score, "
-            "and restart."
+            "Complete small physics game with "
+            "gravity, bounce, trigger collection, "
+            "score, and restart."
         ),
     },
 }
@@ -133,14 +136,16 @@ TEMPLATES = {
 
 def get_hyperkit_version() -> str:
     try:
-        return version(
-            "gameviz-hyperkit"
-        )
-
-    except PackageNotFoundError:
         from . import __version__
 
         return __version__
+    except Exception:
+        try:
+            return version(
+                "gameviz-hyperkit"
+            )
+        except PackageNotFoundError:
+            return "0.0.0-dev"
 
 
 def normalize_template_name(
