@@ -63,6 +63,7 @@ class Game:
         performance_profile: Optional[
             PerformanceProfile
         ] = None,
+        touch_move_min_distance: float = 0.0,
     ) -> None:
         if width <= 0 or height <= 0:
             raise ValueError(
@@ -113,6 +114,16 @@ class Game:
             FrameTimeController(
                 performance_profile
             )
+        )
+
+        if touch_move_min_distance < 0:
+            raise ValueError(
+                "touch_move_min_distance "
+                "cannot be negative."
+            )
+
+        self.touch_move_min_distance = float(
+            touch_move_min_distance
         )
 
         self.background_color = (
@@ -189,6 +200,37 @@ class Game:
             self.environment
             .is_mobile
         )
+
+    @property
+    def performance_stats(
+        self,
+    ) -> dict[str, float | int]:
+        return {
+            "target_fps": (
+                self.performance_profile
+                .target_fps
+            ),
+            "frame_count": (
+                self.frame_time
+                .frame_count
+            ),
+            "hitch_count": (
+                self.frame_time
+                .hitch_count
+            ),
+            "clamped_time": (
+                self.frame_time
+                .clamped_time
+            ),
+            "last_raw_dt": (
+                self.frame_time
+                .last_raw_dt
+            ),
+            "last_dt": (
+                self.frame_time
+                .last_dt
+            ),
+        }
 
     @property
     def fullscreen(
@@ -470,7 +512,12 @@ class Game:
                 )
 
                 self.touch_tracker = (
-                    TouchTracker()
+                    TouchTracker(
+                        move_min_distance=(
+                            game
+                            .touch_move_min_distance
+                        )
+                    )
                 )
 
                 self.viewport = (
