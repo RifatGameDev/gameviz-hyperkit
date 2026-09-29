@@ -14,6 +14,10 @@ from .mobile import (
     MobileViewport,
     SafeAreaInsets,
 )
+from .performance import (
+    FrameTimeController,
+    PerformanceProfile,
+)
 from .scene import Scene
 
 
@@ -56,6 +60,9 @@ class Game:
             SafeAreaInsets
         ] = None,
         use_safe_area: bool = True,
+        performance_profile: Optional[
+            PerformanceProfile
+        ] = None,
     ) -> None:
         if width <= 0 or height <= 0:
             raise ValueError(
@@ -70,7 +77,43 @@ class Game:
             )
 
         self.title = title
-        self.fps = int(fps)
+
+        if performance_profile is None:
+            performance_profile = (
+                PerformanceProfile(
+                    target_fps=int(
+                        fps
+                    ),
+                    fixed_step=(
+                        1.0
+                        / int(
+                            fps
+                        )
+                    ),
+                )
+            )
+
+        if not isinstance(
+            performance_profile,
+            PerformanceProfile,
+        ):
+            raise TypeError(
+                "performance_profile must be "
+                "a PerformanceProfile instance."
+            )
+
+        self.performance_profile = (
+            performance_profile
+        )
+        self.fps = (
+            performance_profile
+            .target_fps
+        )
+        self.frame_time = (
+            FrameTimeController(
+                performance_profile
+            )
+        )
 
         self.background_color = (
             background_color
@@ -115,8 +158,10 @@ class Game:
         ] = None
 
         self._app = None
+        self._widget = None
         self._paused = False
         self._backgrounded = False
+        self._stopped = False
 
     @property
     def is_paused(
@@ -129,6 +174,12 @@ class Game:
         self,
     ) -> bool:
         return self._backgrounded
+
+    @property
+    def is_stopped(
+        self,
+    ) -> bool:
+        return self._stopped
 
     @property
     def is_mobile(
@@ -198,13 +249,53 @@ class Game:
         ):
             callback()
 
+    def _cancel_active_touches(
+        self,
+    ) -> int:
+        widget = self._widget
+
+        if widget is None:
+            return 0
+
+        tracker = getattr(
+            widget,
+            "touch_tracker",
+            None,
+        )
+
+        if tracker is None:
+            return 0
+
+        cancel_all = getattr(
+            tracker,
+            "cancel_all",
+            None,
+        )
+
+        if not callable(
+            cancel_all
+        ):
+            return 0
+
+        result = cancel_all()
+
+        return (
+            int(result)
+            if result is not None
+            else 0
+        )
+
     def pause(
         self,
     ) -> None:
-        if self._paused:
+        if (
+            self._paused
+            or self._stopped
+        ):
             return
 
         self._paused = True
+        self._cancel_active_touches()
 
         self._call_scene_hook(
             "on_pause"
@@ -213,11 +304,15 @@ class Game:
     def background(
         self,
     ) -> None:
-        if self._backgrounded:
+        if (
+            self._backgrounded
+            or self._stopped
+        ):
             return
 
         self._backgrounded = True
         self._paused = True
+        self._cancel_active_touches()
 
         self._call_scene_hook(
             "on_background"
@@ -226,6 +321,9 @@ class Game:
     def resume(
         self,
     ) -> None:
+        if self._stopped:
+            return
+
         was_suspended = (
             self._paused
             or self._backgrounded
@@ -238,6 +336,21 @@ class Game:
             self._call_scene_hook(
                 "on_resume"
             )
+
+    def stop(
+        self,
+    ) -> None:
+        if self._stopped:
+            return
+
+        self._stopped = True
+        self._paused = True
+        self._backgrounded = False
+        self._cancel_active_touches()
+
+        self._call_scene_hook(
+            "on_stop"
+        )
 
     def run(
         self,
@@ -708,8 +821,15 @@ class Game:
                     and not
                     game.is_backgrounded
                 ):
+                    safe_dt = (
+                        game.frame_time
+                        .normalize(
+                            dt
+                        )
+                    )
+
                     game.scene.update(
-                        dt
+                        safe_dt
                     )
 
                 self._redraw()
@@ -896,15 +1016,21 @@ class Game:
                     )
                 )
 
-                self.touch_tracker.touch_move(
-                    vx,
-                    vy,
-                    pointer_id=(
-                        self._pointer_id(
-                            touch
-                        )
-                    ),
+                move_event = (
+                    self.touch_tracker
+                    .touch_move(
+                        vx,
+                        vy,
+                        pointer_id=(
+                            self._pointer_id(
+                                touch
+                            )
+                        ),
+                    )
                 )
+
+                if move_event is None:
+                    return True
 
                 if game.scene:
                     game.scene.on_touch_move(
@@ -1003,9 +1129,12 @@ class Game:
                         game.fullscreen
                     )
 
-                return (
+                widget = (
                     HyperKitWidget()
                 )
+                game._widget = widget
+
+                return widget
 
             def on_pause(
                 self,
@@ -1022,7 +1151,7 @@ class Game:
             def on_stop(
                 self,
             ):
-                game.background()
+                game.stop()
 
         self._app = (
             HyperKitKivyApp()
