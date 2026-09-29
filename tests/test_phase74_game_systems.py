@@ -166,3 +166,146 @@ def test_score_and_progression_hooks_emit_analytics():
         "xp": 30,
         "coins": 15,
     }
+
+
+
+def test_session_tracker_reports_active_state_and_session_id():
+    tracker = SessionTracker(
+        id_factory=lambda: "session-42",
+    )
+
+    assert not tracker.active
+    assert tracker.session_id is None
+
+    tracker.start()
+
+    assert tracker.active
+    assert tracker.session_id == "session-42"
+
+    tracker.end()
+
+    assert not tracker.active
+
+
+def test_session_tracker_rejects_empty_session_id():
+    tracker = SessionTracker(
+        id_factory=lambda: " ",
+    )
+
+    try:
+        tracker.start()
+    except ValueError as exc:
+        assert "session_id" in str(exc)
+    else:
+        raise AssertionError(
+            "Expected empty session_id to be rejected."
+        )
+
+
+def test_progression_tracker_reset_is_chainable():
+    progression = ProgressionTracker(
+        level=3,
+        xp=50,
+        coins=20,
+    )
+
+    result = progression.reset(
+        level=2,
+        xp=10,
+        coins=5,
+    )
+
+    assert result is progression
+    assert progression.as_dict() == {
+        "level": 2,
+        "xp": 10,
+        "coins": 5,
+    }
+
+
+def test_game_systems_reports_initialization_state():
+    systems = GameSystems()
+
+    assert not systems.initialized
+
+    assert systems.initialize() is systems
+
+    assert systems.initialized
+
+
+def test_game_systems_spend_coins_tracks_only_success():
+    analytics = MockAnalyticsProvider()
+    systems = GameSystems(
+        analytics=analytics
+    )
+
+    systems.add_coins(
+        10,
+        track=False,
+    )
+
+    assert systems.spend_coins(4) is True
+    assert systems.progression.coins == 6
+
+    assert systems.spend_coins(100) is False
+    assert systems.progression.coins == 6
+
+    names = [
+        event.name
+        for event in analytics.events
+    ]
+
+    assert names == [
+        "progression_updated",
+    ]
+
+
+def test_game_systems_rejects_invalid_explicit_level():
+    systems = GameSystems()
+
+    try:
+        systems.level_start(0)
+    except ValueError as exc:
+        assert "level" in str(exc)
+    else:
+        raise AssertionError(
+            "Expected invalid level_start level."
+        )
+
+    try:
+        systems.level_complete(-1)
+    except ValueError as exc:
+        assert "level" in str(exc)
+    else:
+        raise AssertionError(
+            "Expected invalid level_complete level."
+        )
+
+
+def test_record_progression_keeps_tracker_values_authoritative():
+    analytics = MockAnalyticsProvider()
+    systems = GameSystems(
+        analytics=analytics
+    )
+
+    systems.progression.reset(
+        level=3,
+        xp=25,
+        coins=7,
+    )
+
+    systems.record_progression(
+        level=999,
+        xp=999,
+        coins=999,
+        source="test",
+    )
+
+    event = analytics.events[-1]
+
+    assert event.properties == {
+        "level": 3,
+        "xp": 25,
+        "coins": 7,
+        "source": "test",
+    }
