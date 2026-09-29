@@ -105,6 +105,7 @@ REQUIRED_README_LINKS = [
     "docs/RELEASE_EVIDENCE_STRUCTURE.md",
     "docs/release-evidence/README.md",
     "docs/RUNTIME_QA_TRACKER_PHASE58.md",
+    "docs/V050_COMPLETE_GAMES_TOOLING.md",
 ]
 
 
