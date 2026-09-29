@@ -262,6 +262,29 @@ from .performance import (
     PerformanceProfile,
 )
 
+from .content import (
+    ContentError,
+    ContentItem,
+    ContentManager,
+    ContentManifest,
+)
+
+from .prefab import (
+    Prefab,
+    PrefabError,
+    PrefabLibrary,
+)
+
+from .pool import (
+    ObjectPool,
+    ObjectPoolError,
+)
+
+from .level_sequence import (
+    LevelSequence,
+    LevelSequenceError,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -439,10 +462,21 @@ __all__ = [
     "FrameTimeController",
     "PerformanceMode",
     "PerformanceProfile",
+    "ContentError",
+    "ContentItem",
+    "ContentManager",
+    "ContentManifest",
+    "Prefab",
+    "PrefabError",
+    "PrefabLibrary",
+    "ObjectPool",
+    "ObjectPoolError",
+    "LevelSequence",
+    "LevelSequenceError",
 ]
 
 
-__version__ = "0.6.0.dev0"
+__version__ = "0.7.0.dev0"
 
 # Phase 73 mobile public API
 from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
