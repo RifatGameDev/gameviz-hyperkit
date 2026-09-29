@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+import re
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 
 from .health import generate_health_report
 
@@ -47,7 +53,9 @@ class ReleaseReport:
 REQUIRED_RELEASE_FILES = [
     "README.md",
     "CHANGELOG.md",
+    "ROADMAP.md",
     "pyproject.toml",
+    "src/hyperkit/__main__.py",
     "docs/TEMPLATES.md",
     "docs/TEMPLATE_HELPERS.md",
     "docs/TEMPLATE_QUALITY_CHECKLIST.md",
@@ -149,6 +157,9 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_simple_physics_runtime_qa_phase64.py",
     "tests/test_final_qa_certification_phase65.py",
     "tests/test_stable_release_readiness_phase68.py",
+    "tests/test_phase75_documentation_sync.py",
+    "tests/test_phase75_public_api_audit.py",
+    "tests/test_phase75_cli_entry.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
@@ -166,6 +177,58 @@ def _file_contains(path: Path, terms: list[str]) -> bool:
     content = path.read_text(encoding="utf-8", errors="ignore")
 
     return all(term in content for term in terms)
+
+
+def _read_project_version(
+    pyproject_path: Path,
+) -> str | None:
+    if not pyproject_path.is_file():
+        return None
+
+    try:
+        data = tomllib.loads(
+            pyproject_path.read_text(
+                encoding="utf-8"
+            )
+        )
+    except (
+        OSError,
+        tomllib.TOMLDecodeError,
+    ):
+        return None
+
+    version = (
+        data.get("project", {})
+        .get("version")
+    )
+
+    if version is None:
+        return None
+
+    return str(version)
+
+
+def _read_module_version(
+    init_path: Path,
+) -> str | None:
+    if not init_path.is_file():
+        return None
+
+    content = init_path.read_text(
+        encoding="utf-8",
+        errors="ignore",
+    )
+
+    match = re.search(
+        r'^__version__\s*=\s*["\']([^"\']+)["\']',
+        content,
+        flags=re.MULTILINE,
+    )
+
+    if match is None:
+        return None
+
+    return match.group(1)
 
 
 def generate_release_report(root: str | Path = ".") -> ReleaseReport:
@@ -217,6 +280,101 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
         name="CHANGELOG version notes",
         passed=_file_contains(changelog_path, ["Unreleased", "0.1.0"]),
         message="CHANGELOG contains version sections",
+    )
+
+    project_version = _read_project_version(
+        pyproject_path
+    )
+    module_version = _read_module_version(
+        root_path
+        / "src"
+        / "hyperkit"
+        / "__init__.py"
+    )
+    versions_match = (
+        project_version is not None
+        and project_version
+        == module_version
+    )
+
+    report.add(
+        name="Package version synchronized",
+        passed=versions_match,
+        message=(
+            f"pyproject and hyperkit.__version__ = {project_version}"
+            if versions_match
+            else (
+                "Version mismatch: "
+                f"pyproject={project_version}, "
+                f"module={module_version}"
+            )
+        ),
+    )
+
+    report.add(
+        name="README active development version",
+        passed=(
+            project_version is not None
+            and _file_contains(
+                readme_path,
+                [
+                    "Active development version:",
+                    project_version,
+                ],
+            )
+        ),
+        message=(
+            "README tracks active package version"
+        ),
+    )
+
+    report.add(
+        name="CHANGELOG active development version",
+        passed=(
+            project_version is not None
+            and _file_contains(
+                changelog_path,
+                [
+                    "Current development version:",
+                    project_version,
+                ],
+            )
+        ),
+        message=(
+            "CHANGELOG tracks active package version"
+        ),
+    )
+
+    report.add(
+        name="Python module CLI entry point",
+        passed=_file_contains(
+            root_path
+            / "src"
+            / "hyperkit"
+            / "__main__.py",
+            [
+                "from .cli import main",
+                "raise SystemExit",
+            ],
+        ),
+        message="python -m hyperkit entry point found",
+    )
+
+    roadmap_path = root_path / "ROADMAP.md"
+    report.add(
+        name="Roadmap completion state",
+        passed=(
+            project_version is not None
+            and _file_contains(
+                roadmap_path,
+                [
+                    "Phase 75",
+                    project_version,
+                    "Release Gates Before 1.0",
+                ],
+            )
+        ),
+        message="Roadmap tracks current completion phase",
     )
 
     report.add(
