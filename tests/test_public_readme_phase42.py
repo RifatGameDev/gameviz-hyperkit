@@ -23,7 +23,8 @@ def test_public_readme_has_package_identity():
 def test_public_readme_explains_current_status():
     content = readme_content()
 
-    assert "Current package version: `0.2.0`" in content
+    assert "Latest published PyPI release: `0.2.0`" in content
+    assert "Active development version: `0.4.0.dev0`" in content
     assert (
         "Installation command: "
         "`pip install gameviz-hyperkit`"
@@ -31,7 +32,7 @@ def test_public_readme_explains_current_status():
     )
     assert (
         "Package maturity: "
-        "Alpha / early SDK preview"
+        "Alpha / active SDK development"
         in content
     )
     assert (
@@ -71,8 +72,8 @@ def test_public_readme_mentions_limitations_and_roadmap():
     content = readme_content()
 
     assert "## Current Limitations" in content
-    assert "Android APK build support remains experimental" in content
-    assert "AdMob and analytics helper systems are not implemented yet" in content
+    assert "Android builds depend on the external Android/Buildozer toolchain" in content
+    assert "AdMob and Firebase Analytics integrations exist" in content
     assert "## Roadmap" in content
     assert "Stable API milestone for version `1.0.0`" in content
 
