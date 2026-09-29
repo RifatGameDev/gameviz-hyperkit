@@ -296,6 +296,9 @@ REQUIRED_PATHS = {
     "Phase 75 release integration tests": (
         "tests/test_phase75_release_integration.py"
     ),
+    "Phase 75 release docs alignment tests": (
+        "tests/test_phase75_release_docs_alignment.py"
+    ),
 }
 
 
