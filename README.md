@@ -20,14 +20,14 @@ HyperKit is publicly available on PyPI and remains in active development toward 
 Current package status:
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.6.0.dev0`
+- Active development version: `0.7.0.dev0`
 - Installation command: `pip install gameviz-hyperkit`
 - Package maturity: Alpha / active SDK development
 - Public compatibility contract: API `0.2`
 - API stability target: future `1.0.0`
 - Supported Python versions: Python 3.9–3.12
 
-The current development line builds on the complete-game and developer-tooling foundation by hardening HyperKit for mobile runtime reliability and performance. HyperKit v0.6 adds performance profiles, frame-hitch protection, fixed-step simulation support, stronger pause/background/resume/stop handling, runtime service lifecycle propagation, scene cleanup, and touch-noise filtering.
+The current development line builds on the mobile runtime foundation by expanding HyperKit's content-driven workflow and reusable gameplay systems. HyperKit v0.7 adds content manifests, prefabs, cached data preloading, level sequencing, object pooling, and sprite frame-pattern helpers.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -107,6 +107,12 @@ HyperKit is useful for:
 - Scene resource cleanup
 - Runtime safe-area updates
 - Touch move-noise filtering
+- Content manifests and tagged content lookup
+- Reusable JSON-driven prefabs
+- Cached JSON/CSV/TXT loading and preload helpers
+- Level sequence/progression helper
+- Reusable object pooling
+- Sprite frame-pattern generation
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
@@ -485,6 +491,7 @@ Package publication is handled through the project's controlled release workflow
 - [Release Evidence Workspace](docs/release-evidence/README.md)
 - [HyperKit v0.5 — Complete Games + Developer Tooling](docs/V050_COMPLETE_GAMES_TOOLING.md)
 - [HyperKit v0.6 — Mobile Production Runtime + Performance](docs/V060_MOBILE_RUNTIME_PERFORMANCE.md)
+- [HyperKit v0.7 — Content, Assets + Advanced Game Features](docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -516,18 +523,17 @@ Package publication is handled through the project's controlled release workflow
 
 ## Roadmap
 
-The active `0.6.0.dev0` line focuses on **Mobile Production Runtime + Performance**:
+The active `0.7.0.dev0` line focuses on **Content, Assets + Advanced Game Features**:
 
-- protect scene updates from large frame-time hitches
-- provide battery, balanced, and performance runtime profiles
-- provide bounded fixed-step simulation support
-- strengthen pause/background/resume/stop lifecycle behavior
-- propagate lifecycle events to registered runtime services
-- release scene resources during transitions and shutdown
-- filter noisy touch-move events when developers opt in
-- keep all v0.5 complete-game and developer-tooling checks green
+- add structured content manifests with id/kind/tag lookup
+- add reusable data-driven prefabs
+- add opt-in cached data loading and preloading
+- add ordered level sequencing for multi-level games
+- add reusable object pooling for common gameplay objects
+- add sprite frame-pattern generation
+- keep all v0.6 mobile runtime/performance checks green
 
-After v0.6, the roadmap continues through content/assets and advanced game features, build/publishing hardening, and public beta. The later v0.9 stage will freeze the intended 1.0 public API before the stable `1.0.0` milestone.
+After v0.7, the roadmap continues through build/publishing hardening and public beta. The later v0.9 stage will freeze the intended 1.0 public API before the stable `1.0.0` milestone.
 
 ---
 
