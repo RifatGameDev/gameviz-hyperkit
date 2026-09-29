@@ -7,7 +7,9 @@ def test_state_machine_default_is_playing():
     state = StateMachine()
 
     assert state.value == "playing"
-    assert state.is_state(GameState.PLAYING)
+    assert state.is_state(
+        GameState.PLAYING
+    )
 
 
 def test_state_machine_changes_state():
@@ -32,8 +34,12 @@ def test_state_machine_changes_state():
 def test_state_machine_rejects_invalid_state():
     state = StateMachine()
 
-    with pytest.raises(ValueError):
-        state.set("invalid_state")
+    with pytest.raises(
+        ValueError
+    ):
+        state.set(
+            "invalid_state"
+        )
 
 
 def test_scene_has_state_helpers():
@@ -56,15 +62,88 @@ def test_scene_has_state_helpers():
 
 def test_scene_default_object_update_only_when_playing():
     scene = Scene()
-    obj = scene.add(GameObject(x=0, y=0, vx=100))
+    obj = scene.add(
+        GameObject(
+            x=0,
+            y=0,
+            vx=100,
+        )
+    )
 
-    scene.update(1.0)
+    scene.update(
+        1.0
+    )
     assert obj.x == 100
 
     scene.pause_game()
-    scene.update(1.0)
+    scene.update(
+        1.0
+    )
     assert obj.x == 100
 
     scene.resume_game()
-    scene.update(1.0)
+    scene.update(
+        1.0
+    )
     assert obj.x == 200
+
+
+def test_state_machine_reports_real_changes_only():
+    state = StateMachine()
+
+    assert state.set(
+        GameState.PLAYING
+    ) is False
+    assert state.pause() is True
+    assert state.pause() is False
+
+
+def test_state_machine_tracks_previous_state():
+    state = StateMachine()
+
+    assert state.previous_state is None
+
+    state.menu()
+
+    assert (
+        state.previous_state
+        is GameState.PLAYING
+    )
+    assert (
+        state.state
+        is GameState.MENU
+    )
+
+
+def test_state_machine_calls_change_callback():
+    changes: list[
+        tuple[
+            GameState,
+            GameState,
+        ]
+    ] = []
+
+    state = StateMachine(
+        on_change=lambda previous, current: (
+            changes.append(
+                (
+                    previous,
+                    current,
+                )
+            )
+        )
+    )
+
+    state.pause()
+    state.resume()
+
+    assert changes == [
+        (
+            GameState.PLAYING,
+            GameState.PAUSED,
+        ),
+        (
+            GameState.PAUSED,
+            GameState.PLAYING,
+        ),
+    ]
