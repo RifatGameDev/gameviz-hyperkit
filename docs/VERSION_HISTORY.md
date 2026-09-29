@@ -9,7 +9,7 @@ milestones of HyperKit.
 - Import name: `hyperkit`
 - CLI command: `hyperkit`
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.6.0.dev0`
+- Active development version: `0.7.0.dev0`
 - Public compatibility contract: API `0.2`
 
 ## Development Roadmap
@@ -26,9 +26,9 @@ v0.4.0  Ads + Analytics + Game Systems
 v0.5.0  Complete Games + Developer Tooling
    ↓
 v0.6.0  Mobile Production Runtime + Performance
-          ← ACTIVE DEVELOPMENT
    ↓
 v0.7.0  Content, Assets + Advanced Game Features
+          ← ACTIVE DEVELOPMENT
    ↓
 v0.8.0  Build, Publishing + Production Hardening
    ↓
@@ -37,11 +37,25 @@ v0.9.0  API Freeze + Public Beta
 v1.0.0  Stable Release
 ```
 
-## 0.6.0 — Active Development
+## 0.7.0 — Active Development
+
+Focus: Content, Assets + Advanced Game Features.
+
+Current work includes:
+
+- structured content manifests
+- content lookup by id, kind, and tags
+- reusable JSON-driven prefabs
+- cached/preloaded JSON, CSV, and text data
+- ordered multi-level progression
+- reusable object pooling
+- sprite frame-pattern generation
+
+## 0.6.0 — Development Milestone
 
 Focus: Mobile Production Runtime + Performance.
 
-Current work includes:
+Delivered:
 
 - mobile performance profiles
 - frame-hitch delta protection
@@ -54,6 +68,8 @@ Current work includes:
 - runtime safe-area updates
 - touch move-noise filtering
 - viewport-aware touch routing
+
+The v0.6 closeout reached 998 passing automated tests.
 
 ## 0.5.0 — Development Milestone
 
