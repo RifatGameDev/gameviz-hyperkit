@@ -1,153 +1,196 @@
 # GameViz HyperKit — Roadmap to 1.0
 
-HyperKit is now in completion and stabilization work rather than broad
-feature discovery.
+This is the authoritative HyperKit development roadmap.
+
+## Version Path
+
+```text
+v0.1.0  Foundation / Initial SDK
+   ↓
+v0.2.0  Core SDK
+   ↓
+v0.3.0  Android + Mobile
+   ↓
+v0.4.0  Ads + Analytics + Game Systems
+   ↓
+v0.5.0  Complete Games + Developer Tooling
+          ← CURRENT DEVELOPMENT STAGE
+   ↓
+v0.6.0  Mobile Production Runtime + Performance
+   ↓
+v0.7.0  Content, Assets + Advanced Game Features
+   ↓
+v0.8.0  Build, Publishing + Production Hardening
+   ↓
+v0.9.0  API Freeze + Public Beta
+   ↓
+v1.0.0  Stable Release
+```
 
 ## Current State
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.4.0.dev0`
+- Active development version: `0.5.0.dev0`
 - Public compatibility contract: API `0.2`
-- Active development branch:
-  `feature/phase74-ads-analytics-game-systems`
-- Current focus: Phase 75 SDK completion audit and hardening
-- Automated regression baseline before the current documentation-sync phase:
-  919 passing tests
+- Active development branch: `feature/v0.5-complete-games-tooling`
+- Current focus: v0.5 Complete Games + Developer Tooling
+- v0.4 final automated regression checkpoint: 949 passing tests
+- v0.4 automated closeout:
+  - project health: 133/133
+  - template validation: 42/42
+  - generated-project validation: 90/90
+  - release readiness: 117/117
+  - pre-release audit: 10/10
 
-## Completed Foundations
+## Completed v0.4 Closeout
 
-The current development line already includes:
+### Phase 75 — SDK Completion Audit
 
-- runtime context and lifecycle
-- project configuration and compatibility helpers
-- Android/mobile workflow foundations
+Phase 75 completed the large SDK hardening pass across physics, collision,
+geometry, UI, layout, persistence, state, transitions, timers, levels,
+input, audio, particles, animation, sprites, assets, game systems, public
+API checks, CLI integration, generated-project validation, documentation,
+health checks, and release-readiness tooling.
+
+The Phase 75 documentation synchronization stage used a 919 passing tests
+baseline before the later closeout work raised the suite to 949 passing
+tests.
+
+### v0.4 Foundation Delivered
+
+- Android/mobile workflow foundation
 - safe-area and viewport helpers
-- provider-based ads architecture
+- Ads provider architecture
 - AdMob Android test-mode integration
-- provider-based analytics architecture
+- Analytics provider architecture
 - Firebase Analytics Android integration
-- game session and progression systems
-- scene and game-object systems
-- shape-aware collision
-- physics bodies, materials, triggers, layers, and masks
-- geometry and vector helpers
-- camera follow, camera shake, and bounds helpers
-- UI labels, buttons, interaction routing, and progress bars
-- canvas scaling and coordinate conversion
-- save/persistence helpers
-- score/high-score helpers
-- timers and cooldowns
-- level loading and object creation
-- input action mapping
-- audio lifecycle helpers
-- tween and color animation
-- sprite animation
-- particle effects
-- asset loading and discovery
-- six built-in templates
-- template validation and release evidence tooling
-- project health, release readiness, and pre-release audit tooling
+- game sessions and progression
+- physics world and collision system
+- UI interaction and layout helpers
+- assets, audio, save, animation, particles, levels, timers, bounds
+- six generated starter games
+- release, health, audit, and generated-project tooling
 
-## Phase 75 — SDK Completion Audit
+## v0.5.0 — Complete Games + Developer Tooling
 
-Phase 75 is a focused hardening pass across the complete SDK.
+The v0.5 milestone turns the existing systems into a more complete
+developer workflow.
 
-Completed hardening areas include:
+### Complete Games
 
-- physics and collision
-- GameObject collider behavior
-- geometry/vector math
-- UI button interaction
-- camera and bounds
-- save persistence
-- canvas/layout scaling
-- game state and scene transitions
-- timers and cooldowns
-- level system
-- input action mapping
-- audio
-- progress bar UI
-- particles
-- animation/tween
-- sprite animation
-- assets
-- game session and progression systems
+The built-in game set remains:
 
-Current closeout work:
+- Tap Counter
+- Flappy Mini
+- Swipe Runner
+- Puzzle Game
+- Quiz Game
+- Simple Physics
 
-- documentation synchronization
-- template documentation alignment
-- release/audit metadata cleanup
+Every built-in game must provide:
+
+- runnable game entry
+- player input
+- score and persistent high score
+- progress feedback
+- completion/game-over state
+- restart flow
+
+The command:
+
+`hyperkit validate-complete-games`
+
+must pass for all six games.
+
+### Developer Tooling
+
+v0.5 includes:
+
+- `RuntimeDiagnostics`
+- `RuntimeSnapshot`
+- `DebugOverlay`
+- `hyperkit diagnostics`
+- `hyperkit validate-complete-games`
+- Python 3.9–3.12 general CI workflow
+- existing generated-project and release diagnostics
+
+### v0.5 Definition of Done
+
+- all complete-game checks pass
+- all six generated games remain valid
+- runtime diagnostics tests pass
+- project diagnostics CLI works
+- Python 3.9–3.12 CI matrix is defined
+- v0.4 Android/Ads/Analytics/Game Systems regressions remain green
+- full pytest suite passes
+- health/template/generated-project/release/audit commands remain green
+
+## v0.6.0 — Mobile Production Runtime + Performance
+
+Planned focus:
+
+- mobile runtime profiling
+- frame pacing and performance hardening
+- lifecycle stress handling
+- memory/resource cleanup
+- touch/input production tuning
+- Android runtime reliability
+- device performance guidance
+
+## v0.7.0 — Content, Assets + Advanced Game Features
+
+Planned focus:
+
+- richer asset/content workflow
+- additional reusable gameplay helpers
+- advanced 2D game features
+- content-driven game configuration
+- improved level/content pipelines
+
+## v0.8.0 — Build, Publishing + Production Hardening
+
+Planned focus:
+
+- production Android build workflow
+- signing/release guidance
+- build reproducibility
+- package/distribution hardening
+- release automation
+- clean-install validation
+- publishing documentation
+
+## v0.9.0 — API Freeze + Public Beta
+
+Planned focus:
+
 - public API review
-- subsystem integration audit
-- template regression validation
-- Android/device smoke validation
-- package build and clean-install validation
+- naming and module consistency
+- compatibility contract update
+- deprecation review
+- API documentation
+- feature freeze
+- public beta QA
 
-## Release Gates Before 1.0
+## v1.0.0 — Stable Release
 
-HyperKit should not be called stable until all of these gates pass:
+Stable release gates include:
 
-1. Full automated regression suite is green.
-2. Built-in templates generate and validate successfully.
-3. All six templates receive final runtime QA.
-4. Android debug-build workflow is validated.
-5. Core templates are smoke-tested on a physical Android device.
-6. AdMob test-mode integration is validated without production ad IDs.
-7. Firebase Analytics integration is validated in a real Android runtime.
-8. Public imports and compatibility behavior are audited.
-9. README, roadmap, changelog, examples, and template docs are synchronized.
-10. Wheel and source distribution build successfully.
-11. `twine check dist/*` passes.
-12. A clean environment can install the built package and use the CLI.
-13. A release candidate passes final QA.
-14. The stable release is installed again from real PyPI and verified.
-
-## Version Strategy
-
-HyperKit does not need to publish every historical roadmap minor version.
-Development can move directly through release-candidate milestones when the
-required quality gates are satisfied.
-
-| Version | Purpose | State |
-| --- | --- | --- |
-| `0.1.x` | Initial public alpha and template baseline | Released |
-| `0.2.0` | Core SDK/runtime foundation | Released |
-| `0.4.0.dev0` | Integrated mobile, ads, analytics, game systems, and completion hardening | Active development |
-| next RC | End-to-end release candidate | Planned |
-| `1.0.0` | Stable focused 2D mobile-game SDK | Target |
-
-## 1.0 Scope
-
-The 1.0 target is a focused SDK capable of producing complete small 2D
-mobile games in categories such as:
-
-- tap games
-- flappy-style games
-- swipe games
-- endless runners
-- simple shooters
-- simple physics games
-- puzzle games
-- educational quiz games
-- other small hypercasual and hybrid-casual designs
-
-The target includes the reusable systems needed to finish those games:
-runtime, rendering helpers, input, physics, UI, audio, persistence, game
-state, templates, Android workflow, ads, analytics, and release tooling.
-
-The 1.0 target does not include a general-purpose 3D engine or an editor
-intended to replace Unity, Unreal Engine, or Godot.
+1. full automated regression suite passes
+2. all complete games pass validation and runtime QA
+3. Android production workflow is validated
+4. Ads and Analytics release paths are validated
+5. public API is frozen
+6. wheel and source distribution build successfully
+7. `twine check dist/*` passes
+8. clean environment installation passes
+9. final release candidate passes
+10. real PyPI installation and CLI verification pass
 
 ## Feature Freeze Rule
 
-After the Phase 75 completion checklist reaches zero:
+Feature freeze applies at the appropriate roadmap stage, especially v0.9
+and release-candidate work. Before then, each minor version should add only
+the features defined for that milestone.
 
-- do not add unrelated feature categories
-- fix integration and compatibility issues
-- update documentation
-- run release validation
-- prepare the release candidate
-
-New feature ideas that are not required for the stable scope should move to
-post-1.0 planning.
+Unrelated feature ideas should move to a later version instead of expanding
+the current milestone indefinitely.
