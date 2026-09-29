@@ -380,6 +380,12 @@ hyperkit diagnostics
 hyperkit validate-complete-games
 ```
 
+### Validate a content manifest
+
+```bash
+hyperkit validate-content --manifest content.json
+```
+
 ### Show the package health report
 
 ```bash
