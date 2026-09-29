@@ -19,6 +19,7 @@ from hyperkit import (
 class TapCounterScene(Scene):
     def start(self):
         self.tap_goal = 30
+        self.game_over = False
 
         self.assets = AssetManager()
         self.score = ScoreManager(high_score_key="tap_counter_high_score")
@@ -142,6 +143,10 @@ class TapCounterScene(Scene):
         super().update(dt)
 
     def on_tap(self, x, y):
+        if self.game_over:
+            self._restart()
+            return
+
         self.score.add(1)
 
         self.target.x = x - self.target.width / 2
@@ -169,15 +174,51 @@ class TapCounterScene(Scene):
         )
 
         if current_score >= self.tap_goal:
+            self.game_over = True
             self.status_label.set_text(
-                "Goal reached! Keep tapping for a new high score.")
-            self.target.color = (0.3, 1.0, 0.55, 1)
+                "Goal reached! Tap to restart."
+            )
+            self.target.color = (
+                0.3,
+                1.0,
+                0.55,
+                1,
+            )
         elif current_score >= self.tap_goal // 2:
             self.status_label.set_text("Nice progress. You are halfway there!")
             self.target.color = (1.0, 0.65, 0.2, 1)
         else:
             self.status_label.set_text("Good tap! Keep going.")
             self.target.color = (0.2, 0.75, 1.0, 1)
+
+    def _restart(self):
+        self.game_over = False
+        self.score.reset()
+
+        self.target.x = 300
+        self.target.y = 520
+        self.target.color = (
+            0.2,
+            0.75,
+            1.0,
+            1,
+        )
+        self.target_label.x = 335
+        self.target_label.y = 560
+
+        self.score_label.set_text(
+            "Score: 0"
+        )
+        self.high_score_label.set_text(
+            f"High Score: {self.score.high_score}"
+        )
+        self.progress_label.set_text(
+            f"Goal Progress: 0 / {self.tap_goal}"
+        )
+        self.progress_bar.set_value(0)
+        self.status_label.set_text(
+            "Ready. Start tapping!"
+        )
 
 
 if __name__ == "__main__":
