@@ -60,6 +60,63 @@ class SpriteAnimation:
                 "SpriteAnimation fps must be greater than 0."
             )
 
+    @classmethod
+    def from_pattern(
+        cls,
+        *,
+        name: str,
+        pattern: str,
+        start: int,
+        end: int,
+        fps: float = 8.0,
+        loop: bool = True,
+        on_complete: Callable[[], None] | None = None,
+    ) -> "SpriteAnimation":
+        if end < start:
+            raise SpriteAnimationError(
+                "Sprite frame end must be greater than or equal to start."
+            )
+
+        pattern = str(
+            pattern
+        )
+
+        if "{index" not in pattern:
+            raise SpriteAnimationError(
+                "Sprite frame pattern must contain an {index} placeholder."
+            )
+
+        try:
+            frames = [
+                pattern.format(
+                    index=index
+                )
+                for index in range(
+                    int(
+                        start
+                    ),
+                    int(
+                        end
+                    )
+                    + 1,
+                )
+            ]
+        except (
+            KeyError,
+            ValueError,
+        ) as exc:
+            raise SpriteAnimationError(
+                "Invalid sprite frame pattern."
+            ) from exc
+
+        return cls(
+            name=name,
+            frames=frames,
+            fps=fps,
+            loop=loop,
+            on_complete=on_complete,
+        )
+
     @property
     def frame_duration(self) -> float:
         return 1.0 / self.fps
