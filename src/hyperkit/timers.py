@@ -27,13 +27,17 @@ class Timer:
     elapsed: float = 0.0
     active: bool = False
     completed: bool = False
+    times_fired: int = 0
 
     def __post_init__(self) -> None:
+        self.duration = float(self.duration)
+
         if self.duration <= 0:
             raise TimerError("Timer duration must be greater than 0.")
 
-        self.active = self.auto_start
+        self.active = bool(self.auto_start)
         self.completed = False
+        self.times_fired = 0
 
     @property
     def remaining(self) -> float:
@@ -43,58 +47,83 @@ class Timer:
     def progress(self) -> float:
         return min(1.0, self.elapsed / self.duration)
 
-    def start(self, reset: bool = True) -> None:
+    def start(self, reset: bool = True) -> "Timer":
         if reset:
             self.elapsed = 0.0
             self.completed = False
+            self.times_fired = 0
 
         self.active = True
+        return self
 
-    def restart(self) -> None:
-        self.start(reset=True)
+    def restart(self) -> "Timer":
+        return self.start(reset=True)
 
-    def pause(self) -> None:
+    def pause(self) -> "Timer":
         self.active = False
+        return self
 
-    def resume(self) -> None:
+    def resume(self) -> "Timer":
         if not self.completed:
             self.active = True
 
-    def stop(self) -> None:
+        return self
+
+    def stop(self) -> "Timer":
         self.active = False
         self.completed = True
+        return self
 
-    def reset(self) -> None:
+    def reset(self) -> "Timer":
         self.elapsed = 0.0
         self.completed = False
-        self.active = self.auto_start
+        self.times_fired = 0
+        self.active = bool(self.auto_start)
+        return self
 
     def update(self, dt: float) -> bool:
         """Update timer.
 
         Returns True only on the frame when the timer completes.
         """
-        if not self.active or self.completed:
+        dt = float(dt)
+
+        if dt < 0:
+            raise TimerError("Timer dt must be non-negative.")
+
+        if not self.active or self.completed or dt == 0:
             return False
 
-        self.elapsed += max(0.0, dt)
+        self.elapsed += dt
 
         if self.elapsed < self.duration:
             return False
 
-        if self.on_complete:
-            self.on_complete()
-
-        if self.repeat:
-            self.elapsed = self.elapsed % self.duration
-            self.completed = False
-            self.active = True
-        else:
+        if not self.repeat:
             self.elapsed = self.duration
             self.completed = True
             self.active = False
+            self.times_fired += 1
 
-        return True
+            if self.on_complete:
+                self.on_complete()
+
+            return True
+
+        fire_count = int(self.elapsed // self.duration)
+        self.elapsed = self.elapsed % self.duration
+
+        for _ in range(fire_count):
+            self.times_fired += 1
+
+            if self.on_complete:
+                self.on_complete()
+
+            if not self.active:
+                break
+
+        self.completed = False
+        return fire_count > 0
 
 
 @dataclass
@@ -114,6 +143,8 @@ class Cooldown:
     elapsed: float = 0.0
 
     def __post_init__(self) -> None:
+        self.duration = float(self.duration)
+
         if self.duration <= 0:
             raise TimerError("Cooldown duration must be greater than 0.")
 
@@ -131,8 +162,14 @@ class Cooldown:
     def progress(self) -> float:
         return min(1.0, self.elapsed / self.duration)
 
-    def update(self, dt: float) -> None:
-        self.elapsed = min(self.duration, self.elapsed + max(0.0, dt))
+    def update(self, dt: float) -> "Cooldown":
+        dt = float(dt)
+
+        if dt < 0:
+            raise TimerError("Cooldown dt must be non-negative.")
+
+        self.elapsed = min(self.duration, self.elapsed + dt)
+        return self
 
     def use(self) -> bool:
         """Use the cooldown if ready.
@@ -146,11 +183,13 @@ class Cooldown:
         self.elapsed = 0.0
         return True
 
-    def reset(self) -> None:
+    def reset(self) -> "Cooldown":
         self.elapsed = 0.0
+        return self
 
-    def finish(self) -> None:
+    def finish(self) -> "Cooldown":
         self.elapsed = self.duration
+        return self
 
 
 class TimerManager:
@@ -162,6 +201,19 @@ class TimerManager:
     def add(self, timer: Timer) -> Timer:
         self.timers.append(timer)
         return timer
+
+    def remove(self, timer: Timer, *, stop: bool = True) -> bool:
+        """Remove a managed timer."""
+
+        if timer not in self.timers:
+            return False
+
+        self.timers.remove(timer)
+
+        if stop:
+            timer.stop()
+
+        return True
 
     def after(self, duration: float, callback: Callable[[], None]) -> Timer:
         """Run callback once after duration."""
@@ -186,15 +238,28 @@ class TimerManager:
         )
 
     def update(self, dt: float) -> None:
+        dt = float(dt)
+
+        if dt < 0:
+            raise TimerError("TimerManager dt must be non-negative.")
+
         remaining_timers: list[Timer] = []
 
-        for timer in self.timers:
+        for timer in list(self.timers):
             timer.update(dt)
 
             if not timer.completed or timer.repeat:
                 remaining_timers.append(timer)
 
         self.timers = remaining_timers
+
+    def pause_all(self) -> None:
+        for timer in self.timers:
+            timer.pause()
+
+    def resume_all(self) -> None:
+        for timer in self.timers:
+            timer.resume()
 
     def clear(self) -> None:
         for timer in self.timers:
