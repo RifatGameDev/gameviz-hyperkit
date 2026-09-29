@@ -33,7 +33,7 @@ def test_polished_template_list_is_complete():
 def test_generated_project_validation_passes_for_all_templates(tmp_path):
     report = generate_generated_project_validation_report(tmp_path)
 
-    assert report.total == len(EXPECTED_TEMPLATES) * 14
+    assert report.total == len(EXPECTED_TEMPLATES) * 15
     assert report.failed_count == 0
     assert report.passed
 
@@ -65,6 +65,7 @@ def test_generated_project_validation_checks_required_files(tmp_path):
     assert "README.md is usable" in check_names
     assert "main.py syntax is valid" in check_names
     assert "main.py imports HyperKit" in check_names
+    assert "main.py HyperKit imports are public" in check_names
     assert "main.py has game entry" in check_names
     assert "hyperkit.toml is valid" in check_names
     assert "hyperkit.toml matches template" in check_names
@@ -76,7 +77,7 @@ def test_generated_project_validation_format_contains_summary(tmp_path):
     output = format_generated_project_validation_report(report)
 
     assert "HyperKit Generated Project Validation" in output
-    assert "Passed: 84/84" in output
+    assert "Passed: 90/90" in output
     assert "Failed: 0" in output
     assert "Generated project validation status: PASS" in output
 
@@ -159,3 +160,61 @@ def test_generated_projects_are_created_in_requested_work_path(tmp_path):
     for template_name in EXPECTED_TEMPLATES:
         project_directory = tmp_path / f"phase55_{template_name}"
         assert project_directory.exists()
+
+
+
+def test_generated_template_hyperkit_imports_are_public(tmp_path):
+    report = generate_generated_project_validation_report(
+        tmp_path
+    )
+
+    checks = [
+        check
+        for check in report.checks
+        if (
+            check.name
+            == "main.py HyperKit imports are public"
+        )
+    ]
+
+    assert len(checks) == len(
+        EXPECTED_TEMPLATES
+    )
+    assert all(
+        check.passed
+        for check in checks
+    )
+
+
+def test_generated_project_validation_detects_private_import(tmp_path):
+    from hyperkit.generated_project_validation import (
+        GeneratedProjectValidationReport,
+        _validate_public_hyperkit_imports,
+    )
+
+    main_file = (
+        tmp_path
+        / "main.py"
+    )
+    main_file.write_text(
+        "from hyperkit import DefinitelyMissingExport\n",
+        encoding="utf-8",
+    )
+
+    report = GeneratedProjectValidationReport(
+        work_root=tmp_path
+    )
+
+    _validate_public_hyperkit_imports(
+        report=report,
+        template_name="demo",
+        main_file=main_file,
+    )
+
+    check = report.checks[-1]
+
+    assert not check.passed
+    assert (
+        "DefinitelyMissingExport"
+        in check.message
+    )
