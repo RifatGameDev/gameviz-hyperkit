@@ -16,9 +16,9 @@ v0.4.0  Ads + Analytics + Game Systems
 v0.5.0  Complete Games + Developer Tooling
    ↓
 v0.6.0  Mobile Production Runtime + Performance
-          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.7.0  Content, Assets + Advanced Game Features
+          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.8.0  Build, Publishing + Production Hardening
    ↓
@@ -30,10 +30,10 @@ v1.0.0  Stable Release
 ## Current State
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.6.0.dev0`
+- Active development version: `0.7.0.dev0`
 - Public compatibility contract: API `0.2`
-- Active development branch: `feature/v0.6-mobile-runtime-performance`
-- Current focus: v0.6 Mobile Production Runtime + Performance
+- Active development branch: `feature/v0.7-content-assets-advanced-game-features`
+- Current focus: v0.7 Content, Assets + Advanced Game Features
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133
@@ -171,15 +171,50 @@ The v0.6 milestone hardens the existing game runtime for mobile use.
 - Python 3.9–3.12 CI remains green
 - package wheel/sdist and `twine check` remain green
 
+v0.6 completed with 998 passing automated tests, project health 142/142,
+template validation 42/42, complete-game validation 54/54,
+generated-project validation 90/90, release readiness 121/121,
+pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine
+validation.
+
 ## v0.7.0 — Content, Assets + Advanced Game Features
 
-Planned focus:
+The v0.7 milestone expands content-driven game creation and reusable gameplay systems.
 
-- richer asset/content workflow
-- additional reusable gameplay helpers
-- advanced 2D game features
-- content-driven game configuration
-- improved level/content pipelines
+### Content and Asset Workflow
+
+- `ContentManifest`, `ContentItem`, and `ContentManager`
+- content lookup by id, kind, and tag
+- image/audio/font/JSON/CSV/TXT content loading
+- content asset validation
+- opt-in JSON/CSV/TXT data cache
+- `preload_data(...)` and cache management
+
+### Reusable Game Content
+
+- `Prefab` and `PrefabLibrary`
+- JSON-driven reusable GameObject definitions
+- top-level and nested-data prefab overrides
+- `LevelSequence` ordered multi-level progression
+- looping, previous/next/reset, and load helpers
+
+### Advanced Reusable Game Features
+
+- generic `ObjectPool` with capacity limits and acquire/release callbacks
+- `SpriteAnimation.from_pattern(...)` for numbered frame sequences
+
+### v0.7 Definition of Done
+
+- content manifest tests pass
+- prefab tests pass
+- cached asset/preload tests pass
+- level sequence tests pass
+- object pooling tests pass
+- sprite frame-pattern tests pass
+- all v0.6 regressions remain green
+- all six complete games remain valid
+- Python 3.9–3.12 CI remains green
+- package wheel/sdist and `twine check` remain green
 
 ## v0.8.0 — Build, Publishing + Production Hardening
 
