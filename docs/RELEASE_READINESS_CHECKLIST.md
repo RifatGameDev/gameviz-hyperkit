@@ -45,6 +45,7 @@ Run:
 ```bash
 hyperkit health
 hyperkit api-freeze-check
+hyperkit stable-release-check
 hyperkit validate-templates
 hyperkit validate-complete-games
 hyperkit validate-generated-projects
@@ -54,9 +55,11 @@ hyperkit pre-release-audit
 
 Every command must pass.
 
-During v0.9 public beta and the 1.0 release path, `api-freeze-check` is a
-required gate. It verifies the exact frozen 1.0 top-level public export set,
-the pinned export count, and the API fingerprint.
+For stable 1.0, both `api-freeze-check` and `stable-release-check` are
+required gates. The API check verifies the exact frozen 1.0 top-level public
+export set, pinned export count, and API fingerprint. The stable release
+check also verifies package identity, Production/Stable metadata, release
+readiness, documentation synchronization, and real-PyPI target eligibility.
 
 ---
 
@@ -266,18 +269,30 @@ The workflow uses Trusted Publishing / OIDC; do not store PyPI API tokens in the
 
 ## 15. Publishing Rule
 
-For the v0.9 public beta, use the dedicated workflow:
+For HyperKit 1.0 stable certification, use the dedicated workflow:
 
 ```text
-.github/workflows/public-beta.yml
+.github/workflows/stable-release.yml
 ```
 
-It validates the frozen API and may optionally publish the verified beta
-bundle to TestPyPI. It does not publish to real PyPI.
+It validates Python 3.9–3.12, the frozen API, all SDK release gates, package
+artifacts, clean installation, and the stable-release certificate.
 
-Use TestPyPI when release-candidate or packaging validation is useful.
+Real PyPI publication is disabled by default and requires:
 
-Publish a stable release to real PyPI only after the full release gates pass, including tests, template validation, build validation, `twine check`, release artifact verification, clean-install verification, and required Android/provider QA for the target release.
+- explicit `publish_pypi` confirmation
+- package version exactly `1.0.0`
+- Git tag exactly `v1.0.0`
+- the protected `pypi` environment
+- all stable certification jobs passing
+
+The historical public-beta workflow remains available as release evidence
+for v0.9 and only targets TestPyPI.
+
+Publish the stable release to real PyPI only after the full release gates
+pass, including tests, template validation, build validation, `twine check`,
+release artifact verification, clean-install verification, stable
+certification, and required Android/provider QA for the target release.
 
 ---
 
