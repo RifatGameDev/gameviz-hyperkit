@@ -5,7 +5,7 @@ from __future__ import annotations
 from .errors import HyperKitCompatibilityError
 
 
-API_VERSION = "0.2"
+API_VERSION = "1.0"
 
 
 def _parse_api_version(version: str) -> tuple[int, int]:
@@ -55,12 +55,12 @@ def is_api_compatible(required_version: str) -> bool:
     Within the same major version, a newer minor API is considered
     compatible with an older requested minor API.
 
-    Examples for API version 0.2:
+    Examples for API version 1.0:
 
-        0.1 -> compatible
-        0.2 -> compatible
-        0.3 -> incompatible
-        1.0 -> incompatible
+        1.0 -> compatible
+        1.1 -> incompatible
+        0.9 -> incompatible
+        2.0 -> incompatible
     """
 
     current_major, current_minor = _parse_api_version(API_VERSION)
