@@ -413,6 +413,24 @@ REQUIRED_PATHS = {
     "v0.8 milestone tests": (
         "tests/test_v080_milestone.py"
     ),
+    "v0.9 API freeze documentation": (
+        "docs/V090_API_FREEZE_PUBLIC_BETA.md"
+    ),
+    "v0.9 public beta workflow": (
+        ".github/workflows/public-beta.yml"
+    ),
+    "v0.9 API freeze tests": (
+        "tests/test_v090_api_freeze.py"
+    ),
+    "v0.9 CLI tests": (
+        "tests/test_v090_cli.py"
+    ),
+    "v0.9 workflow tests": (
+        "tests/test_v090_workflows.py"
+    ),
+    "v0.9 milestone tests": (
+        "tests/test_v090_milestone.py"
+    ),
 }
 
 
