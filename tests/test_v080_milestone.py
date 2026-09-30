@@ -23,6 +23,7 @@ def test_v080_public_release_build_exports():
         "discover_distribution_artifacts",
         "generate_distribution_report",
         "run_clean_install_verification",
+        "validate_publish_target",
         "write_checksum_manifest",
         "write_release_manifest",
     }
