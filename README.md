@@ -563,7 +563,7 @@ The active `0.8.0.dev0` line focuses on **Build, Publishing + Production Hardeni
 - build signed Android release artifacts through a protected workflow
 - keep all v0.7 content/gameplay and earlier regression gates green
 
-After v0.8, the roadmap moves to v0.9 API Freeze + Public Beta before the stable `1.0.0` milestone.
+After v0.8, v0.9 will freeze the intended 1.0 public API and run the public beta before the stable `1.0.0` milestone.
 
 ---
 
