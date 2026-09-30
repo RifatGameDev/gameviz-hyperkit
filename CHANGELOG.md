@@ -15,10 +15,21 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``0.7.0.dev0``.
+Current development version: ``0.8.0.dev0``.
 
 ### Added
 
+- v0.8 Build, Publishing + Production Hardening milestone.
+- Distribution artifact discovery, version validation, size validation, and SHA-256 hashing.
+- `hyperkit verify-dist`, `hyperkit release-manifest`, and `hyperkit verify-clean-install`.
+- `SHA256SUMS` and machine-readable `release-manifest.json` generation.
+- Fresh virtual-environment wheel installation and CLI verification.
+- Manual gated TestPyPI/PyPI Trusted Publishing workflow.
+- Separate store-oriented Android production profile targeting API 36 with NDK 29, AAB output, and p4a `develop`.
+- Android release-signing readiness checks that never print secret values.
+- `hyperkit android-release-doctor`.
+- Protected signed Android production AAB workflow.
+- v0.8 release-build, production-Android, CLI, and workflow regression coverage.
 - v0.7 Content, Assets + Advanced Game Features milestone.
 - `ContentManifest`, `ContentItem`, and `ContentManager`.
 - Tagged and kind-based content lookup with asset validation.
@@ -53,7 +64,11 @@ Current development version: ``0.7.0.dev0``.
 
 ### Changed
 
-- Package development version advanced to `0.7.0.dev0`.
+- Package development version advanced to `0.8.0.dev0`.
+- Normal CI now validates built distributions, writes artifact manifests, performs fresh-wheel installation checks, and uploads the verified distribution bundle.
+- Production Android configuration is intentionally separate from the historically validated API 35 development/debug defaults.
+- Release publication is now workflow-gated instead of relying on manual upload commands.
+- v0.7 advanced the package development version to `0.7.0.dev0`.
 - Game content can now be described and loaded through reusable manifests and prefabs instead of only direct code references.
 - Data-heavy games can opt into cached/preloaded JSON, CSV, and text assets.
 - `Game` now clamps large frame deltas before scene updates.
@@ -72,6 +87,8 @@ Current development version: ``0.7.0.dev0``.
 
 ### Validation
 
+- v0.7 closeout finished with 1032 passing automated tests before v0.8 development started.
+- v0.7 closeout passed health 155/155, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 134/134, pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine validation.
 - v0.6 closeout finished with 998 passing automated tests before v0.7 development started.
 - v0.6 closeout passed health 142/142, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 121/121, pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine validation.
 - v0.5 closeout finished with 973 passing automated tests before v0.6 development started.
@@ -79,7 +96,7 @@ Current development version: ``0.7.0.dev0``.
 - v0.4 closeout finished with 949 passing automated tests before v0.5 development started.
 - v0.4 closeout reports passed: health 133/133, templates 42/42, generated projects 90/90, release readiness 117/117, pre-release audit 10/10.
 - Phase 75 regression suite reached 919 passing tests before documentation synchronization.
-- API compatibility contract remains `0.2` while package development continues at `0.7.0.dev0`.
+- API compatibility contract remains `0.2` while package development continues at `0.8.0.dev0`.
 
 ---
 
