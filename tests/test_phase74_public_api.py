@@ -2,7 +2,7 @@ import hyperkit
 
 
 def test_phase74_package_version():
-    assert hyperkit.__version__ == "0.8.0.dev0"
+    assert hyperkit.__version__ == "0.9.0b1"
 
 
 def test_phase74_public_api_exports():
