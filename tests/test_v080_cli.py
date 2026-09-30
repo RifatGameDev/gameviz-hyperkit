@@ -279,3 +279,64 @@ def test_android_release_doctor_cli_fails_without_signing(
         "Android production readiness: FAIL"
         in output
     )
+
+
+
+def test_publish_check_allows_testpypi_dev_build(
+    tmp_path: Path,
+    capsys,
+):
+    project = create_dist_project(
+        tmp_path
+        / "package"
+    )
+
+    result = main(
+        [
+            "publish-check",
+            "--path",
+            str(
+                project
+            ),
+            "--target",
+            "testpypi",
+        ]
+    )
+
+    output = (
+        capsys.readouterr()
+        .out
+    )
+
+    assert result == 0
+    assert "Publishing check: PASS" in output
+
+
+def test_publish_check_blocks_real_pypi_dev_build(
+    tmp_path: Path,
+    capsys,
+):
+    project = create_dist_project(
+        tmp_path
+        / "package"
+    )
+
+    result = main(
+        [
+            "publish-check",
+            "--path",
+            str(
+                project
+            ),
+            "--target",
+            "pypi",
+        ]
+    )
+
+    output = (
+        capsys.readouterr()
+        .out
+    )
+
+    assert result == 1
+    assert "Publishing check: FAIL" in output
