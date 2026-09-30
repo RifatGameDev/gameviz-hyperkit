@@ -53,6 +53,22 @@ jobs:
           hyperkit release-check
           hyperkit pre-release-audit
 
+      - name: Validate publishing target and production tag
+        shell: bash
+        run: |
+          hyperkit publish-check --target "${{ inputs.publish_target }}"
+
+          if [ "${{ inputs.publish_target }}" = "pypi" ]; then
+            VERSION="$(python -c 'import hyperkit; print(hyperkit.__version__)')"
+            EXPECTED_REF="refs/tags/v$VERSION"
+
+            if [ "$GITHUB_REF" != "$EXPECTED_REF" ]; then
+              echo "Real PyPI publication requires tag $EXPECTED_REF."
+              echo "Current ref: $GITHUB_REF"
+              exit 1
+            fi
+          fi
+
       - name: Configure deterministic build inputs
         shell: bash
         run: |
