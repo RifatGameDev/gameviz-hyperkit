@@ -71,6 +71,11 @@ REQUIRED_RELEASE_FILES = [
     "src/hyperkit/pool.py",
     "src/hyperkit/level_sequence.py",
     "docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md",
+    "src/hyperkit/release_build.py",
+    "src/hyperkit/android_release.py",
+    "docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md",
+    ".github/workflows/release-package.yml",
+    ".github/workflows/android-production-release.yml",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "docs/PROJECT_HEALTH_REPORT.md",
@@ -183,6 +188,11 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_v070_sprite_pattern.py",
     "tests/test_v070_cli.py",
     "tests/test_v070_milestone.py",
+    "tests/test_v080_release_build.py",
+    "tests/test_v080_android_production.py",
+    "tests/test_v080_cli.py",
+    "tests/test_v080_workflows.py",
+    "tests/test_v080_milestone.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
@@ -410,13 +420,81 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
     report.add(
         name="Build command available",
         passed=True,
-        message="Run manually: python -m build",
+        message="Run: python -m build",
     )
 
     report.add(
         name="Twine check command available",
         passed=True,
-        message="Run manually after build: twine check dist/*",
+        message="Run after build: twine check dist/*",
+    )
+
+    cli_path = (
+        root_path
+        / "src"
+        / "hyperkit"
+        / "cli.py"
+    )
+
+    report.add(
+        name="Distribution verification command",
+        passed=_file_contains(
+            cli_path,
+            [
+                "verify-dist",
+                "verify-clean-install",
+                "release-manifest",
+            ],
+        ),
+        message=(
+            "v0.8 distribution verification commands found"
+        ),
+    )
+
+    package_workflow = (
+        root_path
+        / ".github"
+        / "workflows"
+        / "release-package.yml"
+    )
+
+    report.add(
+        name="Trusted publishing workflow",
+        passed=_file_contains(
+            package_workflow,
+            [
+                "workflow_dispatch:",
+                "id-token: write",
+                "pypa/gh-action-pypi-publish",
+                "verify-clean-install",
+            ],
+        ),
+        message=(
+            "Gated release-package workflow found"
+        ),
+    )
+
+    android_workflow = (
+        root_path
+        / ".github"
+        / "workflows"
+        / "android-production-release.yml"
+    )
+
+    report.add(
+        name="Android production release workflow",
+        passed=_file_contains(
+            android_workflow,
+            [
+                "android release",
+                "android-release-doctor",
+                "ANDROID_KEYSTORE_BASE64",
+                "android.release_artifact = aab",
+            ],
+        ),
+        message=(
+            "Signed Android production workflow found"
+        ),
     )
 
     return report
@@ -445,6 +523,9 @@ def format_release_report(report: ReleaseReport) -> str:
         lines.append("  pytest")
         lines.append("  python -m build")
         lines.append("  twine check dist/*")
+        lines.append("  hyperkit verify-dist")
+        lines.append("  hyperkit release-manifest")
+        lines.append("  hyperkit verify-clean-install")
     else:
         lines.append("Release readiness status: FAIL")
         lines.append("Fix failed checks before building a release.")
