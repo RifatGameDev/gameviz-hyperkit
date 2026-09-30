@@ -38,7 +38,7 @@ on:
       app_version:
         description: Android application version
         required: true
-        default: 1.0.0
+        default: 1.0.1
         type: string
 
 permissions:

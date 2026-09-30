@@ -80,6 +80,7 @@ REQUIRED_RELEASE_FILES = [
     ".github/workflows/public-beta.yml",
     "src/hyperkit/stable_release.py",
     "docs/V100_STABLE_RELEASE.md",
+    "docs/V101_PATCH_RELEASE.md",
     ".github/workflows/stable-release.yml",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
@@ -206,6 +207,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_v100_cli.py",
     "tests/test_v100_workflow.py",
     "tests/test_v100_milestone.py",
+    "tests/test_v101_patch_release.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
@@ -422,8 +424,8 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
                     "Current State",
                     project_version,
                     "CURRENT STABLE RELEASE",
-                    "v1.0.0",
-                    "Stable Release",
+                    "v1.0.1",
+                    "Stable Patch Release",
                 ],
             )
         ),
@@ -585,14 +587,14 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
             [
                 "workflow_dispatch:",
                 "stable-release-check",
-                "refs/tags/v1.0.0",
+                "refs/tags/v1.0.1",
                 "publish-check --target pypi",
                 "verify-clean-install",
                 "pypa/gh-action-pypi-publish",
             ],
         ),
         message=(
-            "Protected HyperKit 1.0 stable workflow found"
+            "Protected HyperKit 1.0.1 stable patch workflow found"
         ),
     )
 

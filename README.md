@@ -15,20 +15,20 @@ It is designed for beginners, students, game-jam developers, indie developers, a
 
 ## Current Release Status
 
-HyperKit **v1.0.0 is the current stable release and is published on PyPI**.
+HyperKit **v1.0.1 is the current stable patch release and is published on PyPI**.
 
 Current package status:
 
-- Latest published PyPI release: `1.0.0`
-- Stable package version: `1.0.0`
-- Active development version: `1.0.0`
+- Latest published PyPI release: `1.0.1`
+- Stable package version: `1.0.1`
+- Active development version: `1.0.1`
 - Installation command: `pip install gameviz-hyperkit`
 - Package maturity: Production / Stable
 - Public compatibility contract: API `1.0`
 - Frozen top-level public exports: `256`
 - Supported Python versions: Python 3.9–3.12
 
-The 1.0 line preserves the frozen API established during the v0.9 public beta and adds final stable-release certification, package verification, and protected publication tooling. HyperKit v1.0.0 has been published to real PyPI. Future PyPI releases remain explicit protected actions rather than automatic side effects.
+The 1.0 line preserves the frozen API established during the v0.9 public beta. HyperKit v1.0.1 is the current stable patch release on PyPI, while v1.0.0 remains the first stable release. Publication remains an explicit protected action rather than an automatic side effect.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -127,7 +127,7 @@ HyperKit is useful for:
 - Public-beta validation workflow
 - Stable-release certification
 - Stable-release evidence certificate
-- Protected v1.0.0 publication workflow
+- Protected v1.0.1 publication workflow
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
@@ -557,7 +557,8 @@ Package publication is handled through the project's controlled release workflow
 - [HyperKit v0.7 — Content, Assets + Advanced Game Features](docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md)
 - [HyperKit v0.8 — Build, Publishing + Production Hardening](docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md)
 - [HyperKit v0.9 — API Freeze + Public Beta](docs/V090_API_FREEZE_PUBLIC_BETA.md)
-- [HyperKit v1.0.0 — Stable Release](docs/V100_STABLE_RELEASE.md)
+- [HyperKit v1.0.1 — Stable Patch Release](docs/V101_PATCH_RELEASE.md)
+- [HyperKit v1.0.0 — First Stable Release](docs/V100_STABLE_RELEASE.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -589,7 +590,7 @@ Package publication is handled through the project's controlled release workflow
 
 ## Roadmap
 
-The active `1.0.0` line is the **Stable Release** milestone:
+The active `1.0.1` line is the **Stable Patch Release** milestone:
 
 - preserve the frozen API `1.0` contract
 - preserve the 256-name frozen top-level public surface
@@ -598,9 +599,9 @@ The active `1.0.0` line is the **Stable Release** milestone:
 - verify health, templates, complete games, generated projects, release readiness, and audit gates
 - verify wheel/sdist, release manifests, and fresh-wheel installation
 - generate a machine-readable stable-release certificate
-- protect real-PyPI publication behind an explicit `v1.0.0` tag and confirmation
+- protect real-PyPI publication behind an explicit `v1.0.1` tag and confirmation
 
-After v1.0.0, compatible fixes may move to patch releases and compatible feature additions may move to later 1.x minor releases.
+v1.0.1 is a compatible patch release that keeps the frozen API `1.0` contract unchanged. Compatible fixes can continue in later 1.0.x releases, while compatible feature additions may move to later 1.x minor releases.
 
 ---
 

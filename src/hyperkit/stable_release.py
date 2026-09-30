@@ -23,7 +23,7 @@ from .release_build import (
 )
 
 
-STABLE_PACKAGE_VERSION = "1.0.0"
+STABLE_PACKAGE_VERSION = "1.0.1"
 
 
 @dataclass(frozen=True)
@@ -204,7 +204,7 @@ def generate_stable_release_report(
     stable_docs = (
         root_path
         / "docs"
-        / "V100_STABLE_RELEASE.md"
+        / "V101_PATCH_RELEASE.md"
     )
     stable_workflow = (
         root_path
@@ -312,7 +312,7 @@ def generate_stable_release_report(
                 readme,
                 "Package maturity: Production / Stable",
                 "Public compatibility contract: API `1.0`",
-                "Stable package version: `1.0.0`",
+                "Stable package version: `1.0.1`",
             ),
             message=(
                 "README identifies HyperKit 1.0 as stable"
@@ -322,31 +322,31 @@ def generate_stable_release_report(
             name="Stable roadmap state",
             passed=_contains(
                 roadmap,
-                "v1.0.0  Stable Release",
+                "v1.0.1  Stable Patch Release",
                 "CURRENT STABLE RELEASE",
-                "Active package version: `1.0.0`",
+                "Active package version: `1.0.1`",
             ),
             message=(
-                "Roadmap tracks v1.0.0 stable release"
+                "Roadmap tracks v1.0.1 stable patch release"
             ),
         ),
         StableReleaseCheck(
             name="Stable changelog entry",
             passed=_contains(
                 changelog,
-                "## 1.0.0",
-                "Stable Release",
+                "## 1.0.1",
+                "Stable patch release",
             ),
             message=(
-                "CHANGELOG contains the 1.0.0 stable release"
+                "CHANGELOG contains the 1.0.1 stable patch release"
             ),
         ),
         StableReleaseCheck(
             name="Stable version history",
             passed=_contains(
                 version_history,
-                "1.0.0",
-                "Stable Release",
+                "1.0.1",
+                "Stable Patch Release",
                 "API `1.0`",
             ),
             message=(
@@ -357,8 +357,8 @@ def generate_stable_release_report(
             name="Stable release documentation",
             passed=_contains(
                 stable_docs,
-                "HyperKit v1.0.0",
-                "Stable Release",
+                "HyperKit v1.0.1",
+                "Stable Patch Release",
                 "256",
                 FROZEN_API_FINGERPRINT,
             ),
@@ -376,7 +376,7 @@ def generate_stable_release_report(
                 "publish-check --target pypi",
                 "verify-clean-install",
                 "pypa/gh-action-pypi-publish@release/v1",
-                "refs/tags/v1.0.0",
+                "refs/tags/v1.0.1",
             ),
             message=(
                 "Protected stable-release workflow present"

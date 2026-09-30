@@ -13,7 +13,7 @@ CHANGELOG = Path("CHANGELOG.md")
 
 
 def test_v090_beta_version_and_frozen_api_contract():
-    assert hyperkit.__version__ == "1.0.0"
+    assert hyperkit.__version__ == "1.0.1"
     assert hyperkit.API_VERSION == "1.0"
     assert FROZEN_API_EXPORT_COUNT == 256
     assert len(
@@ -34,7 +34,7 @@ def test_v090_docs_track_current_stage():
 
     assert (
         "Active development version: "
-        "`1.0.0`"
+        "`1.0.1`"
         in readme
     )
     assert (
@@ -57,7 +57,7 @@ def test_v090_docs_track_current_stage():
     )
     assert (
         "Current development version: "
-        "``1.0.0``."
+        "``1.0.1``."
         in changelog
     )
 

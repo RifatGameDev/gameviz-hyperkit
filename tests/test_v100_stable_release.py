@@ -15,8 +15,8 @@ from hyperkit.stable_release import (
 
 
 def test_v100_stable_package_identity_and_api_contract():
-    assert STABLE_PACKAGE_VERSION == "1.0.0"
-    assert hyperkit.__version__ == "1.0.0"
+    assert STABLE_PACKAGE_VERSION == "1.0.1"
+    assert hyperkit.__version__ == "1.0.1"
     assert hyperkit.API_VERSION == "1.0"
 
 
@@ -39,7 +39,7 @@ def test_v100_stable_release_report_passes():
     )
 
     assert report.passed
-    assert report.package_version == "1.0.0"
+    assert report.package_version == "1.0.1"
     assert report.failed_count == 0
 
 
@@ -105,7 +105,7 @@ def test_v100_stable_release_certificate(
     ] == "gameviz-hyperkit"
     assert data[
         "version"
-    ] == "1.0.0"
+    ] == "1.0.1"
     assert data[
         "api_version"
     ] == "1.0"

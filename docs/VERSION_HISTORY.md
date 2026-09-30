@@ -8,8 +8,8 @@ milestones of HyperKit.
 - Package name: `gameviz-hyperkit`
 - Import name: `hyperkit`
 - CLI command: `hyperkit`
-- Latest published PyPI release: `1.0.0`
-- Stable package version: `1.0.0`
+- Latest published PyPI release: `1.0.1`
+- Stable package version: `1.0.1`
 - Public compatibility contract: API `1.0`
 
 ## Development Roadmap
@@ -34,8 +34,27 @@ v0.8.0  Build, Publishing + Production Hardening
 v0.9.0  API Freeze + Public Beta
    ↓
 v1.0.0  Stable Release
+   ↓
+v1.0.1  Stable Patch Release
           ← CURRENT STABLE RELEASE
 ```
+
+## 1.0.1 — Stable Patch Release
+
+Focus: synchronized post-release documentation and release validation without changing the frozen public API.
+
+Delivered:
+
+- stable package version `1.0.1`
+- corrected PyPI long-description source from the current README
+- synchronized README, roadmap, changelog, and version-history release status
+- protected `v1.0.1` PyPI publication workflow
+- API compatibility contract remains `1.0`
+- frozen top-level public exports remain exactly `256`
+- frozen API fingerprint remains unchanged
+- Python 3.9–3.12 release validation remains required
+
+HyperKit `1.0.1` is the current stable patch release. The `1.0.0` entry below remains the historical first stable release.
 
 ## 1.0.0 — Stable Release
 
@@ -212,7 +231,7 @@ Development versions may use suffixes such as `.dev0`, and release
 candidates may use `rc1`, `rc2`, and so on.
 
 The package version and public compatibility contract are intentionally
-separate. The stable package is `1.0.0`, and its public compatibility
+separate. The current stable package is `1.0.1`, and its public compatibility
 contract is API `1.0`.
 
 The 256-name top-level public surface and its pinned fingerprint were frozen

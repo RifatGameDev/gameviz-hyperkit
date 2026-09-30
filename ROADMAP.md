@@ -24,16 +24,18 @@ v0.8.0  Build, Publishing + Production Hardening
 v0.9.0  API Freeze + Public Beta
    ↓
 v1.0.0  Stable Release
+   ↓
+v1.0.1  Stable Patch Release
           ← CURRENT STABLE RELEASE
 ```
 
 ## Current State
 
-- Latest published PyPI release: `1.0.0`
-- Active package version: `1.0.0`
+- Latest published PyPI release: `1.0.1`
+- Active package version: `1.0.1`
 - Public compatibility contract: API `1.0`
 - Stable release branch: `main`
-- Current focus: v1.0.0 post-release maintenance and next-version planning
+- Current focus: v1.0.1 stable patch release verification and publication
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133
@@ -373,6 +375,30 @@ release.
 
 Real PyPI publication is a separate explicit release action after these
 gates pass.
+
+## v1.0.1 — Stable Patch Release
+
+The v1.0.1 patch release republishes the synchronized post-release documentation and release-validation updates while preserving the frozen HyperKit API `1.0` contract.
+
+### Patch Release Scope
+
+- package and module version synchronized at `1.0.1`
+- corrected PyPI long description built from the current README
+- release status, roadmap, changelog, and version history synchronized
+- stable-release validation updated for `v1.0.1`
+- Python 3.9–3.12 CI and the full regression suite must remain green
+- frozen 256-name public API and fingerprint remain unchanged
+- wheel/sdist, `twine check`, distribution verification, and clean-install verification remain required
+
+### v1.0.1 Definition of Done
+
+- all release and documentation checks pass
+- stable-release certification reports package version `1.0.1`
+- protected publication requires Git tag `v1.0.1`
+- GitHub CI passes on the release source
+- real PyPI publishes `gameviz-hyperkit 1.0.1`
+- the live PyPI description shows the synchronized 1.0.1 release status
+
 
 ## Stable API Rule
 

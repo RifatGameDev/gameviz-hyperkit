@@ -39,7 +39,7 @@ def test_cli_init_android_accepts_mobile_options(
             "--package-domain",
             "com.gameviz",
             "--app-version",
-            "1.0.0",
+            "1.0.1",
             "--orientation",
             "landscape",
             "--fullscreen",
@@ -76,7 +76,7 @@ def test_cli_init_android_accepts_mobile_options(
     )
 
     assert (
-        "version = 1.0.0"
+        "version = 1.0.1"
         in content
     )
 

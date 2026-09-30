@@ -72,7 +72,7 @@ def test_v100_stable_workflow_protects_real_pypi_publish():
         encoding="utf-8"
     )
 
-    assert 'refs/tags/v1.0.0' in content
+    assert 'refs/tags/v1.0.1' in content
     assert "environment: pypi" in content
     assert "id-token: write" in content
     assert (
