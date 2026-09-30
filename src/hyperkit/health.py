@@ -437,6 +437,9 @@ REQUIRED_PATHS = {
     "v1.0 stable release documentation": (
         "docs/V100_STABLE_RELEASE.md"
     ),
+    "v1.0.1 patch release documentation": (
+        "docs/V101_PATCH_RELEASE.md"
+    ),
     "v1.0 stable release workflow": (
         ".github/workflows/stable-release.yml"
     ),
@@ -451,6 +454,9 @@ REQUIRED_PATHS = {
     ),
     "v1.0 milestone tests": (
         "tests/test_v100_milestone.py"
+    ),
+    "v1.0.1 patch release tests": (
+        "tests/test_v101_patch_release.py"
     ),
 }
 
