@@ -47,6 +47,9 @@ jobs:
       - name: Validate frozen public API
         run: hyperkit api-freeze-check
 
+      - name: Validate stable release certification
+        run: hyperkit stable-release-check
+
       - name: Run release gates
         run: |
           hyperkit health
