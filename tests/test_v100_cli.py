@@ -23,7 +23,7 @@ def test_v100_stable_release_cli_passes(
         "HyperKit 1.0 Stable Release Certification"
         in output
     )
-    assert "Package version: 1.0.0" in output
+    assert "Package version: 1.0.1" in output
     assert "API contract: 1.0" in output
     assert "Frozen exports: 256" in output
     assert (
@@ -70,7 +70,7 @@ def test_v100_stable_release_cli_writes_certificate(
 
     assert data[
         "version"
-    ] == "1.0.0"
+    ] == "1.0.1"
     assert data[
         "source_commit"
     ] == "abc123"
@@ -93,5 +93,5 @@ def test_v100_publish_check_allows_stable_pypi(
     )
 
     assert result == 0
-    assert "Version: 1.0.0" in output
+    assert "Version: 1.0.1" in output
     assert "Publishing check: PASS" in output
