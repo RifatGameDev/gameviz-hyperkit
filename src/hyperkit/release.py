@@ -80,6 +80,7 @@ REQUIRED_RELEASE_FILES = [
     ".github/workflows/public-beta.yml",
     "src/hyperkit/stable_release.py",
     "docs/V100_STABLE_RELEASE.md",
+    "docs/V101_PATCH_RELEASE.md",
     ".github/workflows/stable-release.yml",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
@@ -206,6 +207,7 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_v100_cli.py",
     "tests/test_v100_workflow.py",
     "tests/test_v100_milestone.py",
+    "tests/test_v101_patch_release.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
