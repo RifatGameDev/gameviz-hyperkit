@@ -22,18 +22,18 @@ v0.7.0  Content, Assets + Advanced Game Features
 v0.8.0  Build, Publishing + Production Hardening
    ↓
 v0.9.0  API Freeze + Public Beta
-          ← CURRENT DEVELOPMENT STAGE
    ↓
 v1.0.0  Stable Release
+          ← CURRENT DEVELOPMENT STAGE
 ```
 
 ## Current State
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.9.0b1`
+- Active package version: `1.0.0`
 - Public compatibility contract: API `1.0`
-- Active development branch: `feature/v0.9-api-freeze-public-beta`
-- Current focus: v0.9 API Freeze + Public Beta
+- Active development branch: `feature/v1.0-stable-release`
+- Current focus: v1.0 Stable Release
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133
@@ -321,28 +321,62 @@ and validates the SDK as a public beta.
 - clean-install verification remains green
 - health/release/pre-release audits remain green
 
+v0.9 completed locally with 1091 passing automated tests, project health
+171/171, template validation 42/42, complete-game validation 54/54,
+generated-project validation 90/90, release readiness 155/155,
+pre-release audit 10/10, API contract `1.0`, 256 frozen exports, and the
+pinned API fingerprint.
+
 ## v1.0.0 — Stable Release
 
-Stable release gates include:
+The v1.0 milestone certifies the frozen SDK as the first stable HyperKit
+release.
 
-1. full automated regression suite passes
-2. all complete games pass validation and runtime QA
-3. Android production workflow is validated
-4. Ads and Analytics release paths are validated
-5. public API is frozen
-6. wheel and source distribution build successfully
-7. `twine check dist/*` passes
-8. clean environment installation passes
-9. final release candidate passes
-10. real PyPI installation and CLI verification pass
+### Stable Release Certification
 
-## Feature Freeze Rule
+- package version exactly `1.0.0`
+- package maturity `Production / Stable`
+- compatibility contract remains API `1.0`
+- frozen top-level export set remains exactly 256 names
+- frozen API fingerprint remains unchanged
+- `hyperkit stable-release-check`
+- machine-readable stable-release certificate
+- stable release documentation and version history
 
-Feature freeze is active during v0.9 public beta. The frozen top-level
-public API should not gain incompatible changes, removals, or unreviewed
-exports before stable 1.0.
+### Stable Package and Publication Gates
 
-Release-blocking fixes, documentation corrections, implementation fixes
-behind the frozen surface, and explicitly reviewed compatibility changes
-remain allowed. Broad new feature categories should wait until after the
-stable 1.0 release decision.
+- full automated regression suite
+- Python 3.9–3.12 CI
+- API freeze validation
+- health/template/complete-game/generated-project validation
+- release readiness and pre-release audit
+- wheel and source distribution build
+- `twine check dist/*`
+- distribution verification and SHA-256 release manifest
+- clean environment installation
+- protected `v1.0.0` stable-release workflow
+- explicit confirmation before real-PyPI publication
+
+### v1.0 Definition of Done
+
+- package and module versions are synchronized at `1.0.0`
+- stable package classifier is present
+- frozen API contract and fingerprint remain unchanged
+- stable-release certification tests pass
+- stable workflow regression tests pass
+- all v0.9 and earlier regressions remain green
+- Python 3.9–3.12 CI remains green
+- wheel/sdist and `twine check` pass
+- clean-install verification passes
+- stable release certificate is generated successfully
+- final local release checkpoint passes
+
+Real PyPI publication is a separate explicit release action after these
+gates pass.
+
+## Stable API Rule
+
+The API `1.0` top-level surface is stable. Backward-compatible fixes can
+ship in patch releases, and backward-compatible additions can ship in later
+1.x minor releases. Incompatible public API changes require a future major
+version.
