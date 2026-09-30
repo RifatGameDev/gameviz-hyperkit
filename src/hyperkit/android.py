@@ -20,6 +20,11 @@ DEFAULT_ANDROID_HOST_PYTHON_VERSION = "3.11.9"
 
 DEFAULT_ACCEPT_SDK_LICENSE = True
 
+PRODUCTION_ANDROID_API = 36
+PRODUCTION_ANDROID_NDK = "29"
+PRODUCTION_P4A_BRANCH = "develop"
+PRODUCTION_RELEASE_ARTIFACT = "aab"
+
 DEFAULT_ANDROID_PERMISSIONS = (
     "VIBRATE",
 )
@@ -35,6 +40,12 @@ DEFAULT_ANDROID_ARCHS = (
 DEFAULT_REQUIREMENTS = (
     f"python3=={DEFAULT_ANDROID_PYTHON_VERSION}",
     f"hostpython3=={DEFAULT_ANDROID_HOST_PYTHON_VERSION}",
+    "kivy",
+    "gameviz-hyperkit",
+)
+
+PRODUCTION_REQUIREMENTS = (
+    "python3",
     "kivy",
     "gameviz-hyperkit",
 )
@@ -62,6 +73,11 @@ SUPPORTED_ORIENTATIONS = (
     "landscape",
     "sensor",
     "all",
+)
+
+SUPPORTED_RELEASE_ARTIFACTS = (
+    "aab",
+    "apk",
 )
 
 
@@ -227,6 +243,10 @@ class AndroidBuildConfig:
         DEFAULT_SOURCE_INCLUDE_EXTS
     )
 
+    release_artifact: str = "aab"
+
+    p4a_branch: Optional[str] = None
+
     def __post_init__(self) -> None:
         title = self.title.strip()
 
@@ -322,6 +342,31 @@ class AndroidBuildConfig:
             if item.strip()
         )
 
+        release_artifact = (
+            str(
+                self.release_artifact
+            )
+            .strip()
+            .lower()
+        )
+
+        if (
+            release_artifact
+            not in SUPPORTED_RELEASE_ARTIFACTS
+        ):
+            raise ValueError(
+                "release_artifact must be 'aab' or 'apk'."
+            )
+
+        p4a_branch = (
+            str(
+                self.p4a_branch
+            ).strip()
+            if self.p4a_branch
+            is not None
+            else None
+        )
+
         if not source_include_exts:
             raise ValueError(
                 "At least one source file extension "
@@ -374,6 +419,18 @@ class AndroidBuildConfig:
             self,
             "source_include_exts",
             source_include_exts,
+        )
+
+        object.__setattr__(
+            self,
+            "release_artifact",
+            release_artifact,
+        )
+
+        object.__setattr__(
+            self,
+            "p4a_branch",
+            p4a_branch or None,
         )
 
         if self.ndk is not None:
@@ -654,6 +711,21 @@ def render_buildozer_spec(
                 "android.archs = "
                 f"{archs}"
             ),
+            (
+                "android.release_artifact = "
+                f"{config.release_artifact}"
+            ),
+        ]
+    )
+
+    if config.p4a_branch:
+        lines.append(
+            "p4a.branch = "
+            f"{config.p4a_branch}"
+        )
+
+    lines.extend(
+        [
             "",
             "[buildozer]",
             "log_level = 2",
@@ -692,6 +764,8 @@ def create_buildozer_spec(
     accept_sdk_license: bool = (
         DEFAULT_ACCEPT_SDK_LICENSE
     ),
+    release_artifact: str = "aab",
+    p4a_branch: Optional[str] = None,
 ) -> Path:
     """
     Create buildozer.spec for a HyperKit project.
@@ -751,6 +825,12 @@ def create_buildozer_spec(
         accept_sdk_license=(
             accept_sdk_license
         ),
+        release_artifact=(
+            release_artifact
+        ),
+        p4a_branch=(
+            p4a_branch
+        ),
     )
 
     spec_path.write_text(
@@ -759,6 +839,60 @@ def create_buildozer_spec(
     )
 
     return spec_path
+
+
+def create_production_buildozer_spec(
+    path: Union[str, Path] = ".",
+    title: str = "HyperKit Game",
+    overwrite: bool = False,
+    *,
+    package_name: Optional[str] = None,
+    package_domain: str = DEFAULT_PACKAGE_DOMAIN,
+    version: str = DEFAULT_APP_VERSION,
+    orientation: str = DEFAULT_ORIENTATION,
+    fullscreen: bool = False,
+    permissions: Optional[
+        Sequence[str]
+    ] = None,
+    archs: Optional[
+        Sequence[str]
+    ] = None,
+) -> Path:
+    """Create a Google Play-oriented Android release configuration.
+
+    The production profile is intentionally separate from HyperKit's
+    historically validated Phase 73 debug defaults. It targets API 36,
+    uses NDK 29, requests an AAB release artifact, and selects the
+    python-for-android develop branch used by current store-oriented
+    Buildozer guidance.
+    """
+
+    return create_buildozer_spec(
+        path=path,
+        title=title,
+        overwrite=overwrite,
+        package_name=package_name,
+        package_domain=package_domain,
+        version=version,
+        requirements=PRODUCTION_REQUIREMENTS,
+        orientation=orientation,
+        fullscreen=fullscreen,
+        permissions=permissions,
+        android_api=PRODUCTION_ANDROID_API,
+        min_api=DEFAULT_ANDROID_MIN_API,
+        ndk=PRODUCTION_ANDROID_NDK,
+        archs=(
+            archs
+            or DEFAULT_ANDROID_ARCHS
+        ),
+        accept_sdk_license=True,
+        release_artifact=(
+            PRODUCTION_RELEASE_ARTIFACT
+        ),
+        p4a_branch=(
+            PRODUCTION_P4A_BRANCH
+        ),
+    )
 
 
 def generate_android_readiness_report(
