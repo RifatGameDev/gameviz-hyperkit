@@ -32,6 +32,11 @@ from .android import (
     generate_android_readiness_report,
 )
 
+from .android_release import (
+    format_android_production_readiness_report,
+    generate_android_production_readiness_report,
+)
+
 from .ads.admob import (
     ADMOB_SAMPLE_APP_ID,
     configure_admob_android_project,
@@ -1533,6 +1538,28 @@ def cmd_android_doctor(
     )
 
 
+def cmd_android_release_doctor(
+    args: argparse.Namespace,
+) -> int:
+    report = (
+        generate_android_production_readiness_report(
+            args.path
+        )
+    )
+
+    print(
+        format_android_production_readiness_report(
+            report
+        )
+    )
+
+    return (
+        0
+        if report.passed
+        else 1
+    )
+
+
 def cmd_build_android(
     args: argparse.Namespace,
 ) -> int:
@@ -2282,6 +2309,25 @@ def build_parser(
 
     p_android_doctor.set_defaults(
         func=cmd_android_doctor
+    )
+
+    p_android_release_doctor = (
+        sub.add_parser(
+            "android-release-doctor",
+            help=(
+                "Validate production Android "
+                "configuration and signing inputs"
+            ),
+        )
+    )
+
+    p_android_release_doctor.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_android_release_doctor.set_defaults(
+        func=cmd_android_release_doctor
     )
 
     p_build = sub.add_parser(
