@@ -1,0 +1,156 @@
+name: HyperKit Stable Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_pypi:
+        description: Publish the verified stable 1.0.0 bundle to PyPI
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  stable-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install HyperKit development dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run full regression suite
+        run: pytest -q
+
+      - name: Validate frozen public API
+        run: hyperkit api-freeze-check
+
+      - name: Run stable release certification
+        run: hyperkit stable-release-check
+
+      - name: Run SDK validation gates
+        run: |
+          hyperkit health
+          hyperkit validate-templates
+          hyperkit validate-complete-games
+          hyperkit validate-generated-projects
+          hyperkit release-check
+          hyperkit pre-release-audit
+
+  stable-package:
+    runs-on: ubuntu-latest
+    needs: stable-test
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install release tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Validate stable package identity
+        run: |
+          python -c "import hyperkit; assert hyperkit.__version__ == '1.0.0'"
+          python -c "import hyperkit; assert hyperkit.API_VERSION == '1.0'"
+          hyperkit api-freeze-check
+          hyperkit stable-release-check
+          hyperkit publish-check --target pypi
+
+      - name: Validate production tag when publishing
+        if: ${{ inputs.publish_pypi == true }}
+        shell: bash
+        run: |
+          if [ "$GITHUB_REF" != "refs/tags/v1.0.0" ]; then
+            echo "Stable PyPI publication requires refs/tags/v1.0.0."
+            echo "Current ref: $GITHUB_REF"
+            exit 1
+          fi
+
+      - name: Configure deterministic build inputs
+        shell: bash
+        run: |
+          echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> "$GITHUB_ENV"
+          echo "PYTHONHASHSEED=0" >> "$GITHUB_ENV"
+
+      - name: Build clean stable distributions
+        run: |
+          rm -rf build dist *.egg-info src/*.egg-info
+          python -m build
+
+      - name: Validate stable distributions
+        run: |
+          python -m twine check dist/*
+          hyperkit verify-dist
+          hyperkit release-manifest --source-commit "$GITHUB_SHA"
+          hyperkit verify-clean-install
+          hyperkit stable-release-check --certificate dist/stable-release-certificate.json --source-commit "$GITHUB_SHA"
+
+      - name: Upload verified stable bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperkit-1.0.0-stable-bundle
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/SHA256SUMS
+            dist/release-manifest.json
+            dist/stable-release-certificate.json
+          if-no-files-found: error
+          retention-days: 30
+
+  publish-pypi:
+    if: ${{ inputs.publish_pypi == true }}
+    needs: stable-package
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download verified stable bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: hyperkit-1.0.0-stable-bundle
+          path: dist
+
+      - name: Prepare package-only upload directory
+        run: |
+          mkdir -p publish-dist
+          cp dist/*.whl publish-dist/
+          cp dist/*.tar.gz publish-dist/
+
+      - name: Publish stable HyperKit 1.0.0 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: publish-dist/
+          skip-existing: false
+          verbose: true
