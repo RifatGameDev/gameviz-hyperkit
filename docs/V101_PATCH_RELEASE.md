@@ -10,7 +10,8 @@ HyperKit v1.0.1 is the first stable patch release of GameViz HyperKit.
 - Stable package version: `1.0.1`
 - Public compatibility contract: API `1.0`
 - Frozen top-level public exports: `256`
-- Frozen API fingerprint remains unchanged from v1.0.0
+- Frozen API fingerprint remains unchanged from v1.0.0:
+  `80bdc58a8590797b01faa0305ec3aac22ed81ea17fc98b8d9a02ec211fa70d75`
 
 ## Purpose
 
