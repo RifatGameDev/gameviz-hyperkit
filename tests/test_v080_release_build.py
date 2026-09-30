@@ -7,6 +7,7 @@ import hyperkit.release_build as release_build
 from hyperkit import (
     generate_distribution_report,
     write_checksum_manifest,
+    validate_publish_target,
     write_release_manifest,
 )
 
@@ -278,3 +279,34 @@ def test_clean_install_verification_reports_install_failure(
 
     assert not result.passed
     assert "installation failed" in result.message
+
+
+
+def test_publish_target_allows_dev_builds_on_testpypi():
+    passed, message = validate_publish_target(
+        "0.8.0.dev0",
+        "testpypi",
+    )
+
+    assert passed
+    assert "0.8.0.dev0" in message
+
+
+def test_publish_target_blocks_dev_builds_on_real_pypi():
+    passed, message = validate_publish_target(
+        "0.8.0.dev0",
+        "pypi",
+    )
+
+    assert not passed
+    assert "stable MAJOR.MINOR.PATCH" in message
+
+
+def test_publish_target_allows_stable_version_on_real_pypi():
+    passed, message = validate_publish_target(
+        "0.8.0",
+        "pypi",
+    )
+
+    assert passed
+    assert "0.8.0" in message
