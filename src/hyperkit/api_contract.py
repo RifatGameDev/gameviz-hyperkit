@@ -10,6 +10,11 @@ from .errors import HyperKitCompatibilityError
 
 
 FROZEN_API_VERSION = "1.0"
+FROZEN_API_EXPORT_COUNT = 256
+FROZEN_API_FINGERPRINT = (
+    "80bdc58a8590797b01faa0305ec3aac2"
+    "2ed81ea17fc98b8d9a02ec211fa70d75"
+)
 
 FROZEN_PUBLIC_API = frozenset(
     {
@@ -413,10 +418,28 @@ def validate_frozen_public_api(
         )
     )
 
+    fingerprint = get_api_fingerprint(
+        exported
+    )
+
+    count_matches = (
+        len(
+            exported_set
+        )
+        == FROZEN_API_EXPORT_COUNT
+    )
+
+    fingerprint_matches = (
+        fingerprint
+        == FROZEN_API_FINGERPRINT
+    )
+
     if (
         not missing
         and not unexpected
         and not duplicates
+        and count_matches
+        and fingerprint_matches
     ):
         return
 
@@ -444,6 +467,22 @@ def validate_frozen_public_api(
             + ", ".join(
                 duplicates
             )
+        )
+
+    if not count_matches:
+        details.append(
+            "export_count="
+            f"{len(exported_set)} "
+            "(expected "
+            f"{FROZEN_API_EXPORT_COUNT})"
+        )
+
+    if not fingerprint_matches:
+        details.append(
+            "fingerprint="
+            f"{fingerprint} "
+            "(expected "
+            f"{FROZEN_API_FINGERPRINT})"
         )
 
     raise HyperKitCompatibilityError(
