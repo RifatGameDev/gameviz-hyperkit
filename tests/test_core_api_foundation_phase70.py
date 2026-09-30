@@ -86,22 +86,22 @@ def test_sdk_config_rejects_invalid_log_level():
 
 
 def test_current_api_version_is_exposed():
-    assert API_VERSION == "0.2"
-    assert get_api_version() == "0.2"
+    assert API_VERSION == "1.0"
+    assert get_api_version() == "1.0"
 
 
 def test_api_compatibility_rules():
-    assert is_api_compatible("0.1") is True
-    assert is_api_compatible("0.2") is True
-    assert is_api_compatible("0.3") is False
-    assert is_api_compatible("1.0") is False
+    assert is_api_compatible("1.0") is True
+    assert is_api_compatible("1.1") is False
+    assert is_api_compatible("0.9") is False
+    assert is_api_compatible("2.0") is False
 
 
 def test_require_api_version_rejects_incompatible_api():
-    require_api_version("0.2")
+    require_api_version("1.0")
 
     with pytest.raises(
         HyperKitCompatibilityError
     ):
-        require_api_version("0.3")
+        require_api_version("1.1")
 
