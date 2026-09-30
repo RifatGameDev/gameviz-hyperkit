@@ -6,9 +6,13 @@ HyperKit v0.8 turns release preparation into executable verification and gated p
 
 Start from the repository root:
 
+`hyperkit api-freeze-check`
+
+Then run:
+
 `hyperkit release-check`
 
-Then run the final source-tree audit:
+and the final source-tree audit:
 
 `hyperkit pre-release-audit`
 
@@ -65,6 +69,19 @@ The normal `.github/workflows/ci.yml` package job now performs:
 6. verified artifact upload
 
 This makes package-installation regressions block normal CI instead of being discovered only at publication time.
+
+## Public Beta Workflow
+
+During v0.9, the manual workflow:
+
+`.github/workflows/public-beta.yml`
+
+runs the Python 3.9–3.12 regression matrix, exact API freeze validation,
+full release gates, package build, `twine check`, release-manifest
+generation, and fresh-wheel installation. It may optionally publish the
+verified beta to TestPyPI through Trusted Publishing.
+
+The public-beta workflow never publishes to real PyPI.
 
 ## Controlled Release Workflow
 
