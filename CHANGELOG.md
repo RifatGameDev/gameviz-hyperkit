@@ -25,6 +25,8 @@ Current development version: ``0.8.0.dev0``.
 - `SHA256SUMS` and machine-readable `release-manifest.json` generation.
 - Fresh virtual-environment wheel installation and CLI verification.
 - Manual gated TestPyPI/PyPI Trusted Publishing workflow.
+- Stable-version and matching-tag guard for controlled real-PyPI publication.
+- `hyperkit publish-check` for destination eligibility validation.
 - Separate store-oriented Android production profile targeting API 36 with NDK 29, AAB output, and p4a `develop`.
 - Android release-signing readiness checks that never print secret values.
 - `hyperkit android-release-doctor`.
