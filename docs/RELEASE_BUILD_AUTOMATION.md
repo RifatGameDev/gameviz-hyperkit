@@ -1,6 +1,6 @@
 # Release Build Automation
 
-HyperKit v0.8 turns release preparation into executable verification and gated publishing workflows.
+HyperKit 1.0 uses executable verification, stable-release certification, and protected publishing workflows.
 
 ## Core Release Checks
 
@@ -9,6 +9,10 @@ Start from the repository root:
 `hyperkit api-freeze-check`
 
 Then run:
+
+`hyperkit stable-release-check`
+
+followed by:
 
 `hyperkit release-check`
 
@@ -72,16 +76,30 @@ This makes package-installation regressions block normal CI instead of being dis
 
 ## Public Beta Workflow
 
-During v0.9, the manual workflow:
+The historical v0.9 workflow:
 
 `.github/workflows/public-beta.yml`
 
-runs the Python 3.9–3.12 regression matrix, exact API freeze validation,
-full release gates, package build, `twine check`, release-manifest
-generation, and fresh-wheel installation. It may optionally publish the
-verified beta to TestPyPI through Trusted Publishing.
+remains as beta release evidence. It validates the frozen API and may
+publish only to TestPyPI.
 
-The public-beta workflow never publishes to real PyPI.
+## Stable Release Workflow
+
+The v1.0 workflow:
+
+`.github/workflows/stable-release.yml`
+
+runs the Python 3.9–3.12 regression matrix, exact API freeze validation,
+`stable-release-check`, all SDK release gates, package build, `twine
+check`, distribution verification, release-manifest generation, and
+fresh-wheel installation.
+
+It also writes:
+
+`dist/stable-release-certificate.json`
+
+Real PyPI publication is disabled by default. It requires explicit
+confirmation and workflow execution from `refs/tags/v1.0.0`.
 
 ## Controlled Release Workflow
 
@@ -154,4 +172,5 @@ Use TestPyPI for release-candidate or packaging validation when useful.
 
 A stable release may be published to real PyPI only after all required gates pass, including automated tests, template validation, package build validation, `twine check`, clean-install verification, release artifact verification, and required Android/provider QA for the target release.
 
-The v0.8 publishing workflow provides the mechanism, but v0.9 still owns API freeze/public-beta work and v1.0 remains the stable-release milestone.
+The v1.0 stable workflow is the final certification path. Real PyPI
+publication remains a separate explicit action after all stable gates pass.
