@@ -31,7 +31,7 @@ def test_readme_tracks_active_development_version():
         in content
     )
     assert (
-        "Latest published PyPI release: `0.2.0`"
+        "Latest published PyPI release: `1.0.0`"
         in content
     )
 
