@@ -285,6 +285,23 @@ from .level_sequence import (
     LevelSequenceError,
 )
 
+from .release_build import (
+    CleanInstallResult,
+    DistributionArtifact,
+    DistributionCheck,
+    DistributionReport,
+    ReleaseBuildError,
+    discover_distribution_artifacts,
+    format_clean_install_result,
+    format_distribution_report,
+    generate_distribution_report,
+    read_project_version,
+    run_clean_install_verification,
+    sha256_file,
+    write_checksum_manifest,
+    write_release_manifest,
+)
+
 
 try:  # Kivy may not be available in headless test environments.
     from .app import Game
@@ -473,10 +490,24 @@ __all__ = [
     "ObjectPoolError",
     "LevelSequence",
     "LevelSequenceError",
+    "CleanInstallResult",
+    "DistributionArtifact",
+    "DistributionCheck",
+    "DistributionReport",
+    "ReleaseBuildError",
+    "discover_distribution_artifacts",
+    "format_clean_install_result",
+    "format_distribution_report",
+    "generate_distribution_report",
+    "read_project_version",
+    "run_clean_install_verification",
+    "sha256_file",
+    "write_checksum_manifest",
+    "write_release_manifest",
 ]
 
 
-__version__ = "0.7.0.dev0"
+__version__ = "0.8.0.dev0"
 
 # Phase 73 mobile public API
 from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
