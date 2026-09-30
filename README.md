@@ -1,6 +1,6 @@
 # GameViz HyperKit
 
-[![PyPI Version](https://img.shields.io/pypi/v/gameviz-hyperkit)](https://pypi.org/project/gameviz-hyperkit/)
+[![PyPI Version](https://img.shields.io/pypi/v/gameviz-hyperkit?cacheSeconds=300)](https://pypi.org/project/gameviz-hyperkit/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/gameviz-hyperkit)](https://pypi.org/project/gameviz-hyperkit/)
 [![License](https://img.shields.io/pypi/l/gameviz-hyperkit)](LICENSE)
 
@@ -19,7 +19,7 @@ HyperKit is now in the **v1.0.0 stable-release certification stage**.
 
 Current package status:
 
-- Latest published PyPI release: `0.2.0`
+- Latest published PyPI release: `1.0.0`
 - Stable package version: `1.0.0`
 - Active development version: `1.0.0`
 - Installation command: `pip install gameviz-hyperkit`
