@@ -58,7 +58,7 @@ def test_roadmap_tracks_completion_audit():
     )
 
     assert "Phase 75 — SDK Completion Audit" in content
-    assert "0.9.0b1" in content
+    assert "1.0.0" in content
     assert "919 passing tests" in content
     assert "Feature Freeze Rule" in content
 
