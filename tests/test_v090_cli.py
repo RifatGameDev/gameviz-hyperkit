@@ -40,8 +40,8 @@ def test_v090_api_freeze_cli_passes(
     )
 
 
-def test_v090_cli_version_reports_beta():
+def test_cli_version_advances_to_stable_release():
     assert (
         hyperkit.__version__
-        == "0.9.0b1"
+        == "1.0.0"
     )
