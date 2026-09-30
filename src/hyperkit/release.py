@@ -76,6 +76,8 @@ REQUIRED_RELEASE_FILES = [
     "docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md",
     ".github/workflows/release-package.yml",
     ".github/workflows/android-production-release.yml",
+    "docs/V090_API_FREEZE_PUBLIC_BETA.md",
+    ".github/workflows/public-beta.yml",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "docs/PROJECT_HEALTH_REPORT.md",
@@ -193,6 +195,10 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_v080_cli.py",
     "tests/test_v080_workflows.py",
     "tests/test_v080_milestone.py",
+    "tests/test_v090_api_freeze.py",
+    "tests/test_v090_cli.py",
+    "tests/test_v090_workflows.py",
+    "tests/test_v090_milestone.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
@@ -495,6 +501,52 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
         ),
         message=(
             "Signed Android production workflow found"
+        ),
+    )
+
+    api_contract_path = (
+        root_path
+        / "src"
+        / "hyperkit"
+        / "api_contract.py"
+    )
+
+    report.add(
+        name="Frozen API exact-match check",
+        passed=_file_contains(
+            api_contract_path,
+            [
+                'FROZEN_API_VERSION = "1.0"',
+                "FROZEN_API_EXPORT_COUNT = 256",
+                "FROZEN_API_FINGERPRINT",
+                "validate_frozen_public_api",
+            ],
+        ),
+        message=(
+            "Frozen 1.0 API contract metadata found"
+        ),
+    )
+
+    beta_workflow = (
+        root_path
+        / ".github"
+        / "workflows"
+        / "public-beta.yml"
+    )
+
+    report.add(
+        name="Public beta workflow",
+        passed=_file_contains(
+            beta_workflow,
+            [
+                "workflow_dispatch:",
+                "api-freeze-check",
+                "publish-check --target testpypi",
+                "pypa/gh-action-pypi-publish",
+            ],
+        ),
+        message=(
+            "Public beta validation workflow found"
         ),
     )
 
