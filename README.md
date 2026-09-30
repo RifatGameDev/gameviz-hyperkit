@@ -15,19 +15,19 @@ It is designed for beginners, students, game-jam developers, indie developers, a
 
 ## Current Release Status
 
-HyperKit is publicly available on PyPI and remains in active development toward a stable 1.0 release.
+HyperKit is publicly available on PyPI and is now in the **public-beta / API-freeze stage** on the road to stable 1.0.
 
 Current package status:
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.8.0.dev0`
+- Active development version: `0.9.0b1`
 - Installation command: `pip install gameviz-hyperkit`
-- Package maturity: Alpha / active SDK development
-- Public compatibility contract: API `0.2`
-- API stability target: future `1.0.0`
+- Package maturity: Beta / public API freeze
+- Public compatibility contract: API `1.0`
+- Frozen top-level public exports: `256`
 - Supported Python versions: Python 3.9–3.12
 
-The current development line focuses on production hardening. HyperKit v0.8 adds verified distribution artifacts, clean-install checks, SHA-256 release manifests, gated Trusted Publishing workflows, and a separate store-oriented Android production profile with signing readiness checks.
+The v0.9 line freezes the intended HyperKit 1.0 public surface, adds exact API-freeze validation and a deterministic API fingerprint, and introduces a dedicated public-beta validation workflow. Broad new feature categories are deferred until after the stable 1.0 release decision.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -120,6 +120,10 @@ HyperKit is useful for:
 - Production Android API 36/AAB profile
 - Android signing readiness validation
 - Signed Android production release workflow
+- Frozen 1.0 public API contract
+- Exact API-freeze validation
+- Deterministic public API fingerprint
+- Public-beta validation workflow
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
@@ -417,6 +421,12 @@ hyperkit init-android --production --overwrite
 hyperkit android-release-doctor
 ```
 
+### Validate the frozen 1.0 public API
+
+```bash
+hyperkit api-freeze-check
+```
+
 ### Show the package health report
 
 ```bash
@@ -530,6 +540,7 @@ Package publication is handled through the project's controlled release workflow
 - [HyperKit v0.6 — Mobile Production Runtime + Performance](docs/V060_MOBILE_RUNTIME_PERFORMANCE.md)
 - [HyperKit v0.7 — Content, Assets + Advanced Game Features](docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md)
 - [HyperKit v0.8 — Build, Publishing + Production Hardening](docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md)
+- [HyperKit v0.9 — API Freeze + Public Beta](docs/V090_API_FREEZE_PUBLIC_BETA.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -554,25 +565,25 @@ Package publication is handled through the project's controlled release workflow
 - Android builds depend on the external Android/Buildozer toolchain and still require final device-level release validation.
 - AdMob and Firebase Analytics integrations exist, but production-provider configuration and release QA remain environment-dependent.
 - The current focus is complete small 2D hypercasual and hybrid-casual mobile games.
-- The public API may still change before version `1.0.0`.
-- Final 1.0 documentation, API freeze, clean-install validation, and release-candidate QA are still pending.
+- The intended 1.0 top-level public API is frozen during the v0.9 public beta; incompatible changes should not be introduced without explicit freeze review.
+- Stable `1.0.0` release certification and final release-candidate QA are still pending.
 
 ---
 
 ## Roadmap
 
-The active `0.8.0.dev0` line focuses on **Build, Publishing + Production Hardening**:
+The active `0.9.0b1` line focuses on **API Freeze + Public Beta**:
 
-- verify wheel and source-distribution structure and version identity
-- generate SHA-256 checksums and machine-readable release manifests
-- verify the built wheel from a fresh virtual environment
-- gate TestPyPI and PyPI publication behind the full release workflow
-- provide a store-oriented Android API 36 / AAB production profile
-- validate Android signing inputs without exposing secret values
-- build signed Android release artifacts through a protected workflow
-- keep all v0.7 content/gameplay and earlier regression gates green
+- freeze the exact intended 1.0 top-level public API
+- use compatibility contract API `1.0`
+- validate the frozen export count and API fingerprint
+- prevent accidental missing, duplicate, or unexpected public exports
+- run a dedicated Python 3.9–3.12 public-beta workflow
+- verify wheel/sdist, release manifests, and fresh-wheel installation
+- allow optional TestPyPI beta publication through Trusted Publishing
+- keep all v0.8 production-hardening and earlier regression gates green
 
-After v0.8, v0.9 will freeze the intended 1.0 public API and run the public beta before the stable `1.0.0` milestone.
+After v0.9, the next roadmap milestone is **v1.0.0 Stable Release**.
 
 ---
 
