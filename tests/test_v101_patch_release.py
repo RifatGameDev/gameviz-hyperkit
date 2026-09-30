@@ -2,6 +2,8 @@ from pathlib import Path
 
 import hyperkit
 
+from hyperkit.stable_release import generate_stable_release_report
+
 from hyperkit.api_contract import (
     FROZEN_API_EXPORT_COUNT,
     FROZEN_API_FINGERPRINT,
@@ -51,6 +53,6 @@ def test_v101_workflow_requires_matching_tag():
 
 
 def test_v101_stable_release_report_passes():
-    report = hyperkit.generate_stable_release_report(".")
+    report = generate_stable_release_report(".")
     assert report.package_version == "1.0.1"
     assert report.passed
