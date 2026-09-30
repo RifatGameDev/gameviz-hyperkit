@@ -18,9 +18,9 @@ v0.5.0  Complete Games + Developer Tooling
 v0.6.0  Mobile Production Runtime + Performance
    ↓
 v0.7.0  Content, Assets + Advanced Game Features
-          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.8.0  Build, Publishing + Production Hardening
+          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.9.0  API Freeze + Public Beta
    ↓
@@ -30,10 +30,10 @@ v1.0.0  Stable Release
 ## Current State
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.7.0.dev0`
+- Active development version: `0.8.0.dev0`
 - Public compatibility contract: API `0.2`
-- Active development branch: `feature/v0.7-content-assets-advanced-game-features`
-- Current focus: v0.7 Content, Assets + Advanced Game Features
+- Active development branch: `feature/v0.8-build-publishing-production-hardening`
+- Current focus: v0.8 Build, Publishing + Production Hardening
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133
@@ -216,17 +216,60 @@ The v0.7 milestone expands content-driven game creation and reusable gameplay sy
 - Python 3.9–3.12 CI remains green
 - package wheel/sdist and `twine check` remain green
 
+v0.7 completed with 1032 passing automated tests, project health 155/155,
+template validation 42/42, complete-game validation 54/54,
+generated-project validation 90/90, release readiness 134/134,
+pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine
+validation.
+
 ## v0.8.0 — Build, Publishing + Production Hardening
 
-Planned focus:
+The v0.8 milestone converts release guidance into executable production gates.
 
-- production Android build workflow
-- signing/release guidance
-- build reproducibility
-- package/distribution hardening
-- release automation
-- clean-install validation
-- publishing documentation
+### Python Distribution Hardening
+
+- `DistributionArtifact`, `DistributionReport`, and SHA-256 validation
+- `hyperkit verify-dist`
+- `hyperkit release-manifest`
+- `hyperkit verify-clean-install`
+- isolated fresh-wheel import and CLI verification
+- `SHA256SUMS` and `release-manifest.json`
+- CI package artifact upload after verification
+
+### Publishing Automation
+
+- manual `release-package.yml` workflow
+- full automated release gates before publication
+- TestPyPI and real PyPI destinations
+- explicit real-PyPI confirmation
+- GitHub OIDC / PyPI Trusted Publishing
+- protected `testpypi` and `pypi` environments
+
+### Android Production Hardening
+
+- separate production profile preserving the historical API 35 debug defaults
+- production target API 36
+- NDK 29
+- AAB release artifact
+- python-for-android `develop` branch
+- release-signing readiness validation
+- `hyperkit android-release-doctor`
+- protected signed Android production workflow
+- artifact checksum generation
+
+### v0.8 Definition of Done
+
+- distribution artifact verification tests pass
+- release checksum/manifest tests pass
+- clean-install verification tests pass
+- production Android configuration tests pass
+- signing-readiness tests pass
+- package publishing workflow regression tests pass
+- Android production workflow regression tests pass
+- normal CI performs clean-install package verification
+- Python 3.9–3.12 CI remains green
+- all v0.7 regressions remain green
+- wheel/sdist and `twine check` remain green
 
 ## v0.9.0 — API Freeze + Public Beta
 
