@@ -15,6 +15,8 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
+Current development version: ``1.0.0``.
+
 No post-1.0 changes recorded yet.
 
 ---
