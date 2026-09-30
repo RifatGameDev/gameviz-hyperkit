@@ -144,6 +144,87 @@ def read_project_version(
     return version
 
 
+def validate_publish_target(
+    version: str,
+    target: str,
+) -> tuple[bool, str]:
+    """Validate whether a package version may use a publishing target.
+
+    TestPyPI accepts development and pre-release validation builds.
+    Real PyPI publication through HyperKit's controlled workflow is
+    restricted to stable MAJOR.MINOR.PATCH versions.
+    """
+
+    normalized_version = str(
+        version
+    ).strip()
+    normalized_target = (
+        str(
+            target
+        )
+        .strip()
+        .lower()
+    )
+
+    if normalized_target not in {
+        "none",
+        "testpypi",
+        "pypi",
+    }:
+        return (
+            False,
+            "Unsupported publish target. "
+            "Choose none, testpypi, or pypi.",
+        )
+
+    if not normalized_version:
+        return (
+            False,
+            "Package version must not be empty.",
+        )
+
+    if normalized_target != "pypi":
+        return (
+            True,
+            (
+                "Publishing target accepts the "
+                f"current version: {normalized_version}"
+            ),
+        )
+
+    parts = normalized_version.split(
+        "."
+    )
+
+    stable = (
+        len(
+            parts
+        )
+        == 3
+        and all(
+            part.isdigit()
+            for part in parts
+        )
+    )
+
+    if not stable:
+        return (
+            False,
+            (
+                "Real PyPI publication requires a "
+                "stable MAJOR.MINOR.PATCH version. "
+                f"Current version: {normalized_version}"
+            ),
+        )
+
+    return (
+        True,
+        (
+            "Stable version is eligible for "
+            f"controlled PyPI publication: {normalized_version}"
+        ),
+    )
+
 def sha256_file(
     path: str | Path,
 ) -> str:
