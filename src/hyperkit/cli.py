@@ -98,6 +98,12 @@ from .release_build import (
     write_release_manifest,
 )
 
+from .stable_release import (
+    format_stable_release_report,
+    generate_stable_release_report,
+    write_stable_release_certificate,
+)
+
 from .template_validation import (
     format_template_validation_report,
     generate_template_validation_report,
@@ -1855,6 +1861,53 @@ def cmd_api_freeze_check(
     return 0
 
 
+def cmd_stable_release_check(
+    args: argparse.Namespace,
+) -> int:
+    report = generate_stable_release_report(
+        args.path
+    )
+
+    print(
+        format_stable_release_report(
+            report
+        )
+    )
+
+    if (
+        report.passed
+        and getattr(
+            args,
+            "certificate",
+            None,
+        )
+    ):
+        certificate = (
+            write_stable_release_certificate(
+                report,
+                args.certificate,
+                source_commit=(
+                    getattr(
+                        args,
+                        "source_commit",
+                        None,
+                    )
+                ),
+            )
+        )
+
+        print("")
+        print(
+            f"Certificate: {certificate}"
+        )
+
+    return (
+        0
+        if report.passed
+        else 1
+    )
+
+
 def cmd_publish_check(
     args: argparse.Namespace,
 ) -> int:
@@ -2530,6 +2583,43 @@ def build_parser(
 
     p_api_freeze.set_defaults(
         func=cmd_api_freeze_check
+    )
+
+    p_stable_release = (
+        sub.add_parser(
+            "stable-release-check",
+            help=(
+                "Run final HyperKit 1.0 "
+                "stable release certification"
+            ),
+        )
+    )
+
+    p_stable_release.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_stable_release.add_argument(
+        "--certificate",
+        default=None,
+        help=(
+            "Optional output path for a "
+            "stable-release certificate JSON"
+        ),
+    )
+
+    p_stable_release.add_argument(
+        "--source-commit",
+        default=None,
+        help=(
+            "Optional source commit recorded "
+            "in the stable-release certificate"
+        ),
+    )
+
+    p_stable_release.set_defaults(
+        func=cmd_stable_release_check
     )
 
     p_publish_check = (
