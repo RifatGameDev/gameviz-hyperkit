@@ -61,6 +61,13 @@ from .complete_games import (
     generate_complete_game_report,
 )
 
+from .api_contract import (
+    FROZEN_API_VERSION,
+    FROZEN_PUBLIC_API,
+    get_api_fingerprint,
+    validate_frozen_public_api,
+)
+
 from .content import (
     ContentManager,
 )
@@ -1818,6 +1825,36 @@ def cmd_release_check(
     )
 
 
+def cmd_api_freeze_check(
+    args: argparse.Namespace,
+) -> int:
+    validate_frozen_public_api()
+
+    print(
+        "HyperKit API Freeze Check"
+    )
+    print(
+        "========================="
+    )
+    print(
+        "API contract: "
+        f"{FROZEN_API_VERSION}"
+    )
+    print(
+        "Frozen exports: "
+        f"{len(FROZEN_PUBLIC_API)}"
+    )
+    print(
+        "API fingerprint: "
+        f"{get_api_fingerprint()}"
+    )
+    print(
+        "API freeze status: PASS"
+    )
+
+    return 0
+
+
 def cmd_publish_check(
     args: argparse.Namespace,
 ) -> int:
@@ -2479,6 +2516,20 @@ def build_parser(
 
     p_release_check.set_defaults(
         func=cmd_release_check
+    )
+
+    p_api_freeze = (
+        sub.add_parser(
+            "api-freeze-check",
+            help=(
+                "Validate the exact frozen "
+                "HyperKit 1.0 public API"
+            ),
+        )
+    )
+
+    p_api_freeze.set_defaults(
+        func=cmd_api_freeze_check
     )
 
     p_publish_check = (
