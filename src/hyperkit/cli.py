@@ -84,7 +84,9 @@ from .release_build import (
     format_clean_install_result,
     format_distribution_report,
     generate_distribution_report,
+    read_project_version,
     run_clean_install_verification,
+    validate_publish_target,
     write_checksum_manifest,
     write_release_manifest,
 )
@@ -1816,6 +1818,47 @@ def cmd_release_check(
     )
 
 
+def cmd_publish_check(
+    args: argparse.Namespace,
+) -> int:
+    version = read_project_version(
+        args.path
+    )
+
+    passed, message = (
+        validate_publish_target(
+            version,
+            args.target,
+        )
+    )
+
+    print(
+        "HyperKit Publishing Check"
+    )
+    print(
+        "========================="
+    )
+    print(
+        f"Version: {version}"
+    )
+    print(
+        f"Target: {args.target}"
+    )
+    print(
+        message
+    )
+    print(
+        "Publishing check: "
+        f"{'PASS' if passed else 'FAIL'}"
+    )
+
+    return (
+        0
+        if passed
+        else 1
+    )
+
+
 def cmd_verify_dist(
     args: argparse.Namespace,
 ) -> int:
@@ -2436,6 +2479,36 @@ def build_parser(
 
     p_release_check.set_defaults(
         func=cmd_release_check
+    )
+
+    p_publish_check = (
+        sub.add_parser(
+            "publish-check",
+            help=(
+                "Validate whether the current "
+                "package version may use a "
+                "publishing target"
+            ),
+        )
+    )
+
+    p_publish_check.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_publish_check.add_argument(
+        "--target",
+        choices=[
+            "none",
+            "testpypi",
+            "pypi",
+        ],
+        required=True,
+    )
+
+    p_publish_check.set_defaults(
+        func=cmd_publish_check
     )
 
     p_verify_dist = (
