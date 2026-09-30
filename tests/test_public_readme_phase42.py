@@ -23,7 +23,7 @@ def test_public_readme_has_package_identity():
 def test_public_readme_explains_current_status():
     content = readme_content()
 
-    assert "Latest published PyPI release: `0.2.0`" in content
+    assert "Latest published PyPI release: `1.0.0`" in content
     assert "Active development version: `1.0.0`" in content
     assert (
         "Installation command: "
