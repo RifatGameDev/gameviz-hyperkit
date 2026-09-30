@@ -66,9 +66,30 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install build twine
+          pip install -e .
 
       - name: Build wheel and source distribution
         run: python -m build
 
       - name: Validate package artifacts
         run: python -m twine check dist/*
+
+      - name: Verify distribution structure
+        run: hyperkit verify-dist
+
+      - name: Generate release checksums and manifest
+        run: hyperkit release-manifest --source-commit "$GITHUB_SHA"
+
+      - name: Verify clean wheel installation
+        run: hyperkit verify-clean-install
+
+      - name: Upload verified distribution artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperkit-python-distributions
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/SHA256SUMS
+            dist/release-manifest.json
+          if-no-files-found: error
