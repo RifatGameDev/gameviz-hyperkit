@@ -242,7 +242,18 @@ The preferred package release workflow is:
 
 Use `none` for verification only, `testpypi` for package validation, or `pypi` for real PyPI.
 
-Real PyPI additionally requires the explicit production confirmation input.
+Real PyPI additionally requires:
+
+- the explicit production confirmation input
+- a stable `MAJOR.MINOR.PATCH` package version
+- the matching `v<version>` Git tag
+
+Validate the selected destination with:
+
+```bash
+hyperkit publish-check --target testpypi
+hyperkit publish-check --target pypi
+```
 
 The workflow uses Trusted Publishing / OIDC; do not store PyPI API tokens in the repository.
 
