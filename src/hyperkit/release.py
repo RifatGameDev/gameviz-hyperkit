@@ -444,6 +444,7 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
                 "verify-dist",
                 "verify-clean-install",
                 "release-manifest",
+                "publish-check",
             ],
         ),
         message=(
