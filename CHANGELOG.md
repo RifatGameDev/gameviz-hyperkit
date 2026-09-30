@@ -15,10 +15,19 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``0.8.0.dev0``.
+Current development version: ``0.9.0b1``.
 
 ### Added
 
+- v0.9 API Freeze + Public Beta milestone.
+- Frozen intended HyperKit 1.0 top-level public API.
+- `FROZEN_API_VERSION`, `FROZEN_PUBLIC_API`, exact export validation, and deterministic API fingerprinting.
+- Pinned frozen export count and SHA-256 API fingerprint.
+- `hyperkit api-freeze-check`.
+- API freeze regression tests for missing, unexpected, and duplicate exports.
+- Dedicated Python 3.9–3.12 public-beta workflow.
+- Optional TestPyPI beta publication through Trusted Publishing.
+- v0.9 API freeze, CLI, workflow, and milestone regression coverage.
 - v0.8 Build, Publishing + Production Hardening milestone.
 - Distribution artifact discovery, version validation, size validation, and SHA-256 hashing.
 - `hyperkit verify-dist`, `hyperkit release-manifest`, and `hyperkit verify-clean-install`.
@@ -66,7 +75,12 @@ Current development version: ``0.8.0.dev0``.
 
 ### Changed
 
-- Package development version advanced to `0.8.0.dev0`.
+- Package development version advanced to public beta `0.9.0b1`.
+- Public compatibility contract advanced from API `0.2` to frozen API `1.0`.
+- Package maturity advanced from Alpha to Beta.
+- `REQUIRED_PUBLIC_API` now represents the complete frozen intended 1.0 top-level surface.
+- Broad public API feature additions are frozen during the v0.9 beta unless explicitly reviewed.
+- v0.8 advanced the package development version to `0.8.0.dev0`.
 - Normal CI now validates built distributions, writes artifact manifests, performs fresh-wheel installation checks, and uploads the verified distribution bundle.
 - Production Android configuration is intentionally separate from the historically validated API 35 development/debug defaults.
 - Release publication is now workflow-gated instead of relying on manual upload commands.
@@ -89,6 +103,8 @@ Current development version: ``0.8.0.dev0``.
 
 ### Validation
 
+- v0.8 closeout finished with 1069 passing automated tests before v0.9 beta development started.
+- v0.8 closeout passed health 165/165, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 147/147, pre-release audit 10/10, distribution verification, release-manifest generation, clean-install verification, and TestPyPI publishing-target validation.
 - v0.7 closeout finished with 1032 passing automated tests before v0.8 development started.
 - v0.7 closeout passed health 155/155, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 134/134, pre-release audit 10/10, Python 3.9–3.12 CI, and package build/twine validation.
 - v0.6 closeout finished with 998 passing automated tests before v0.7 development started.
@@ -98,7 +114,7 @@ Current development version: ``0.8.0.dev0``.
 - v0.4 closeout finished with 949 passing automated tests before v0.5 development started.
 - v0.4 closeout reports passed: health 133/133, templates 42/42, generated projects 90/90, release readiness 117/117, pre-release audit 10/10.
 - Phase 75 regression suite reached 919 passing tests before documentation synchronization.
-- API compatibility contract remains `0.2` while package development continues at `0.8.0.dev0`.
+- API compatibility contract is frozen at `1.0` while package development is in public beta at `0.9.0b1`.
 
 ---
 
