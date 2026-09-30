@@ -1,52 +1,132 @@
 # Release Build Automation
 
-HyperKit includes a release readiness command:
+HyperKit v0.8 turns release preparation into executable verification and gated publishing workflows.
+
+## Core Release Checks
+
+Start from the repository root:
 
 `hyperkit release-check`
 
-This command checks whether the package looks ready for a release preparation step.
+Then run the final source-tree audit:
 
-## What It Checks
+`hyperkit pre-release-audit`
 
-- project health report
-- README.md
-- CHANGELOG.md
-- pyproject.toml
-- required documentation files
-- required release test files
-- package identity in README
-- version notes in CHANGELOG
-- synchronized package version metadata
-- active development version in README and CHANGELOG
-- Python module CLI entry point
-- current roadmap completion state
-- build command guidance
-- twine check command guidance
+These commands validate package metadata, documentation, required tests, version synchronization, roadmap state, templates, and release-readiness structure.
 
-## Usage
+## Build the Python Distributions
 
-Run from the package repository root:
-
-`hyperkit release-check`
-
-Check a specific path:
-
-`hyperkit release-check --path .`
-
-## Manual Release Commands
-
-After `hyperkit release-check` passes, run:
-
-`pytest`
+Create a clean wheel and source distribution:
 
 `python -m build`
 
+Validate the package metadata:
+
 `twine check dist/*`
 
-Then perform clean-install verification from a fresh virtual environment using the built wheel before release.
+Verify the built artifact structure and package version:
+
+`hyperkit verify-dist`
+
+## Artifact Integrity
+
+Generate SHA-256 checksums and a machine-readable release manifest:
+
+`hyperkit release-manifest`
+
+Expected additional files:
+
+```text
+dist/SHA256SUMS
+dist/release-manifest.json
+```
+
+The manifest records artifact filename, kind, size, SHA-256 digest, package version, and source commit when provided.
+
+## Clean-install Verification
+
+Every release requires clean-install verification from the built wheel:
+
+`hyperkit verify-clean-install`
+
+The command creates a fresh temporary virtual environment, installs the wheel, imports HyperKit, verifies the package version, and verifies `python -m hyperkit --version`.
+
+The isolated environment is deleted after verification.
+
+## Continuous Integration
+
+The normal `.github/workflows/ci.yml` package job now performs:
+
+1. package build
+2. `twine check`
+3. `hyperkit verify-dist`
+4. checksum and release-manifest generation
+5. clean-install verification
+6. verified artifact upload
+
+This makes package-installation regressions block normal CI instead of being discovered only at publication time.
+
+## Controlled Release Workflow
+
+The manual workflow:
+
+`.github/workflows/release-package.yml`
+
+runs the full test and release gates before any publication action.
+
+It supports:
+
+- verification only
+- TestPyPI
+- real PyPI
+
+Real PyPI publication requires an explicit production confirmation input in addition to selecting the PyPI target.
+
+## Trusted Publishing
+
+The release workflow uses GitHub OIDC with PyPI Trusted Publishing.
+
+Configure the corresponding publishers/environments before using publication jobs:
+
+- `testpypi`
+- `pypi`
+
+No PyPI API token is embedded in the workflow or repository.
+
+## Build Repeatability
+
+The controlled release workflow:
+
+- checks out full source history
+- derives `SOURCE_DATE_EPOCH` from the release source commit
+- sets `PYTHONHASHSEED=0`
+- removes previous build and distribution output
+- generates SHA-256 identities for final artifacts
+
+These controls make the build inputs explicit and the resulting artifacts traceable to the selected source commit.
+
+## Android Production Release
+
+Generate the store-oriented Android profile with:
+
+`hyperkit init-android --production --overwrite`
+
+Validate configuration and signing inputs:
+
+`hyperkit android-release-doctor`
+
+The production profile uses Android API 36, NDK 29, an AAB release artifact, and the python-for-android `develop` branch while preserving the older API 35 development/debug defaults.
+
+The protected workflow:
+
+`.github/workflows/android-production-release.yml`
+
+builds a signed release AAB using protected GitHub environment secrets and uploads the AAB with a SHA-256 checksum.
 
 ## Publishing Rule
 
-Use TestPyPI when release-candidate packaging validation is useful.
+Use TestPyPI for release-candidate or packaging validation when useful.
 
-A stable release may be published to real PyPI only after the full release gates pass, including automated tests, template validation, package build validation, `twine check`, clean-install verification, and required Android/provider QA for the target release.
+A stable release may be published to real PyPI only after all required gates pass, including automated tests, template validation, package build validation, `twine check`, clean-install verification, release artifact verification, and required Android/provider QA for the target release.
+
+The v0.8 publishing workflow provides the mechanism, but v0.9 still owns API freeze/public-beta work and v1.0 remains the stable-release milestone.
