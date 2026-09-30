@@ -298,6 +298,7 @@ from .release_build import (
     read_project_version,
     run_clean_install_verification,
     sha256_file,
+    validate_publish_target,
     write_checksum_manifest,
     write_release_manifest,
 )
@@ -502,6 +503,7 @@ __all__ = [
     "read_project_version",
     "run_clean_install_verification",
     "sha256_file",
+    "validate_publish_target",
     "write_checksum_manifest",
     "write_release_manifest",
 ]
