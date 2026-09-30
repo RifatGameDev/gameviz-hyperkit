@@ -75,8 +75,8 @@ def test_public_readme_mentions_limitations_and_roadmap():
     assert "Android builds depend on the external Android/Buildozer toolchain" in content
     assert "AdMob and Firebase Analytics integrations exist" in content
     assert "## Roadmap" in content
-    assert "intended 1.0 top-level public API is frozen" in content
-    assert "v1.0.0 Stable Release" in content
+    assert "stable API `1.0` contract" in content
+    assert "Stable Release" in content
 
 
 def test_public_readme_links_core_docs():
