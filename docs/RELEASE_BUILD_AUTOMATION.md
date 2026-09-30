@@ -80,7 +80,15 @@ It supports:
 - TestPyPI
 - real PyPI
 
-Real PyPI publication requires an explicit production confirmation input in addition to selecting the PyPI target.
+Real PyPI publication requires an explicit production confirmation input in addition to selecting the PyPI target. It also requires a stable `MAJOR.MINOR.PATCH` package version and the matching `v<version>` Git tag.
+
+You can inspect target eligibility directly:
+
+`hyperkit publish-check --target testpypi`
+
+or:
+
+`hyperkit publish-check --target pypi`
 
 ## Trusted Publishing
 
