@@ -431,6 +431,18 @@ hyperkit android-release-doctor
 hyperkit api-freeze-check
 ```
 
+### Run final stable-release certification
+
+```bash
+hyperkit stable-release-check
+```
+
+To write machine-readable certification evidence:
+
+```bash
+hyperkit stable-release-check --certificate dist/stable-release-certificate.json
+```
+
 ### Show the package health report
 
 ```bash
