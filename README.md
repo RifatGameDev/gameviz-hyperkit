@@ -401,6 +401,15 @@ hyperkit release-manifest
 hyperkit verify-clean-install
 ```
 
+### Check a package publishing target
+
+```bash
+hyperkit publish-check --target testpypi
+```
+
+The controlled real-PyPI workflow accepts only stable `MAJOR.MINOR.PATCH`
+versions and requires a matching `v<version>` Git tag.
+
 ### Generate production Android configuration
 
 ```bash
