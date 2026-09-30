@@ -44,6 +44,9 @@ jobs:
       - name: Run automated tests
         run: pytest -q
 
+      - name: Validate frozen public API
+        run: hyperkit api-freeze-check
+
       - name: Run release gates
         run: |
           hyperkit health
