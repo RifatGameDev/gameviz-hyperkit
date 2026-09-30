@@ -54,6 +54,9 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
       PYTHONFORANDROID_PREREQUISITES_INSTALL_INTERACTIVE: "0"
       PROJECT_DIR: ${{ inputs.project_name }}
+      P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      P4A_RELEASE_KEYALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}
 
     steps:
       - name: Checkout source
@@ -78,15 +81,12 @@ jobs:
       - name: Configure protected Android signing inputs
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_ALIAS_PASSWORD: ${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}
         shell: bash
         run: |
           test -n "$ANDROID_KEYSTORE_BASE64"
-          test -n "$ANDROID_KEYSTORE_PASSWORD"
-          test -n "$ANDROID_KEY_ALIAS"
-          test -n "$ANDROID_KEY_ALIAS_PASSWORD"
+          test -n "$P4A_RELEASE_KEYSTORE_PASSWD"
+          test -n "$P4A_RELEASE_KEYALIAS"
+          test -n "$P4A_RELEASE_KEYALIAS_PASSWD"
 
           KEYSTORE_PATH="$RUNNER_TEMP/hyperkit-release.keystore"
           printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_PATH"
@@ -94,9 +94,6 @@ jobs:
           test -s "$KEYSTORE_PATH"
 
           printf 'P4A_RELEASE_KEYSTORE=%s\n' "$KEYSTORE_PATH" >> "$GITHUB_ENV"
-          printf 'P4A_RELEASE_KEYSTORE_PASSWD=%s\n' "$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-          printf 'P4A_RELEASE_KEYALIAS=%s\n' "$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-          printf 'P4A_RELEASE_KEYALIAS_PASSWD=%s\n' "$ANDROID_KEY_ALIAS_PASSWORD" >> "$GITHUB_ENV"
 
       - name: Validate production Android readiness
         run: hyperkit android-release-doctor --path "$PROJECT_DIR"
