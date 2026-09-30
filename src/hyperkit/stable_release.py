@@ -204,7 +204,7 @@ def generate_stable_release_report(
     stable_docs = (
         root_path
         / "docs"
-        / "V100_STABLE_RELEASE.md"
+        / "V101_PATCH_RELEASE.md"
     )
     stable_workflow = (
         root_path
@@ -335,7 +335,7 @@ def generate_stable_release_report(
             passed=_contains(
                 changelog,
                 "## 1.0.1",
-                "Stable Release",
+                "Stable patch release",
             ),
             message=(
                 "CHANGELOG contains the 1.0.1 stable patch release"
@@ -358,7 +358,7 @@ def generate_stable_release_report(
             passed=_contains(
                 stable_docs,
                 "HyperKit v1.0.1",
-                "Stable Release",
+                "Stable Patch Release",
                 "256",
                 FROZEN_API_FINGERPRINT,
             ),
