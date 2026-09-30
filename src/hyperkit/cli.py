@@ -20,8 +20,13 @@ from .android import (
     DEFAULT_ANDROID_PERMISSIONS,
     DEFAULT_APP_VERSION,
     DEFAULT_PACKAGE_DOMAIN,
+    PRODUCTION_ANDROID_API,
+    PRODUCTION_ANDROID_NDK,
+    PRODUCTION_P4A_BRANCH,
+    PRODUCTION_RELEASE_ARTIFACT,
     SUPPORTED_ORIENTATIONS,
     create_buildozer_spec,
+    create_production_buildozer_spec,
     detect_android_build_environment,
     format_android_readiness_report,
     generate_android_readiness_report,
@@ -68,6 +73,15 @@ from .release import (
 from .release_evidence import (
     format_release_evidence_report,
     generate_release_evidence_report,
+)
+
+from .release_build import (
+    format_clean_install_result,
+    format_distribution_report,
+    generate_distribution_report,
+    run_clean_install_verification,
+    write_checksum_manifest,
+    write_release_manifest,
 )
 
 from .template_validation import (
@@ -1274,29 +1288,59 @@ def _android_archs_from_args(
 def cmd_init_android(
     args: argparse.Namespace,
 ) -> int:
-    spec = create_buildozer_spec(
-        path=args.path,
-        title=args.title,
-        overwrite=args.overwrite,
-        package_name=args.package_name,
-        package_domain=args.package_domain,
-        version=args.app_version,
-        orientation=args.orientation,
-        fullscreen=args.fullscreen,
-        permissions=(
-            _android_permissions_from_args(
-                args
-            )
-        ),
-        android_api=args.android_api,
-        min_api=args.min_api,
-        ndk=args.ndk,
-        archs=(
-            _android_archs_from_args(
-                args
-            )
-        ),
+    production = bool(
+        getattr(
+            args,
+            "production",
+            False,
+        )
     )
+
+    if production:
+        spec = create_production_buildozer_spec(
+            path=args.path,
+            title=args.title,
+            overwrite=args.overwrite,
+            package_name=args.package_name,
+            package_domain=args.package_domain,
+            version=args.app_version,
+            orientation=args.orientation,
+            fullscreen=args.fullscreen,
+            permissions=(
+                _android_permissions_from_args(
+                    args
+                )
+            ),
+            archs=(
+                _android_archs_from_args(
+                    args
+                )
+            ),
+        )
+    else:
+        spec = create_buildozer_spec(
+            path=args.path,
+            title=args.title,
+            overwrite=args.overwrite,
+            package_name=args.package_name,
+            package_domain=args.package_domain,
+            version=args.app_version,
+            orientation=args.orientation,
+            fullscreen=args.fullscreen,
+            permissions=(
+                _android_permissions_from_args(
+                    args
+                )
+            ),
+            android_api=args.android_api,
+            min_api=args.min_api,
+            ndk=args.ndk,
+            archs=(
+                _android_archs_from_args(
+                    args
+                )
+            ),
+        )
 
     print(
         "HyperKit Android Configuration"
@@ -1329,15 +1373,38 @@ def cmd_init_android(
         f"{'yes' if args.fullscreen else 'no'}"
     )
 
-    print(
-        "Android API: "
-        f"{args.android_api}"
-    )
-
-    print(
-        "Minimum API: "
-        f"{args.min_api}"
-    )
+    if production:
+        print(
+            "Profile: production"
+        )
+        print(
+            "Android API: "
+            f"{PRODUCTION_ANDROID_API}"
+        )
+        print(
+            "NDK: "
+            f"{PRODUCTION_ANDROID_NDK}"
+        )
+        print(
+            "Release artifact: "
+            f"{PRODUCTION_RELEASE_ARTIFACT}"
+        )
+        print(
+            "python-for-android branch: "
+            f"{PRODUCTION_P4A_BRANCH}"
+        )
+    else:
+        print(
+            "Profile: development"
+        )
+        print(
+            "Android API: "
+            f"{args.android_api}"
+        )
+        print(
+            "Minimum API: "
+            f"{args.min_api}"
+        )
 
     print("")
 
@@ -1722,6 +1789,116 @@ def cmd_release_check(
     )
 
 
+def cmd_verify_dist(
+    args: argparse.Namespace,
+) -> int:
+    report = generate_distribution_report(
+        args.path
+    )
+
+    print(
+        format_distribution_report(
+            report
+        )
+    )
+
+    return (
+        0
+        if report.passed
+        else 1
+    )
+
+
+def cmd_release_manifest(
+    args: argparse.Namespace,
+) -> int:
+    report = generate_distribution_report(
+        args.path
+    )
+
+    print(
+        format_distribution_report(
+            report
+        )
+    )
+
+    if not report.passed:
+        return 1
+
+    checksum_path = (
+        write_checksum_manifest(
+            report
+        )
+    )
+
+    manifest_path = (
+        write_release_manifest(
+            report,
+            source_commit=(
+                getattr(
+                    args,
+                    "source_commit",
+                    None,
+                )
+            ),
+        )
+    )
+
+    print("")
+    print(
+        f"Checksums: {checksum_path}"
+    )
+    print(
+        f"Manifest: {manifest_path}"
+    )
+
+    return 0
+
+
+def cmd_verify_clean_install(
+    args: argparse.Namespace,
+) -> int:
+    report = generate_distribution_report(
+        args.path
+    )
+
+    if not report.passed:
+        print(
+            format_distribution_report(
+                report
+            )
+        )
+        return 1
+
+    wheel = report.wheel
+
+    if wheel is None:
+        print(
+            "No wheel artifact found.",
+            file=sys.stderr,
+        )
+        return 1
+
+    result = run_clean_install_verification(
+        wheel.path,
+        expected_version=(
+            report.expected_version
+        ),
+    )
+
+    print(
+        format_clean_install_result(
+            result
+        )
+    )
+
+    return (
+        0
+        if result.passed
+        else 1
+    )
+
+
 def cmd_pre_release_audit(
     args: argparse.Namespace,
 ) -> int:
@@ -1987,6 +2164,16 @@ def build_parser(
     )
 
     p_init_android.add_argument(
+        "--production",
+        action="store_true",
+        help=(
+            "Generate the v0.8 production "
+            "Android profile for store-oriented "
+            "release builds."
+        ),
+    )
+
+    p_init_android.add_argument(
         "--overwrite",
         action="store_true",
         help=(
@@ -2203,6 +2390,72 @@ def build_parser(
 
     p_release_check.set_defaults(
         func=cmd_release_check
+    )
+
+    p_verify_dist = (
+        sub.add_parser(
+            "verify-dist",
+            help=(
+                "Validate built wheel and "
+                "source distribution artifacts"
+            ),
+        )
+    )
+
+    p_verify_dist.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_verify_dist.set_defaults(
+        func=cmd_verify_dist
+    )
+
+    p_release_manifest = (
+        sub.add_parser(
+            "release-manifest",
+            help=(
+                "Validate distribution artifacts "
+                "and write SHA-256 release metadata"
+            ),
+        )
+    )
+
+    p_release_manifest.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_release_manifest.add_argument(
+        "--source-commit",
+        default=None,
+        help=(
+            "Optional source commit recorded "
+            "in release-manifest.json"
+        ),
+    )
+
+    p_release_manifest.set_defaults(
+        func=cmd_release_manifest
+    )
+
+    p_clean_install = (
+        sub.add_parser(
+            "verify-clean-install",
+            help=(
+                "Install the built wheel in a fresh "
+                "virtual environment and verify it"
+            ),
+        )
+    )
+
+    p_clean_install.add_argument(
+        "--path",
+        default=".",
+    )
+
+    p_clean_install.set_defaults(
+        func=cmd_verify_clean_install
     )
 
     p_pre_release_audit = (
