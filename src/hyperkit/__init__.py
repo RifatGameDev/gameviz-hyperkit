@@ -235,8 +235,13 @@ from .lifecycle import (
 )
 
 from .api_contract import (
+    FROZEN_API_VERSION,
+    FROZEN_PUBLIC_API,
     REQUIRED_PUBLIC_API,
+    get_api_fingerprint,
     get_missing_public_api,
+    get_unexpected_public_api,
+    validate_frozen_public_api,
     validate_public_api,
 )
 
@@ -464,8 +469,13 @@ __all__ = [
     "start_runtime",
     "stop_runtime",
     "run_game",
+    "FROZEN_API_VERSION",
+    "FROZEN_PUBLIC_API",
     "REQUIRED_PUBLIC_API",
+    "get_api_fingerprint",
     "get_missing_public_api",
+    "get_unexpected_public_api",
+    "validate_frozen_public_api",
     "validate_public_api",
     "DebugOverlay",
     "RuntimeDiagnostics",
@@ -509,7 +519,7 @@ __all__ = [
 ]
 
 
-__version__ = "0.8.0.dev0"
+__version__ = "0.9.0b1"
 
 # Phase 73 mobile public API
 from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
