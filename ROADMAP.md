@@ -24,16 +24,16 @@ v0.8.0  Build, Publishing + Production Hardening
 v0.9.0  API Freeze + Public Beta
    ↓
 v1.0.0  Stable Release
-          ← CURRENT DEVELOPMENT STAGE
+          ← CURRENT STABLE RELEASE
 ```
 
 ## Current State
 
-- Latest published PyPI release: `0.2.0`
+- Latest published PyPI release: `1.0.0`
 - Active package version: `1.0.0`
 - Public compatibility contract: API `1.0`
-- Active development branch: `feature/v1.0-stable-release`
-- Current focus: v1.0 Stable Release
+- Stable release branch: `main`
+- Current focus: v1.0.0 post-release maintenance and next-version planning
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133

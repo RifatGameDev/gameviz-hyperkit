@@ -323,7 +323,7 @@ def generate_stable_release_report(
             passed=_contains(
                 roadmap,
                 "v1.0.0  Stable Release",
-                "CURRENT DEVELOPMENT STAGE",
+                "CURRENT STABLE RELEASE",
                 "Active package version: `1.0.0`",
             ),
             message=(

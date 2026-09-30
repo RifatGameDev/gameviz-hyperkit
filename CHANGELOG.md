@@ -93,7 +93,7 @@ Stable Release.
 - Package version advanced from public beta `0.9.0b1` to stable `1.0.0`.
 - Package maturity advanced from Beta to Production / Stable.
 - API `1.0`, the 256-name frozen public surface, and its pinned fingerprint remain unchanged from the public beta.
-- Real PyPI publication remains an explicit protected action after stable certification.
+- HyperKit `1.0.0` was published to real PyPI through the protected stable-release workflow.
 - Package development version advanced to public beta `0.9.0b1`.
 - Public compatibility contract advanced from API `0.2` to frozen API `1.0`.
 - Package maturity advanced from Alpha to Beta.

@@ -421,7 +421,7 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
                 [
                     "Current State",
                     project_version,
-                    "CURRENT DEVELOPMENT STAGE",
+                    "CURRENT STABLE RELEASE",
                     "v1.0.0",
                     "Stable Release",
                 ],

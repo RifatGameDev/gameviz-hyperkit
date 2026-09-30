@@ -63,7 +63,7 @@ def test_v070_docs_track_current_stage():
         in roadmap
     )
     assert (
-        "CURRENT DEVELOPMENT STAGE"
+        "CURRENT STABLE RELEASE"
         in roadmap
     )
     assert (

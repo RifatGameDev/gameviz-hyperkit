@@ -15,7 +15,7 @@ It is designed for beginners, students, game-jam developers, indie developers, a
 
 ## Current Release Status
 
-HyperKit is now in the **v1.0.0 stable-release certification stage**.
+HyperKit **v1.0.0 is the current stable release and is published on PyPI**.
 
 Current package status:
 
@@ -28,7 +28,7 @@ Current package status:
 - Frozen top-level public exports: `256`
 - Supported Python versions: Python 3.9–3.12
 
-The 1.0 line preserves the frozen API established during the v0.9 public beta and adds final stable-release certification, package verification, and protected publication tooling. Real PyPI publication remains an explicit final action rather than an automatic side effect.
+The 1.0 line preserves the frozen API established during the v0.9 public beta and adds final stable-release certification, package verification, and protected publication tooling. HyperKit v1.0.0 has been published to real PyPI. Future PyPI releases remain explicit protected actions rather than automatic side effects.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 

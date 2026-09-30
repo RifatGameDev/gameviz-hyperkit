@@ -8,7 +8,7 @@ milestones of HyperKit.
 - Package name: `gameviz-hyperkit`
 - Import name: `hyperkit`
 - CLI command: `hyperkit`
-- Latest published PyPI release: `0.2.0`
+- Latest published PyPI release: `1.0.0`
 - Stable package version: `1.0.0`
 - Public compatibility contract: API `1.0`
 
@@ -34,7 +34,7 @@ v0.8.0  Build, Publishing + Production Hardening
 v0.9.0  API Freeze + Public Beta
    ↓
 v1.0.0  Stable Release
-          ← ACTIVE RELEASE STAGE
+          ← CURRENT STABLE RELEASE
 ```
 
 ## 1.0.0 — Stable Release
@@ -53,8 +53,8 @@ Delivered:
 - Python 3.9–3.12 stable release workflow
 - protected real-PyPI publication path requiring explicit confirmation and tag `v1.0.0`
 
-Real PyPI publication remains a separate explicit action after the final
-stable verification gates pass.
+GameViz HyperKit `1.0.0` has been published to real PyPI through the
+protected stable-release workflow.
 
 ## 0.9.0b1 — Public Beta Milestone
 
@@ -176,7 +176,7 @@ Delivered foundations include:
 
 ## 0.2.0 — Published Release
 
-Version `0.2.0` is the latest published PyPI release.
+Version `0.2.0` was an earlier published PyPI release.
 
 It introduced the core SDK/runtime foundation, including:
 

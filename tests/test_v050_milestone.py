@@ -47,7 +47,7 @@ def test_v050_docs_track_current_stage():
 
     assert "Active development version: `1.0.0`" in readme
     assert "v0.5.0  Complete Games + Developer Tooling" in roadmap
-    assert "CURRENT DEVELOPMENT STAGE" in roadmap
+    assert "CURRENT STABLE RELEASE" in roadmap
     assert "Current development version: ``1.0.0``." in changelog
 
 
