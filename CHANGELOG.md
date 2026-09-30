@@ -15,9 +15,34 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``1.0.0``.
+Current development version: ``1.0.1``.
 
-No post-1.0 changes recorded yet.
+No unreleased changes are recorded after the 1.0.1 patch release.
+
+---
+
+## 1.0.1 - 2026-09-30
+
+Stable patch release.
+
+### Fixed
+
+- Corrected stale release-status text that remained in the PyPI long description from the original 1.0.0 package build.
+- Synchronized current release markers and stable-release validation with the published patch version.
+
+### Documentation
+
+- Updated README, roadmap, version history, and release-readiness documentation for HyperKit `1.0.1`.
+- Added dedicated `v1.0.1` patch-release documentation while preserving the historical `v1.0.0` stable-release record.
+
+### Internal
+
+- Updated package/module version identity and protected release workflow from `1.0.0` to `1.0.1`.
+- Preserved API compatibility contract `1.0`, the frozen 256-name public surface, and the pinned API fingerprint.
+
+### Validation
+
+- Requires the complete Python 3.9–3.12 CI matrix, full regression suite, stable-release certification, distribution verification, and clean-install verification before publication.
 
 ---
 
