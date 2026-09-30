@@ -9,7 +9,7 @@ CHANGELOG = Path("CHANGELOG.md")
 
 
 def test_v060_development_version_and_api_contract():
-    assert hyperkit.__version__ == "0.7.0.dev0"
+    assert hyperkit.__version__ == "0.8.0.dev0"
     assert hyperkit.API_VERSION == "0.2"
 
 
@@ -45,7 +45,7 @@ def test_v060_docs_track_current_stage():
 
     assert (
         "Active development version: "
-        "`0.7.0.dev0`"
+        "`0.8.0.dev0`"
         in readme
     )
     assert (
@@ -59,7 +59,7 @@ def test_v060_docs_track_current_stage():
     )
     assert (
         "Current development version: "
-        "``0.7.0.dev0``."
+        "``0.8.0.dev0``."
         in changelog
     )
 
