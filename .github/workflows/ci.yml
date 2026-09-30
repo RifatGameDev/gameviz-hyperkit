@@ -37,6 +37,9 @@ jobs:
       - name: Run automated tests
         run: pytest -q
 
+      - name: Validate frozen public API
+        run: hyperkit api-freeze-check
+
       - name: Validate built-in templates
         run: hyperkit validate-templates
 
