@@ -20,14 +20,14 @@ HyperKit is publicly available on PyPI and remains in active development toward 
 Current package status:
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.7.0.dev0`
+- Active development version: `0.8.0.dev0`
 - Installation command: `pip install gameviz-hyperkit`
 - Package maturity: Alpha / active SDK development
 - Public compatibility contract: API `0.2`
 - API stability target: future `1.0.0`
 - Supported Python versions: Python 3.9–3.12
 
-The current development line builds on the mobile runtime foundation by expanding HyperKit's content-driven workflow and reusable gameplay systems. HyperKit v0.7 adds content manifests, prefabs, cached data preloading, level sequencing, object pooling, and sprite frame-pattern helpers.
+The current development line focuses on production hardening. HyperKit v0.8 adds verified distribution artifacts, clean-install checks, SHA-256 release manifests, gated Trusted Publishing workflows, and a separate store-oriented Android production profile with signing readiness checks.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -113,6 +113,13 @@ HyperKit is useful for:
 - Level sequence/progression helper
 - Reusable object pooling
 - Sprite frame-pattern generation
+- Distribution artifact verification
+- SHA-256 release manifests
+- Fresh-wheel clean-install verification
+- Gated TestPyPI/PyPI Trusted Publishing workflow
+- Production Android API 36/AAB profile
+- Android signing readiness validation
+- Signed Android production release workflow
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
@@ -386,6 +393,21 @@ hyperkit validate-complete-games
 hyperkit validate-content --manifest content.json
 ```
 
+### Verify built Python distributions
+
+```bash
+hyperkit verify-dist
+hyperkit release-manifest
+hyperkit verify-clean-install
+```
+
+### Generate production Android configuration
+
+```bash
+hyperkit init-android --production --overwrite
+hyperkit android-release-doctor
+```
+
 ### Show the package health report
 
 ```bash
@@ -498,6 +520,7 @@ Package publication is handled through the project's controlled release workflow
 - [HyperKit v0.5 — Complete Games + Developer Tooling](docs/V050_COMPLETE_GAMES_TOOLING.md)
 - [HyperKit v0.6 — Mobile Production Runtime + Performance](docs/V060_MOBILE_RUNTIME_PERFORMANCE.md)
 - [HyperKit v0.7 — Content, Assets + Advanced Game Features](docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md)
+- [HyperKit v0.8 — Build, Publishing + Production Hardening](docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -529,17 +552,18 @@ Package publication is handled through the project's controlled release workflow
 
 ## Roadmap
 
-The active `0.7.0.dev0` line focuses on **Content, Assets + Advanced Game Features**:
+The active `0.8.0.dev0` line focuses on **Build, Publishing + Production Hardening**:
 
-- add structured content manifests with id/kind/tag lookup
-- add reusable data-driven prefabs
-- add opt-in cached data loading and preloading
-- add ordered level sequencing for multi-level games
-- add reusable object pooling for common gameplay objects
-- add sprite frame-pattern generation
-- keep all v0.6 mobile runtime/performance checks green
+- verify wheel and source-distribution structure and version identity
+- generate SHA-256 checksums and machine-readable release manifests
+- verify the built wheel from a fresh virtual environment
+- gate TestPyPI and PyPI publication behind the full release workflow
+- provide a store-oriented Android API 36 / AAB production profile
+- validate Android signing inputs without exposing secret values
+- build signed Android release artifacts through a protected workflow
+- keep all v0.7 content/gameplay and earlier regression gates green
 
-After v0.7, the roadmap continues through build/publishing hardening and public beta. The later v0.9 stage will freeze the intended 1.0 public API before the stable `1.0.0` milestone.
+After v0.8, the roadmap moves to v0.9 API Freeze + Public Beta before the stable `1.0.0` milestone.
 
 ---
 
