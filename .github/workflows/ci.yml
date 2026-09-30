@@ -40,6 +40,9 @@ jobs:
       - name: Validate frozen public API
         run: hyperkit api-freeze-check
 
+      - name: Validate stable release certification
+        run: hyperkit stable-release-check
+
       - name: Validate built-in templates
         run: hyperkit validate-templates
 
