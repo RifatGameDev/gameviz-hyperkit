@@ -9,7 +9,7 @@ milestones of HyperKit.
 - Import name: `hyperkit`
 - CLI command: `hyperkit`
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.7.0.dev0`
+- Active development version: `0.8.0.dev0`
 - Public compatibility contract: API `0.2`
 
 ## Development Roadmap
@@ -28,20 +28,35 @@ v0.5.0  Complete Games + Developer Tooling
 v0.6.0  Mobile Production Runtime + Performance
    ↓
 v0.7.0  Content, Assets + Advanced Game Features
-          ← ACTIVE DEVELOPMENT
    ↓
 v0.8.0  Build, Publishing + Production Hardening
+          ← ACTIVE DEVELOPMENT
    ↓
 v0.9.0  API Freeze + Public Beta
    ↓
 v1.0.0  Stable Release
 ```
 
-## 0.7.0 — Active Development
+## 0.8.0 — Active Development
+
+Focus: Build, Publishing + Production Hardening.
+
+Current work includes:
+
+- distribution artifact verification
+- SHA-256 checksum and release-manifest generation
+- isolated clean-install wheel verification
+- gated TestPyPI/PyPI Trusted Publishing
+- controlled build inputs
+- store-oriented Android API 36 / AAB production profile
+- Android signing readiness validation
+- protected signed Android release workflow
+
+## 0.7.0 — Development Milestone
 
 Focus: Content, Assets + Advanced Game Features.
 
-Current work includes:
+Delivered:
 
 - structured content manifests
 - content lookup by id, kind, and tags
@@ -50,6 +65,9 @@ Current work includes:
 - ordered multi-level progression
 - reusable object pooling
 - sprite frame-pattern generation
+- content validation CLI
+
+The v0.7 closeout reached 1032 passing automated tests.
 
 ## 0.6.0 — Development Milestone
 
