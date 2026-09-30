@@ -109,10 +109,22 @@ supports three destinations:
 - `testpypi` — verify then publish to TestPyPI
 - `pypi` — verify then publish to real PyPI
 
-Real PyPI publication requires both:
+Real PyPI publication requires all of the following:
 
 - selecting the `pypi` target
 - explicitly enabling the production confirmation input
+- a stable `MAJOR.MINOR.PATCH` package version
+- running the workflow from the matching `v<version>` Git tag
+
+HyperKit also exposes:
+
+```bash
+hyperkit publish-check --target testpypi
+hyperkit publish-check --target pypi
+```
+
+Development and pre-release versions are accepted for TestPyPI validation
+but blocked from the controlled real-PyPI path.
 
 Publishing uses GitHub OIDC / PyPI Trusted Publishing rather than storing a PyPI API token in the repository workflow.
 
