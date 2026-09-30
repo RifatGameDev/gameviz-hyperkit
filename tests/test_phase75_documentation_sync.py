@@ -60,7 +60,7 @@ def test_roadmap_tracks_completion_audit():
     assert "Phase 75 — SDK Completion Audit" in content
     assert "1.0.0" in content
     assert "919 passing tests" in content
-    assert "Feature Freeze Rule" in content
+    assert "Stable API Rule" in content
 
 
 def test_changelog_records_phase75_hardening():
@@ -71,7 +71,7 @@ def test_changelog_records_phase75_hardening():
     assert "Phase 75 SDK completion audit and hardening" in content
     assert "919 passing tests" in content
     assert (
-        "API compatibility contract is frozen at `1.0`"
+        "API compatibility contract is stable at `1.0`"
         in content
     )
 
