@@ -431,6 +431,27 @@ REQUIRED_PATHS = {
     "v0.9 milestone tests": (
         "tests/test_v090_milestone.py"
     ),
+    "v1.0 stable release source": (
+        "src/hyperkit/stable_release.py"
+    ),
+    "v1.0 stable release documentation": (
+        "docs/V100_STABLE_RELEASE.md"
+    ),
+    "v1.0 stable release workflow": (
+        ".github/workflows/stable-release.yml"
+    ),
+    "v1.0 stable release tests": (
+        "tests/test_v100_stable_release.py"
+    ),
+    "v1.0 CLI tests": (
+        "tests/test_v100_cli.py"
+    ),
+    "v1.0 workflow tests": (
+        "tests/test_v100_workflow.py"
+    ),
+    "v1.0 milestone tests": (
+        "tests/test_v100_milestone.py"
+    ),
 }
 
 
