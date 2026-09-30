@@ -422,8 +422,8 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
                     "Current State",
                     project_version,
                     "CURRENT STABLE RELEASE",
-                    "v1.0.0",
-                    "Stable Release",
+                    "v1.0.1",
+                    "Stable Patch Release",
                 ],
             )
         ),
@@ -585,14 +585,14 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
             [
                 "workflow_dispatch:",
                 "stable-release-check",
-                "refs/tags/v1.0.0",
+                "refs/tags/v1.0.1",
                 "publish-check --target pypi",
                 "verify-clean-install",
                 "pypa/gh-action-pypi-publish",
             ],
         ),
         message=(
-            "Protected HyperKit 1.0 stable workflow found"
+            "Protected HyperKit 1.0.1 stable patch workflow found"
         ),
     )
 
