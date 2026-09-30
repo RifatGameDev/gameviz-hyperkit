@@ -97,6 +97,16 @@ def test_v080_publish_jobs_upload_only_python_distributions():
     ) == 2
 
 
+def test_v080_real_pypi_requires_stable_version_and_matching_tag():
+    content = PACKAGE_RELEASE.read_text(
+        encoding="utf-8"
+    )
+
+    assert "hyperkit publish-check --target" in content
+    assert 'EXPECTED_REF="refs/tags/v$VERSION"' in content
+    assert 'if [ "$GITHUB_REF" != "$EXPECTED_REF" ]' in content
+
+
 def test_v080_package_release_controls_build_inputs():
     content = PACKAGE_RELEASE.read_text(
         encoding="utf-8"
