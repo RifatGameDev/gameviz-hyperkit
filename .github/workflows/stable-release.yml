@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_pypi:
-        description: Publish the verified stable 1.0.0 bundle to PyPI
+        description: Publish the verified stable 1.0.1 bundle to PyPI
         required: false
         type: boolean
         default: false
@@ -78,7 +78,7 @@ jobs:
 
       - name: Validate stable package identity
         run: |
-          python -c "import hyperkit; assert hyperkit.__version__ == '1.0.0'"
+          python -c "import hyperkit; assert hyperkit.__version__ == '1.0.1'"
           python -c "import hyperkit; assert hyperkit.API_VERSION == '1.0'"
           hyperkit api-freeze-check
           hyperkit stable-release-check
@@ -88,8 +88,8 @@ jobs:
         if: ${{ inputs.publish_pypi == true }}
         shell: bash
         run: |
-          if [ "$GITHUB_REF" != "refs/tags/v1.0.0" ]; then
-            echo "Stable PyPI publication requires refs/tags/v1.0.0."
+          if [ "$GITHUB_REF" != "refs/tags/v1.0.1" ]; then
+            echo "Stable PyPI publication requires refs/tags/v1.0.1."
             echo "Current ref: $GITHUB_REF"
             exit 1
           fi
@@ -116,7 +116,7 @@ jobs:
       - name: Upload verified stable bundle
         uses: actions/upload-artifact@v4
         with:
-          name: hyperkit-1.0.0-stable-bundle
+          name: hyperkit-1.0.1-stable-bundle
           path: |
             dist/*.whl
             dist/*.tar.gz
@@ -139,7 +139,7 @@ jobs:
       - name: Download verified stable bundle
         uses: actions/download-artifact@v4
         with:
-          name: hyperkit-1.0.0-stable-bundle
+          name: hyperkit-1.0.1-stable-bundle
           path: dist
 
       - name: Prepare package-only upload directory
@@ -148,7 +148,7 @@ jobs:
           cp dist/*.whl publish-dist/
           cp dist/*.tar.gz publish-dist/
 
-      - name: Publish stable HyperKit 1.0.0 to PyPI
+      - name: Publish stable HyperKit 1.0.1 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: publish-dist/
