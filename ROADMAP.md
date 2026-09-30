@@ -20,9 +20,9 @@ v0.6.0  Mobile Production Runtime + Performance
 v0.7.0  Content, Assets + Advanced Game Features
    ↓
 v0.8.0  Build, Publishing + Production Hardening
-          ← CURRENT DEVELOPMENT STAGE
    ↓
 v0.9.0  API Freeze + Public Beta
+          ← CURRENT DEVELOPMENT STAGE
    ↓
 v1.0.0  Stable Release
 ```
@@ -30,10 +30,10 @@ v1.0.0  Stable Release
 ## Current State
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.8.0.dev0`
-- Public compatibility contract: API `0.2`
-- Active development branch: `feature/v0.8-build-publishing-production-hardening`
-- Current focus: v0.8 Build, Publishing + Production Hardening
+- Active development version: `0.9.0b1`
+- Public compatibility contract: API `1.0`
+- Active development branch: `feature/v0.9-api-freeze-public-beta`
+- Current focus: v0.9 API Freeze + Public Beta
 - v0.4 final automated regression checkpoint: 949 passing tests
 - v0.4 automated closeout:
   - project health: 133/133
@@ -271,17 +271,55 @@ The v0.8 milestone converts release guidance into executable production gates.
 - all v0.7 regressions remain green
 - wheel/sdist and `twine check` remain green
 
+v0.8 completed with 1069 passing automated tests, project health 165/165,
+template validation 42/42, complete-game validation 54/54,
+generated-project validation 90/90, release readiness 147/147,
+pre-release audit 10/10, clean wheel installation, distribution verification,
+release-manifest generation, and TestPyPI publishing-target validation.
+
 ## v0.9.0 — API Freeze + Public Beta
 
-Planned focus:
+The v0.9 milestone freezes the intended top-level public API for HyperKit 1.0
+and validates the SDK as a public beta.
 
-- public API review
-- naming and module consistency
-- compatibility contract update
-- deprecation review
-- API documentation
-- feature freeze
-- public beta QA
+### Public API Freeze
+
+- package beta version `0.9.0b1`
+- compatibility contract API `1.0`
+- exact `FROZEN_PUBLIC_API` export set
+- pinned export count and SHA-256 API fingerprint
+- missing/unexpected/duplicate export rejection
+- `hyperkit api-freeze-check`
+- feature freeze for broad new public surface
+
+### Compatibility and Deprecation Review
+
+- API 1.0 major-version compatibility rules
+- frozen API validation in CI and release readiness
+- existing deprecation framework retained for future compatibility transitions
+- incompatible public renames/removals blocked during beta without explicit freeze review
+
+### Public Beta Validation
+
+- Python 3.9–3.12 beta regression matrix
+- full health/template/complete-game/generated-project/release/audit gates
+- wheel/sdist build and `twine check`
+- distribution manifest and clean-install verification
+- optional TestPyPI publication through Trusted Publishing
+- no real-PyPI publication from the dedicated beta workflow
+
+### v0.9 Definition of Done
+
+- exact frozen API tests pass
+- compatibility contract 1.0 tests pass
+- API fingerprint and export-count tests pass
+- API freeze CLI tests pass
+- public beta workflow tests pass
+- all v0.8 regressions remain green
+- Python 3.9–3.12 CI remains green
+- wheel/sdist and `twine check` remain green
+- clean-install verification remains green
+- health/release/pre-release audits remain green
 
 ## v1.0.0 — Stable Release
 
@@ -300,9 +338,11 @@ Stable release gates include:
 
 ## Feature Freeze Rule
 
-Feature freeze applies at the appropriate roadmap stage, especially v0.9
-and release-candidate work. Before then, each minor version should add only
-the features defined for that milestone.
+Feature freeze is active during v0.9 public beta. The frozen top-level
+public API should not gain incompatible changes, removals, or unreviewed
+exports before stable 1.0.
 
-Unrelated feature ideas should move to a later version instead of expanding
-the current milestone indefinitely.
+Release-blocking fixes, documentation corrections, implementation fixes
+behind the frozen surface, and explicitly reviewed compatibility changes
+remain allowed. Broad new feature categories should wait until after the
+stable 1.0 release decision.
