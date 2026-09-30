@@ -9,8 +9,8 @@ CHANGELOG = Path("CHANGELOG.md")
 
 
 def test_v070_development_version_and_api_contract():
-    assert hyperkit.__version__ == "0.8.0.dev0"
-    assert hyperkit.API_VERSION == "0.2"
+    assert hyperkit.__version__ == "0.9.0b1"
+    assert hyperkit.API_VERSION == "1.0"
 
 
 def test_v070_public_content_and_gameplay_exports():
@@ -54,7 +54,7 @@ def test_v070_docs_track_current_stage():
 
     assert (
         "Active development version: "
-        "`0.8.0.dev0`"
+        "`0.9.0b1`"
         in readme
     )
     assert (
@@ -68,7 +68,7 @@ def test_v070_docs_track_current_stage():
     )
     assert (
         "Current development version: "
-        "``0.8.0.dev0``."
+        "``0.9.0b1``."
         in changelog
     )
 
