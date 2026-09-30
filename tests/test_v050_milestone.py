@@ -9,7 +9,7 @@ CHANGELOG = Path("CHANGELOG.md")
 
 
 def test_v050_development_version_and_api_contract():
-    assert hyperkit.__version__ == "0.9.0b1"
+    assert hyperkit.__version__ == "1.0.0"
     assert hyperkit.API_VERSION == "1.0"
 
 
@@ -45,10 +45,10 @@ def test_v050_docs_track_current_stage():
         encoding="utf-8"
     )
 
-    assert "Active development version: `0.9.0b1`" in readme
+    assert "Active development version: `1.0.0`" in readme
     assert "v0.5.0  Complete Games + Developer Tooling" in roadmap
     assert "CURRENT DEVELOPMENT STAGE" in roadmap
-    assert "Current development version: ``0.9.0b1``." in changelog
+    assert "Current development version: ``1.0.0``." in changelog
 
 
 def test_v050_health_tracks_milestone_artifacts():
