@@ -84,6 +84,19 @@ def test_v080_package_release_uses_trusted_publishing():
     assert "api-token" not in content.lower()
 
 
+def test_v080_publish_jobs_upload_only_python_distributions():
+    content = PACKAGE_RELEASE.read_text(
+        encoding="utf-8"
+    )
+
+    assert "mkdir -p publish-dist" in content
+    assert "cp dist/*.whl publish-dist/" in content
+    assert "cp dist/*.tar.gz publish-dist/" in content
+    assert content.count(
+        "packages-dir: publish-dist/"
+    ) == 2
+
+
 def test_v080_package_release_controls_build_inputs():
     content = PACKAGE_RELEASE.read_text(
         encoding="utf-8"
