@@ -15,9 +15,22 @@ HyperKit currently uses the following change categories:
 
 ## Unreleased
 
-Current development version: ``0.9.0b1``.
+No post-1.0 changes recorded yet.
+
+---
+
+## 1.0.0 - 2026-09-30
+
+Stable Release.
 
 ### Added
+
+- v1.0 Stable Release milestone.
+- Final `hyperkit stable-release-check` certification command.
+- Machine-readable stable-release certificate generation.
+- Dedicated protected `stable-release.yml` workflow for the `v1.0.0` release.
+- Final stable package identity and Production/Stable metadata.
+- Stable release documentation and post-1.0 versioning policy.
 
 - v0.9 API Freeze + Public Beta milestone.
 - Frozen intended HyperKit 1.0 top-level public API.
@@ -75,6 +88,10 @@ Current development version: ``0.9.0b1``.
 
 ### Changed
 
+- Package version advanced from public beta `0.9.0b1` to stable `1.0.0`.
+- Package maturity advanced from Beta to Production / Stable.
+- API `1.0`, the 256-name frozen public surface, and its pinned fingerprint remain unchanged from the public beta.
+- Real PyPI publication remains an explicit protected action after stable certification.
 - Package development version advanced to public beta `0.9.0b1`.
 - Public compatibility contract advanced from API `0.2` to frozen API `1.0`.
 - Package maturity advanced from Alpha to Beta.
@@ -103,6 +120,8 @@ Current development version: ``0.9.0b1``.
 
 ### Validation
 
+- v0.9 closeout finished locally with 1091 passing automated tests before v1.0 stable certification started.
+- v0.9 closeout passed health 171/171, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 155/155, pre-release audit 10/10, exact API freeze validation, API `1.0`, 256 frozen exports, and the pinned API fingerprint.
 - v0.8 closeout finished with 1069 passing automated tests before v0.9 beta development started.
 - v0.8 closeout passed health 165/165, templates 42/42, complete games 54/54, generated projects 90/90, release readiness 147/147, pre-release audit 10/10, distribution verification, release-manifest generation, clean-install verification, and TestPyPI publishing-target validation.
 - v0.7 closeout finished with 1032 passing automated tests before v0.8 development started.
@@ -114,7 +133,7 @@ Current development version: ``0.9.0b1``.
 - v0.4 closeout finished with 949 passing automated tests before v0.5 development started.
 - v0.4 closeout reports passed: health 133/133, templates 42/42, generated projects 90/90, release readiness 117/117, pre-release audit 10/10.
 - Phase 75 regression suite reached 919 passing tests before documentation synchronization.
-- API compatibility contract is frozen at `1.0` while package development is in public beta at `0.9.0b1`.
+- API compatibility contract is stable at `1.0` for package version `1.0.0`.
 
 ---
 
