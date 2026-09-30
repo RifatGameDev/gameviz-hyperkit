@@ -78,6 +78,9 @@ REQUIRED_RELEASE_FILES = [
     ".github/workflows/android-production-release.yml",
     "docs/V090_API_FREEZE_PUBLIC_BETA.md",
     ".github/workflows/public-beta.yml",
+    "src/hyperkit/stable_release.py",
+    "docs/V100_STABLE_RELEASE.md",
+    ".github/workflows/stable-release.yml",
     "docs/VERSION_HISTORY.md",
     "docs/GENERATED_PROJECT_SMOKE_TESTS.md",
     "docs/PROJECT_HEALTH_REPORT.md",
@@ -199,6 +202,10 @@ REQUIRED_RELEASE_TESTS = [
     "tests/test_v090_cli.py",
     "tests/test_v090_workflows.py",
     "tests/test_v090_milestone.py",
+    "tests/test_v100_stable_release.py",
+    "tests/test_v100_cli.py",
+    "tests/test_v100_workflow.py",
+    "tests/test_v100_milestone.py",
 ]
 
 REQUIRED_PYPROJECT_TERMS = [
@@ -550,6 +557,45 @@ def generate_release_report(root: str | Path = ".") -> ReleaseReport:
         ),
     )
 
+    stable_workflow = (
+        root_path
+        / ".github"
+        / "workflows"
+        / "stable-release.yml"
+    )
+
+    report.add(
+        name="Stable release certification command",
+        passed=_file_contains(
+            cli_path,
+            [
+                "stable-release-check",
+                "cmd_stable_release_check",
+            ],
+        ),
+        message=(
+            "Stable release certification CLI found"
+        ),
+    )
+
+    report.add(
+        name="Stable release workflow",
+        passed=_file_contains(
+            stable_workflow,
+            [
+                "workflow_dispatch:",
+                "stable-release-check",
+                "refs/tags/v1.0.0",
+                "publish-check --target pypi",
+                "verify-clean-install",
+                "pypa/gh-action-pypi-publish",
+            ],
+        ),
+        message=(
+            "Protected HyperKit 1.0 stable workflow found"
+        ),
+    )
+
     return report
 
 
@@ -579,6 +625,7 @@ def format_release_report(report: ReleaseReport) -> str:
         lines.append("  hyperkit verify-dist")
         lines.append("  hyperkit release-manifest")
         lines.append("  hyperkit verify-clean-install")
+        lines.append("  hyperkit stable-release-check")
     else:
         lines.append("Release readiness status: FAIL")
         lines.append("Fix failed checks before building a release.")
