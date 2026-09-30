@@ -281,8 +281,8 @@ artifacts, clean installation, and the stable-release certificate.
 Real PyPI publication is disabled by default and requires:
 
 - explicit `publish_pypi` confirmation
-- package version exactly `1.0.0`
-- Git tag exactly `v1.0.0`
+- package version exactly `1.0.1`
+- Git tag exactly `v1.0.1`
 - the protected `pypi` environment
 - all stable certification jobs passing
 
