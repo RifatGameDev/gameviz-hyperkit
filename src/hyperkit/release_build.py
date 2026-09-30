@@ -475,14 +475,17 @@ def write_checksum_manifest(
         )
     ]
 
-    output.write_text(
-        "\n".join(
-            lines
-        )
-        + "\n",
+    with output.open(
+        "w",
         encoding="utf-8",
         newline="\n",
-    )
+    ) as handle:
+        handle.write(
+            "\n".join(
+                lines
+            )
+            + "\n"
+        )
 
     return output
 
@@ -538,16 +541,19 @@ def write_release_manifest(
         ],
     }
 
-    output.write_text(
-        json.dumps(
-            payload,
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
+    with output.open(
+        "w",
         encoding="utf-8",
         newline="\n",
-    )
+    ) as handle:
+        handle.write(
+            json.dumps(
+                payload,
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n"
+        )
 
     return output
 
