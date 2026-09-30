@@ -44,6 +44,7 @@ Run:
 
 ```bash
 hyperkit health
+hyperkit api-freeze-check
 hyperkit validate-templates
 hyperkit validate-complete-games
 hyperkit validate-generated-projects
@@ -52,6 +53,10 @@ hyperkit pre-release-audit
 ```
 
 Every command must pass.
+
+During v0.9 public beta and the 1.0 release path, `api-freeze-check` is a
+required gate. It verifies the exact frozen 1.0 top-level public export set,
+the pinned export count, and the API fingerprint.
 
 ---
 
@@ -260,6 +265,15 @@ The workflow uses Trusted Publishing / OIDC; do not store PyPI API tokens in the
 ---
 
 ## 15. Publishing Rule
+
+For the v0.9 public beta, use the dedicated workflow:
+
+```text
+.github/workflows/public-beta.yml
+```
+
+It validates the frozen API and may optionally publish the verified beta
+bundle to TestPyPI. It does not publish to real PyPI.
 
 Use TestPyPI when release-candidate or packaging validation is useful.
 
