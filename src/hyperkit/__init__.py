@@ -519,7 +519,7 @@ __all__ = [
 ]
 
 
-__version__ = "0.9.0b1"
+__version__ = "1.0.0"
 
 # Phase 73 mobile public API
 from .mobile import DisplayOrientation, MobileDisplayProfile, MobileViewport, SafeAreaInsets, normalize_orientation
