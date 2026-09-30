@@ -383,6 +383,36 @@ REQUIRED_PATHS = {
     "v0.7 milestone tests": (
         "tests/test_v070_milestone.py"
     ),
+    "v0.8 release build source": (
+        "src/hyperkit/release_build.py"
+    ),
+    "v0.8 Android release source": (
+        "src/hyperkit/android_release.py"
+    ),
+    "v0.8 documentation": (
+        "docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md"
+    ),
+    "v0.8 package release workflow": (
+        ".github/workflows/release-package.yml"
+    ),
+    "v0.8 Android production workflow": (
+        ".github/workflows/android-production-release.yml"
+    ),
+    "v0.8 release build tests": (
+        "tests/test_v080_release_build.py"
+    ),
+    "v0.8 Android production tests": (
+        "tests/test_v080_android_production.py"
+    ),
+    "v0.8 CLI tests": (
+        "tests/test_v080_cli.py"
+    ),
+    "v0.8 workflow tests": (
+        "tests/test_v080_workflows.py"
+    ),
+    "v0.8 milestone tests": (
+        "tests/test_v080_milestone.py"
+    ),
 }
 
 
