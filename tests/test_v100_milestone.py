@@ -14,7 +14,7 @@ CHANGELOG = Path("CHANGELOG.md")
 
 
 def test_v100_stable_version_and_api_contract():
-    assert hyperkit.__version__ == "1.0.0"
+    assert hyperkit.__version__ == "1.0.1"
     assert hyperkit.API_VERSION == "1.0"
     assert FROZEN_API_EXPORT_COUNT == 256
     assert len(
@@ -34,7 +34,7 @@ def test_v100_docs_track_stable_release():
     )
 
     assert (
-        "Stable package version: `1.0.0`"
+        "Stable package version: `1.0.1`"
         in readme
     )
     assert (
@@ -46,7 +46,7 @@ def test_v100_docs_track_stable_release():
         in readme
     )
     assert (
-        "v1.0.0  Stable Release"
+        "v1.0.1  Stable Patch Release"
         in roadmap
     )
     assert (
@@ -54,11 +54,12 @@ def test_v100_docs_track_stable_release():
         in roadmap
     )
     assert (
-        "Active package version: `1.0.0`"
+        "Active package version: `1.0.1`"
         in roadmap
     )
+    assert "## 1.0.1" in changelog
     assert "## 1.0.0" in changelog
-    assert "Stable Release" in changelog
+    assert "Stable patch release" in changelog
 
 
 def test_v100_health_tracks_stable_artifacts():
@@ -74,11 +75,13 @@ def test_v100_health_tracks_stable_artifacts():
     expected = {
         "src/hyperkit/stable_release.py",
         "docs/V100_STABLE_RELEASE.md",
+        "docs/V101_PATCH_RELEASE.md",
         ".github/workflows/stable-release.yml",
         "tests/test_v100_stable_release.py",
         "tests/test_v100_cli.py",
         "tests/test_v100_workflow.py",
         "tests/test_v100_milestone.py",
+        "tests/test_v101_patch_release.py",
     }
 
     assert expected.issubset(
@@ -99,6 +102,7 @@ def test_v100_release_report_tracks_stable_artifacts():
     for path in (
         "src/hyperkit/stable_release.py",
         "docs/V100_STABLE_RELEASE.md",
+        "docs/V101_PATCH_RELEASE.md",
         ".github/workflows/stable-release.yml",
     ):
         assert (
@@ -111,6 +115,7 @@ def test_v100_release_report_tracks_stable_artifacts():
         "tests/test_v100_cli.py",
         "tests/test_v100_workflow.py",
         "tests/test_v100_milestone.py",
+        "tests/test_v101_patch_release.py",
     ):
         assert (
             f"Required release test: {path}"
