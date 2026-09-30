@@ -9,7 +9,7 @@ milestones of HyperKit.
 - Import name: `hyperkit`
 - CLI command: `hyperkit`
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.9.0b1`
+- Stable package version: `1.0.0`
 - Public compatibility contract: API `1.0`
 
 ## Development Roadmap
@@ -32,16 +32,35 @@ v0.7.0  Content, Assets + Advanced Game Features
 v0.8.0  Build, Publishing + Production Hardening
    ↓
 v0.9.0  API Freeze + Public Beta
-          ← ACTIVE DEVELOPMENT
    ↓
 v1.0.0  Stable Release
+          ← ACTIVE RELEASE STAGE
 ```
 
-## 0.9.0b1 — Active Public Beta
+## 1.0.0 — Stable Release
+
+Focus: Stable Release certification and protected publication.
+
+Delivered:
+
+- stable package version `1.0.0`
+- Production/Stable package metadata
+- API compatibility contract `1.0`
+- unchanged frozen 256-name top-level public API
+- unchanged pinned SHA-256 API fingerprint
+- `hyperkit stable-release-check`
+- machine-readable stable-release certificate
+- Python 3.9–3.12 stable release workflow
+- protected real-PyPI publication path requiring explicit confirmation and tag `v1.0.0`
+
+Real PyPI publication remains a separate explicit action after the final
+stable verification gates pass.
+
+## 0.9.0b1 — Public Beta Milestone
 
 Focus: API Freeze + Public Beta.
 
-Current work includes:
+Delivered:
 
 - frozen intended 1.0 top-level public API
 - API compatibility contract `1.0`
@@ -52,6 +71,9 @@ Current work includes:
 - Python 3.9–3.12 public-beta validation workflow
 - optional TestPyPI beta publication through Trusted Publishing
 - feature freeze for broad new public API additions
+
+The v0.9 local closeout reached 1091 passing tests, health 171/171,
+release readiness 155/155, and pre-release audit 10/10.
 
 ## 0.8.0 — Development Milestone
 
@@ -190,9 +212,10 @@ Development versions may use suffixes such as `.dev0`, and release
 candidates may use `rc1`, `rc2`, and so on.
 
 The package version and public compatibility contract are intentionally
-separate. At the v0.9 public-beta stage the package is `0.9.0b1`, while
-the compatibility contract is frozen at API `1.0`.
+separate. The stable package is `1.0.0`, and its public compatibility
+contract is API `1.0`.
 
-The intended top-level public API for stable 1.0 is now frozen. The
-remaining roadmap work is beta validation and stable-release certification,
-not broad public API expansion.
+The 256-name top-level public surface and its pinned fingerprint were frozen
+during v0.9 and remain the stable 1.0 contract. Future backward-compatible
+fixes and additions may use 1.x releases; incompatible public API changes
+require a future major version.
