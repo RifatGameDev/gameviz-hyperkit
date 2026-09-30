@@ -1,8 +1,8 @@
 # Release Readiness Checklist
 
-This checklist is used before publishing a new HyperKit version.
+This checklist is used before publishing a new HyperKit package version or producing a production Android release.
 
-HyperKit should only be released when the package, templates, examples, documentation, and tests are in a clean state.
+A release should proceed only when the package, templates, generated projects, documentation, build artifacts, and required platform QA are clean.
 
 ---
 
@@ -22,12 +22,12 @@ working tree clean
 
 ---
 
-## 2. Test Suite
+## 2. Full Automated Tests
 
-Run the full test suite:
+Run:
 
 ```bash
-pytest
+pytest -q
 ```
 
 Expected:
@@ -38,55 +38,49 @@ all tests passed
 
 ---
 
-## 3. Editable Install
+## 3. SDK Validation Gates
 
-Reinstall the package locally:
-
-```bash
-pip install -e .
-```
-
-Check the CLI:
+Run:
 
 ```bash
-hyperkit doctor
-hyperkit info
-hyperkit list-templates
+hyperkit health
+hyperkit validate-templates
+hyperkit validate-complete-games
+hyperkit validate-generated-projects
+hyperkit release-check
+hyperkit pre-release-audit
 ```
+
+Every command must pass.
 
 ---
 
-## 4. Template Validation
+## 4. Generated Game Runtime Check
 
-Create and run important starter templates outside the package repo:
+Create important starter games outside the package repository:
 
 ```bash
 cd <workspace-outside-the-repository>
-hyperkit new release-tap-test --template tap_counter
-hyperkit new release-flappy-test --template flappy_mini
-hyperkit new release-runner-test --template swipe_runner
+hyperkit new release-tap-test --template tap-counter
+hyperkit new release-flappy-test --template flappy-mini
+hyperkit new release-runner-test --template swipe-runner
 ```
 
-Run each generated project:
+Run the generated games as appropriate for the target release.
 
-```bash
-cd release-tap-test
-python main.py
-```
-
-Do not commit generated test projects.
+Do not commit generated release-test projects.
 
 ---
 
-## 5. Package Build
+## 5. Clean Package Build
 
-Build the package:
+Remove stale package output, then build:
 
 ```bash
 python -m build
 ```
 
-Expected output:
+Expected:
 
 ```text
 dist/
@@ -96,9 +90,9 @@ dist/
 
 ---
 
-## 6. Package Check
+## 6. Twine Validation
 
-Check the built files:
+Run:
 
 ```bash
 twine check dist/*
@@ -112,20 +106,65 @@ PASSED
 
 ---
 
-## 7. Metadata Checklist
+## 7. Distribution Verification
 
-`pyproject.toml` should include:
+Run:
+
+```bash
+hyperkit verify-dist
+```
+
+The command must confirm exactly one wheel and one source distribution, correct version identity, non-empty artifacts, and valid SHA-256 digests.
+
+---
+
+## 8. Release Artifact Manifest
+
+Run:
+
+```bash
+hyperkit release-manifest
+```
+
+Confirm:
+
+```text
+dist/SHA256SUMS
+dist/release-manifest.json
+```
+
+are present.
+
+---
+
+## 9. Clean-install Verification
+
+Run clean-install verification against the built wheel:
+
+```bash
+hyperkit verify-clean-install
+```
+
+The result must report `PASS`.
+
+This is required in addition to editable-development installation tests.
+
+---
+
+## 10. Package Metadata
+
+Confirm `pyproject.toml` contains:
 
 - package name
-- version
+- package version
 - description
 - README reference
-- Python version requirement
+- Python requirement
 - author information
-- dependencies
-- CLI script entry point
+- runtime dependencies
+- CLI entry points
 
-Expected package identity:
+Expected identity:
 
 ```text
 Package name: gameviz-hyperkit
@@ -135,32 +174,94 @@ CLI command: hyperkit
 
 ---
 
-## 8. Documentation Checklist
+## 11. Documentation
 
-Before release, confirm these files exist:
+Confirm these files are current:
 
 - `README.md`
-- `docs/TEMPLATES.md`
-- `docs/TEMPLATE_HELPERS.md`
-- `docs/TEMPLATE_QUALITY_CHECKLIST.md`
+- `CHANGELOG.md`
+- `ROADMAP.md`
+- `docs/VERSION_HISTORY.md`
+- `docs/RELEASE_BUILD_AUTOMATION.md`
 - `docs/RELEASE_READINESS_CHECKLIST.md`
+- current-version milestone documentation
 
 ---
 
-## 9. Publishing Rule
+## 12. Production Android Configuration
 
-Use TestPyPI for release-candidate or packaging validation when needed.
+For a store-oriented Android release, generate the production profile:
 
-Publish a stable release to real PyPI only after the full release gates pass, including tests, template validation, build validation, `twine check`, clean-install verification, and required Android/provider QA for the target release.
+```bash
+hyperkit init-android --production --overwrite
+```
+
+Then run:
+
+```bash
+hyperkit android-release-doctor
+```
+
+The production doctor must pass before a signed Android release build.
+
+The v0.8 production profile expects API 36, NDK 29, AAB output, and p4a `develop`.
 
 ---
 
-## 10. Release Commit
+## 13. Android Signing Secrets
 
-Use a clear release preparation commit:
+Production Android signing requires:
+
+```text
+P4A_RELEASE_KEYSTORE
+P4A_RELEASE_KEYSTORE_PASSWD
+P4A_RELEASE_KEYALIAS
+P4A_RELEASE_KEYALIAS_PASSWD
+```
+
+Never commit a keystore or signing passwords.
+
+For the GitHub production workflow, store signing inputs in the protected `android-production` environment using:
+
+```text
+ANDROID_KEYSTORE_BASE64
+ANDROID_KEYSTORE_PASSWORD
+ANDROID_KEY_ALIAS
+ANDROID_KEY_ALIAS_PASSWORD
+```
+
+---
+
+## 14. Controlled Publishing
+
+The preferred package release workflow is:
+
+```text
+.github/workflows/release-package.yml
+```
+
+Use `none` for verification only, `testpypi` for package validation, or `pypi` for real PyPI.
+
+Real PyPI additionally requires the explicit production confirmation input.
+
+The workflow uses Trusted Publishing / OIDC; do not store PyPI API tokens in the repository.
+
+---
+
+## 15. Publishing Rule
+
+Use TestPyPI when release-candidate or packaging validation is useful.
+
+Publish a stable release to real PyPI only after the full release gates pass, including tests, template validation, build validation, `twine check`, release artifact verification, clean-install verification, and required Android/provider QA for the target release.
+
+---
+
+## 16. Release Commit
+
+Use a clear release preparation commit and the intended release branch:
 
 ```bash
 git add .
-git commit -m "Prepare release readiness validation"
+git commit -m "Prepare HyperKit release"
 git push origin <release-branch>
 ```
