@@ -15,19 +15,20 @@ It is designed for beginners, students, game-jam developers, indie developers, a
 
 ## Current Release Status
 
-HyperKit is publicly available on PyPI and is now in the **public-beta / API-freeze stage** on the road to stable 1.0.
+HyperKit is now in the **v1.0.0 stable-release certification stage**.
 
 Current package status:
 
 - Latest published PyPI release: `0.2.0`
-- Active development version: `0.9.0b1`
+- Stable package version: `1.0.0`
+- Active development version: `1.0.0`
 - Installation command: `pip install gameviz-hyperkit`
-- Package maturity: Beta / public API freeze
+- Package maturity: Production / Stable
 - Public compatibility contract: API `1.0`
 - Frozen top-level public exports: `256`
 - Supported Python versions: Python 3.9–3.12
 
-The v0.9 line freezes the intended HyperKit 1.0 public surface, adds exact API-freeze validation and a deterministic API fingerprint, and introduces a dedicated public-beta validation workflow. Broad new feature categories are deferred until after the stable 1.0 release decision.
+The 1.0 line preserves the frozen API established during the v0.9 public beta and adds final stable-release certification, package verification, and protected publication tooling. Real PyPI publication remains an explicit final action rather than an automatic side effect.
 
 HyperKit is intended to support complete small 2D mobile games inside its focused scope. It is not intended to replace a full general-purpose 2D/3D engine.
 
@@ -124,6 +125,9 @@ HyperKit is useful for:
 - Exact API-freeze validation
 - Deterministic public API fingerprint
 - Public-beta validation workflow
+- Stable-release certification
+- Stable-release evidence certificate
+- Protected v1.0.0 publication workflow
 - Python 3.9–3.12 CI workflow
 - Experimental Android build configuration
 
@@ -541,6 +545,7 @@ Package publication is handled through the project's controlled release workflow
 - [HyperKit v0.7 — Content, Assets + Advanced Game Features](docs/V070_CONTENT_ASSETS_ADVANCED_FEATURES.md)
 - [HyperKit v0.8 — Build, Publishing + Production Hardening](docs/V080_BUILD_PUBLISHING_PRODUCTION_HARDENING.md)
 - [HyperKit v0.9 — API Freeze + Public Beta](docs/V090_API_FREEZE_PUBLIC_BETA.md)
+- [HyperKit v1.0.0 — Stable Release](docs/V100_STABLE_RELEASE.md)
 - [Roadmap to HyperKit 1.0](ROADMAP.md)
 
 ### Template Polish and Runtime Documentation
@@ -562,28 +567,28 @@ Package publication is handled through the project's controlled release workflow
 
 - HyperKit is not a general-purpose 2D/3D engine.
 - Advanced 3D rendering is not supported.
-- Android builds depend on the external Android/Buildozer toolchain and still require final device-level release validation.
+- Android builds depend on the external Android/Buildozer toolchain and still require app-specific device/store release validation.
 - AdMob and Firebase Analytics integrations exist, but production-provider configuration and release QA remain environment-dependent.
 - The current focus is complete small 2D hypercasual and hybrid-casual mobile games.
-- The intended 1.0 top-level public API is frozen during the v0.9 public beta; incompatible changes should not be introduced without explicit freeze review.
-- Stable `1.0.0` release certification and final release-candidate QA are still pending.
+- The stable API `1.0` contract covers the frozen top-level public surface; future incompatible changes require a major-version transition.
+- A specific game's production readiness still depends on that game's own assets, signing, provider configuration, store requirements, and QA.
 
 ---
 
 ## Roadmap
 
-The active `0.9.0b1` line focuses on **API Freeze + Public Beta**:
+The active `1.0.0` line is the **Stable Release** milestone:
 
-- freeze the exact intended 1.0 top-level public API
-- use compatibility contract API `1.0`
-- validate the frozen export count and API fingerprint
-- prevent accidental missing, duplicate, or unexpected public exports
-- run a dedicated Python 3.9–3.12 public-beta workflow
+- preserve the frozen API `1.0` contract
+- preserve the 256-name frozen top-level public surface
+- require exact API fingerprint validation
+- run Python 3.9–3.12 stable regression checks
+- verify health, templates, complete games, generated projects, release readiness, and audit gates
 - verify wheel/sdist, release manifests, and fresh-wheel installation
-- allow optional TestPyPI beta publication through Trusted Publishing
-- keep all v0.8 production-hardening and earlier regression gates green
+- generate a machine-readable stable-release certificate
+- protect real-PyPI publication behind an explicit `v1.0.0` tag and confirmation
 
-After v0.9, the next roadmap milestone is **v1.0.0 Stable Release**.
+After v1.0.0, compatible fixes may move to patch releases and compatible feature additions may move to later 1.x minor releases.
 
 ---
 
