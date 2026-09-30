@@ -99,7 +99,7 @@ It also writes:
 `dist/stable-release-certificate.json`
 
 Real PyPI publication is disabled by default. It requires explicit
-confirmation and workflow execution from `refs/tags/v1.0.0`.
+confirmation and workflow execution from `refs/tags/v1.0.1`.
 
 ## Controlled Release Workflow
 
